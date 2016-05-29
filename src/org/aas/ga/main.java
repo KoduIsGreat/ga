@@ -18,8 +18,8 @@ static final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqr
      */
     public static void main(String[] args) {
         // TODO code application logic here
-      Simulation sim = new Simulation("Hello, World!",200);
-      sim.Evolve(0.5);
+      Simulation sim = new Simulation("Hello, World!",400);
+      sim.Evolve(0.5,.3);
         
     }
     

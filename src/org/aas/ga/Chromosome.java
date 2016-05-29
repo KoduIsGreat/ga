@@ -6,6 +6,8 @@
 package org.aas.ga;
 
 import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Random;
 import static org.aas.ga.main.AB;
 
@@ -13,27 +15,66 @@ import static org.aas.ga.main.AB;
  *
  * @author Adam
  */
-public class Chromosome {
-
+public class Chromosome implements Comparable<Chromosome>{
+    private final int MALE = 0;
+    private final int FEMALE = 1;
     private byte[] data;
     private int size;
-
-    
-    public Chromosome(int size,byte[] target)
+    private int fitness;
+    private int age;
+    private int sex; // 0 male 1 female
+    private LinkedHashMap<Integer,Byte> desirableGenes = new LinkedHashMap<>();
+    public Chromosome(int size)
     {
         this.size = size;
-        birth(size);
+        init(size);
+    }
+    protected Chromosome(byte[]data){
+        this.data = data;
+        sex = data[0]%2;    
+        fitness = 0;
+        age = 0; 
+    }
 
+    private void init(int size)
+    {
+        data = getRandomBytes(size);
+        sex = data[0]%2;    
+        fitness = 0;
+        age = 0;   
     }
     
-
+    private  byte randomByte()
+    {
+         return ( (byte) (32 + (new Random()).nextInt(95)) );
+    }
+    
+    private byte[] getRandomBytes(int length){
+        Random rand = new Random();
+        StringBuilder sb = new StringBuilder();
+        for(int i =0; i< length; i ++)
+            sb.append(AB.charAt(rand.nextInt(AB.length())));
+        
+        return sb.toString().getBytes();
+    }
+    
+    private int HammingDistance(byte a, byte b)
+    {
+        int dist = 1;
+        if(a == b)
+            dist --;
+        return dist;
+    }
     
     @Override
     public int hashCode()
     {
         int hash = 7;
-        hash = 41 * hash + Arrays.hashCode(this.data);
-        hash = 41 * hash + this.size;
+        hash = 37 * hash + Arrays.hashCode(this.data);
+        hash = 37 * hash + this.size;
+        hash = 37 * hash + this.fitness;
+        hash = 37 * hash + this.age;
+        hash = 37 * hash + this.sex;
         return hash;
     }
 
@@ -53,55 +94,137 @@ public class Chromosome {
         {
             return false;
         }
-        return this.size != other.size;
+        if (this.size != other.size)
+        {
+            return false;
+        }
+        if (this.fitness != other.fitness)
+        {
+            return false;
+        }
+        if (this.age != other.age)
+        {
+            return false;
+        }
+        return this.sex != other.sex;
     }
     
-    
-    private void birth(int length)
+    @Override
+    public int compareTo(Chromosome other)
     {
-        Random rand = new Random();
-        StringBuilder sb = new StringBuilder();
-        for(int i =0; i< length; i ++)
-            sb.append(AB.charAt(rand.nextInt(AB.length())));
+        if(this.fitness == other.getFitness())
+            return 0;
         
-        data = sb.toString().getBytes();
+        return (this.fitness < other.getFitness()) ? -1 : 1;
     }
     
-    public void mutate(double rate)
+    protected void mutate(double rate)
     {    
         Random rand = new Random();
- 
         for(int i =0; i < data.length; i++)
         {
-            data[i] = rand.nextDouble() < rate ? randomByte()  : data[i];
+            if(!desirableGenes.containsKey(i))
+                data[i] = rand.nextDouble() < rate ? randomByte()  : data[i];
         }
-        
+
+    }
+       
+    protected void calculateFitness(byte[]target)
+    {   
+        desirableGenes.clear();
+        for(int i =0 ; i < target.length;i++)
+        {
+            int val = HammingDistance(data[i],target[i]);
+            if (val==0)
+                desirableGenes.put(i, data[i]);
+            fitness += val;   
+        }
     }
     
-    private  byte randomByte()
+    private byte[] getLeftGeneArray(){
+        int maleLength = data.length/2+data.length%2;
+        byte[] left = new byte[maleLength];        
+        for(int i =0 ; i < left.length; i++)
+            left[i] = data[i];
+        return left;
+    }
+
+    
+    protected byte[] getGeneArray(int length)
     {
-         return ( (byte) (32 + (new Random()).nextInt(95)) );
+        byte[] genes = new byte[length];        
+        for(int i =0 ; i < genes.length; i++)
+            genes[i] = data[i];
+        return genes;
     }
     
-    public byte[] getData()
+    private byte[] getRightGeneArray()
+    {
+        byte[] right = new byte[data.length/2];
+        for(int i = 0; i<right.length;i++)
+            right[i] = data[data.length-i];
+        return right;
+    }
+    
+    protected byte[] getGenes()
+    {
+        if(sex == MALE)
+            return getLeftGeneArray();
+        else
+            return getRightGeneArray();
+    }
+    
+    protected byte[] getData()
     {
         return data;
     }
 
-    public void setData(byte[] data)
+    protected void setData(byte[] data)
     {
         this.data = data;
     }
 
-    public int getSize()
+    protected int getSize()
     {
         return size;
     }
 
-    public void setSize(int size)
+    protected void setSize(int size)
     {
         this.size = size;
     }
     
+    protected int getFitness()
+    {
+        return fitness;
+    }
+    
+    protected int getAge()
+    {
+        return age;
+    }
 
+    protected void age()
+    {
+        age += 1;
+    }
+    
+    protected int getSex()
+    {
+        return sex;
+    }
+    protected void setSex(int sex){
+        this.sex = sex;
+    }
+
+    public LinkedHashMap<Integer,Byte> getDesirableGenes(){
+        return desirableGenes;
+    }
+    /**
+     * @param desirableGenes the desirableGenes to set
+     */
+    public void setDesirableGenes(LinkedHashMap<Integer,Byte> desirableGenes)
+    {
+        this.desirableGenes = desirableGenes;
+    }
 }
