@@ -7,9 +7,7 @@ package org.aas.ga;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.Random;
-import static org.aas.ga.main.AB;
 
 /**
  *
@@ -49,13 +47,13 @@ public class Chromosome implements Comparable<Chromosome>{
          return ( (byte) (32 + (new Random()).nextInt(95)) );
     }
     
-    private byte[] getRandomBytes(int length){
-        Random rand = new Random();
-        StringBuilder sb = new StringBuilder();
+    private byte[] getRandomBytes(int length)
+    {
+        byte[] random_data = new byte[length];
         for(int i =0; i< length; i ++)
-            sb.append(AB.charAt(rand.nextInt(AB.length())));
+            random_data[i] = randomByte();
         
-        return sb.toString().getBytes();
+        return random_data;
     }
     
     private int HammingDistance(byte a, byte b)
@@ -126,7 +124,6 @@ public class Chromosome implements Comparable<Chromosome>{
             if(!desirableGenes.containsKey(i))
                 data[i] = rand.nextDouble() < rate ? randomByte()  : data[i];
         }
-
     }
        
     protected void calculateFitness(byte[]target)
@@ -139,39 +136,6 @@ public class Chromosome implements Comparable<Chromosome>{
                 desirableGenes.put(i, data[i]);
             fitness += val;   
         }
-    }
-    
-    private byte[] getLeftGeneArray(){
-        int maleLength = data.length/2+data.length%2;
-        byte[] left = new byte[maleLength];        
-        for(int i =0 ; i < left.length; i++)
-            left[i] = data[i];
-        return left;
-    }
-
-    
-    protected byte[] getGeneArray(int length)
-    {
-        byte[] genes = new byte[length];        
-        for(int i =0 ; i < genes.length; i++)
-            genes[i] = data[i];
-        return genes;
-    }
-    
-    private byte[] getRightGeneArray()
-    {
-        byte[] right = new byte[data.length/2];
-        for(int i = 0; i<right.length;i++)
-            right[i] = data[data.length-i];
-        return right;
-    }
-    
-    protected byte[] getGenes()
-    {
-        if(sex == MALE)
-            return getLeftGeneArray();
-        else
-            return getRightGeneArray();
     }
     
     protected byte[] getData()
@@ -220,9 +184,7 @@ public class Chromosome implements Comparable<Chromosome>{
     public LinkedHashMap<Integer,Byte> getDesirableGenes(){
         return desirableGenes;
     }
-    /**
-     * @param desirableGenes the desirableGenes to set
-     */
+    
     public void setDesirableGenes(LinkedHashMap<Integer,Byte> desirableGenes)
     {
         this.desirableGenes = desirableGenes;

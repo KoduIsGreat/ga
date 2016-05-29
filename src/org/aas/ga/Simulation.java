@@ -7,7 +7,6 @@ package org.aas.ga;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Random;
@@ -23,16 +22,17 @@ public class Simulation
     ArrayList<Chromosome> population = new ArrayList<>();
     ArrayList<Chromosome> survivors = new ArrayList<>();
     
-    byte[] target;
-    int pop;
-    int gen;
+    private final byte[] target;
+    private final int pop;
+    private final int max_gen;
     private final int FITTEST =0;
-    private int mostFitValue = 9999;
+    private int cur_gen;
 
-    public Simulation(String input, int pop)
+    public Simulation(String input, int pop, int max_gen)
     {
         this.target = input.getBytes();
-        this.pop = pop;    
+        this.pop = pop;
+        this.max_gen = max_gen;
         populate(pop,target.length);
     }
     
@@ -42,13 +42,6 @@ public class Simulation
         {
             population.add(new Chromosome(length));
         }
-    }
-
-    private byte[] concat(byte[] first, byte[] second) 
-    {
-        byte[] result = Arrays.copyOf(first, first.length + second.length);
-        System.arraycopy(second, 0, result, first.length, second.length);
-        return result;
     }
     
     private void mate(double rate,Random rand)
@@ -64,21 +57,20 @@ public class Simulation
         while(!survivors.isEmpty())
         {
             mate(rate,rand);
-        }
-        
+        }       
         populate(pop,target.length);
-        gen++;
+        cur_gen++;
     }
-    private LinkedHashMap<Integer,Byte> getChildDesirableGenes(LinkedHashMap<Integer,Byte> male, LinkedHashMap<Integer,Byte> female){
-        byte[] newData = new byte[target.length];
+    
+    private LinkedHashMap<Integer,Byte> getChildDesirableGenes(LinkedHashMap<Integer,Byte> male, LinkedHashMap<Integer,Byte> female)
+    {
         for(Integer i : female.keySet())
         {
             male.putIfAbsent(i, female.get(i));
-        }
-  
-        
+        }          
         return male;
     }
+    
     private byte[] getChildData(LinkedHashMap<Integer,Byte> genes)
     {
         byte[] newData = new byte[target.length];
@@ -89,9 +81,9 @@ public class Simulation
                     newData[i] = genes.get(i);
                 }
             }
-
             return newData;
     }
+    
     private ArrayList<Chromosome> crossOver(Chromosome male, Chromosome female,double rate)
     {
         ArrayList<Chromosome> toNextGen = new ArrayList<>();
@@ -114,7 +106,7 @@ public class Simulation
     {
         for(Chromosome chromo : this.population)
         {   
-            if(chromo.getFitness() == 0 || chromo.getAge()>gen/2)
+            if(chromo.getFitness() == 0 || chromo.getAge()>cur_gen/2)
             {
                 chromo.mutate(rate);
                 chromo.calculateFitness(target);
@@ -151,19 +143,17 @@ public class Simulation
     
     public void Evolve(double rate, double elitePercentage)
     {
-        gen = 0;
-        while(mostFitValue>0)
+        cur_gen = 0;
+        while(cur_gen<max_gen)
         {           
            mutatePopulation(rate);
            Collections.sort(population);
-           writeGenerationLine(gen,population.get(FITTEST));
-           mostFitValue = population.get(FITTEST).getFitness();
-           if(mostFitValue ==0)
+           writeGenerationLine(cur_gen,population.get(FITTEST));
+           if(population.get(FITTEST).getFitness() ==0)
                break;
            getElites(elitePercentage);          
            nextGen(rate);
         }
-        writeGenerationLine(gen,population.get(FITTEST));
     }
     
     
