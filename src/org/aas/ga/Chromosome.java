@@ -29,7 +29,7 @@ public class Chromosome implements Comparable<Chromosome>{
     }
     protected Chromosome(byte[]data){
         this.data = data;
-        sex = data[0]%2;    
+
         fitness = 0;
         age = 0; 
     }
@@ -173,19 +173,12 @@ public class Chromosome implements Comparable<Chromosome>{
         age += 1;
     }
     
-    protected int getSex()
-    {
-        return sex;
-    }
-    protected void setSex(int sex){
-        this.sex = sex;
-    }
 
-    public LinkedHashMap<Integer,Byte> getDesirableGenes(){
+    protected LinkedHashMap<Integer,Byte> getDesirableGenes(){
         return desirableGenes;
     }
     
-    public void setDesirableGenes(LinkedHashMap<Integer,Byte> desirableGenes)
+    protected void setDesirableGenes(LinkedHashMap<Integer,Byte> desirableGenes)
     {
         this.desirableGenes = desirableGenes;
     }
