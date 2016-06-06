@@ -10,8 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 
 /**
@@ -19,7 +18,7 @@ import java.util.logging.Logger;
  * @author Adam
  * @param <T>
  */
-public abstract class BaseGene<T>
+public abstract class AbstractGene<T> implements Gene
 {
     protected List<T> GENETIC_MATERIAL_OPTIONS = new ArrayList<>();
 
@@ -27,46 +26,35 @@ public abstract class BaseGene<T>
     private int length;
     private List<T> dna;
     
-    public BaseGene(List<T> dna,List<T>options ,boolean suppressed, int length)
-    {    
-        try
-        {
-            GENETIC_MATERIAL_OPTIONS.addAll(options);
-            validateDNA(dna);
-            this.length = length;                                     
-            this.suppressed = suppressed;
-            this.dna = dna;
-        }
-        catch (InvalidGeneticOperatorException ex)
-        {
-            Logger.getLogger(BaseGene.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    public BaseGene(List<T> dna,List<T> options){
-        try
-        {
-            GENETIC_MATERIAL_OPTIONS.addAll(options);
-            validateDNA(dna);
-            this.dna = dna;          
-            this.length = dna.size();
-            this.suppressed = false;
-        }
-        catch (InvalidGeneticOperatorException ex)
-        {
-            Logger.getLogger(BaseGene.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    protected AbstractGene(List<T>options,int length)
+    {
+        this.GENETIC_MATERIAL_OPTIONS = options;
+        this.length = length;
+        this.suppressed =false;
         
     }
-    private void validateDNA(List<T> dna) throws InvalidGeneticOperatorException
+    
+    protected AbstractGene(List<T>options,int length, boolean suppressed)
     {
-        for(T strand : dna){
-            if(!GENETIC_MATERIAL_OPTIONS.contains(strand))
-            {
-                throw new InvalidGeneticOperatorException("Invalid Genetic material in DNA at index "+dna.indexOf(strand),new Exception());
-            }
-        }    
-    }    
+        this.GENETIC_MATERIAL_OPTIONS = options;
+        this.length = length;
+        this.suppressed =suppressed;
+
+    }
+    
+    private AbstractGene(List<T> dna, List<T>options,int length, boolean suppressed)
+    {
+        this.GENETIC_MATERIAL_OPTIONS = options;
+        this.dna =dna;
+        this.length = length;
+        this.suppressed = suppressed;        
+    }
+  
+    protected AbstractGene(List<T> options)
+    {
+        this.GENETIC_MATERIAL_OPTIONS = options;
+    }
+    
     private T getRandomGeneticMaterial()
     {
         Random rand = new Random();
@@ -84,7 +72,7 @@ public abstract class BaseGene<T>
     @Override
     public String toString()
     {
-        return "BaseGene{" + "GENETIC_MATERIAL_OPTIONS=" + GENETIC_MATERIAL_OPTIONS + ", suppressed=" + suppressed + ", length=" + length + ", dna=" + dna + '}';
+        return "Gene{" + "GENETIC_MATERIAL_OPTIONS=" + GENETIC_MATERIAL_OPTIONS + ", suppressed=" + suppressed + ", length=" + length + ", dna=" + dna + '}';
     }
     
     @Override
@@ -98,7 +86,7 @@ public abstract class BaseGene<T>
         {
             return false;
         }
-        final BaseGene<?> other = (BaseGene<?>) obj;
+        final AbstractGene<?> other = (AbstractGene<?>) obj;
         if (this.suppressed != other.suppressed)
         {
             return false;
@@ -118,16 +106,17 @@ public abstract class BaseGene<T>
         }
         return true;
     }
-    
-    public  BaseGene<T> createRandom()
+
+    public Gene createRandom()
     {
         List<T> dna = new ArrayList<>();
         while(dna.size() <= this.length)
             dna.add(getRandomGeneticMaterial());
      
-        return new BaseGene(dna,this.GENETIC_MATERIAL_OPTIONS,false,this.length) {};
+        return new AbstractGene(dna,this.GENETIC_MATERIAL_OPTIONS,this.length,this.suppressed) {};
     }
     
+    @Override
     public void mutate(double p){
         Random rand = new Random();
         List<T> new_dna = new ArrayList<>();
@@ -144,21 +133,22 @@ public abstract class BaseGene<T>
         }
         this.dna = new_dna;
     }
-    
-    public BaseGene<T> copy()
+    @Override
+    public Gene copy()
     {
-        return new BaseGene(this.dna,this.GENETIC_MATERIAL_OPTIONS,this.suppressed,this.length) {};
+        return new AbstractGene(this.GENETIC_MATERIAL_OPTIONS,this.dna,this.length,this.suppressed) {};
     }
     
     public List<T> getDna()
     {
-        return dna;
+        return this.dna;
     }
 
     public void setDna(List<T> dna)
     {
         this.dna = dna;
     }
+
     
     public boolean isSuppressed()
     {

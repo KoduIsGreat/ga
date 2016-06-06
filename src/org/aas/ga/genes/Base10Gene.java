@@ -6,18 +6,27 @@
 package org.aas.ga.genes;
 
 import java.util.Arrays;
-import java.util.List;
+
 
 /**
  *
  * @author Adam
  */
-public class Base10Gene extends BaseGene<Integer>
+public class Base10Gene extends AbstractGene<Integer> implements Gene
 {
 
-    public Base10Gene(List<Integer> dna, boolean suppressed, int length)
+    public Base10Gene(int length, boolean suppressed)
     {
-        super(dna, Arrays.asList(0,1,2,3,4,5,6,7,8,9), suppressed, length);
+        super(Arrays.asList(0,1,2,3,4,5,6,7,8,9),length, suppressed);
+    }
+ 
+    public Base10Gene(int length)
+    {
+        super(Arrays.asList(0,1,2,3,4,5,6,7,8,9),length);
     }
     
+    public Base10Gene()
+    {
+        super(Arrays.asList(0,1,2,3,4,5,6,7,8,9));
+    }
 }

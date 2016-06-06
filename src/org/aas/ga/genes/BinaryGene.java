@@ -14,19 +14,22 @@ import java.util.List;
  *
  * @author Adam
  */
-public class BinaryGene extends BaseGene<Integer>
+public class BinaryGene extends AbstractGene<Integer> implements Gene
 {
 
-    public BinaryGene(List<Integer> dna, boolean suppressed, int length) throws InvalidGeneticOperatorException
+    public BinaryGene(int length, boolean suppressed) throws InvalidGeneticOperatorException
     {      
-        super(dna,Arrays.asList(0,1),suppressed,length);
+        super(Arrays.asList(0,1),length,suppressed);
     }
     
-    public BinaryGene(List<Integer> dna)
+    public BinaryGene(int length)
     {
-        super(dna,Arrays.asList(0,1));
+        super(Arrays.asList(0,1),length);
     }
-    
+    public BinaryGene()
+    {
+        super(Arrays.asList(0,1));
+    }
     @Override
     public void mutate(double p)
     {

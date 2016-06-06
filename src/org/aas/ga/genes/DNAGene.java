@@ -6,18 +6,27 @@
 package org.aas.ga.genes;
 
 import java.util.Arrays;
-import java.util.List;
+
 
 /**
  *
  * @author Adam
  */
-public class DNAGene extends BaseGene<String>
+public class DNAGene extends AbstractGene<String> implements Gene
 {
 
-    public DNAGene(List<String> dna, List<String> options, boolean suppressed, int length)
+    public DNAGene(int length, boolean suppressed)
     {
-        super(dna,Arrays.asList("A","C","T","G"), suppressed, length);
+        super(Arrays.asList("A","C","T","G"),length, suppressed);
     }
     
+    public DNAGene(int length)
+    {
+        super(Arrays.asList("A","C","T","G"),length);
+    }
+    
+    public DNAGene()
+    {
+        super(Arrays.asList("A","C","T","G"));
+    }
 }
