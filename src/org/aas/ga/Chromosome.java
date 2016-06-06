@@ -22,6 +22,7 @@ public class Chromosome implements Comparable<Chromosome>{
     private int age;
     private int sex; // 0 male 1 female
     private LinkedHashMap<Integer,Byte> desirableGenes = new LinkedHashMap<>();
+    
     public Chromosome(int size)
     {
         this.size = size;
@@ -42,7 +43,7 @@ public class Chromosome implements Comparable<Chromosome>{
         age = 0;   
     }
     
-    private  byte randomByte()
+    private byte randomByte()
     {
          return ( (byte) (32 + (new Random()).nextInt(95)) );
     }
