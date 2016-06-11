@@ -106,7 +106,7 @@ public abstract class AbstractGene<T> implements Gene
         }
         return true;
     }
-    
+
     @Override
     public Gene createRandom()
     {
