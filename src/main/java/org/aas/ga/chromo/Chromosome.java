@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by Adam on 6/11/2016.
  */
-public interface Chromosome {
+public interface Chromosome extends Comparable<Chromosome>{
     public Chromosome crossover(Chromosome other, int p);
     public void mutate(double p);
     public Chromosome copy();

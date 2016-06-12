@@ -9,6 +9,8 @@ package org.aas.ga.trans;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.aas.ga.chromo.Chromosome;
 import org.aas.ga.chromo.DefaultChromosome;
 import org.aas.ga.genes.Gene;
 
@@ -17,12 +19,11 @@ import org.aas.ga.genes.Gene;
  * @author Adam
  * @param <E>
  */
-public abstract class BaseTransformer<E>
+public abstract class BaseTransformer<E> implements Transformer<E>
 {
-    
-    public abstract E transformGene(Gene gene);
-    
-    public List<E> transformChromosome(DefaultChromosome chromo)
+
+    @Override
+    public List<E> transformChromosome(Chromosome chromo)
     {        
         List<Gene> genes = chromo.getGenes();
         List<E> transformed = new ArrayList();

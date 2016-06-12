@@ -39,35 +39,6 @@ public class DefaultChromosome implements Chromosome
     }
 
     @Override
-    public List<Gene> getGenes()
-    {
-        return genes;
-    }
-
-    @Override
-    public void setGenes(ArrayList<Gene> genes)
-    {
-        this.genes = genes;
-    }
-
-    @Override
-    public Double getFitness()
-    {
-        return fitness;
-    }
-
-    @Override
-    public void setFitness(Double f) {
-        this.fitness =f;
-    }
-
-    @Override
-    public Iterator<Gene> iterator() {
-        return this.genes.iterator();
-    }
-
-
-    @Override
     public Chromosome crossover(Chromosome other, int p) {
         ArrayList<Gene> childDNA = new ArrayList();
         childDNA.addAll(this.genes.subList(0,p));
@@ -99,6 +70,42 @@ public class DefaultChromosome implements Chromosome
         return new DefaultChromosome(newGenes,gene_type,this.length);
     }
 
+    @Override
+    public int compareTo(Chromosome o)
+    {
+        if(this.fitness == o.getFitness())
+            return 0;
+
+        return (this.fitness < o.getFitness()) ? -1 : 1;
+    }
+
+    @Override
+    public List<Gene> getGenes()
+    {
+        return genes;
+    }
+
+    @Override
+    public void setGenes(ArrayList<Gene> genes)
+    {
+        this.genes = genes;
+    }
+
+    @Override
+    public Double getFitness()
+    {
+        return fitness;
+    }
+
+    @Override
+    public void setFitness(Double f) {this.fitness =f;}
+
+    @Override
+    public Iterator<Gene> iterator()
+    {
+        return this.genes.iterator();
+    }
+
     public static class ChromosomeFactory
     {
         public static ArrayList<Chromosome> createChromosomes(Gene gene_type,int chromo_len,int n)
@@ -111,7 +118,3 @@ public class DefaultChromosome implements Chromosome
         }
     }
 }
-
-
-
-
