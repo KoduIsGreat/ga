@@ -14,7 +14,7 @@ import org.aas.ga.genes.Gene;
  */
 public class BinaryIntTransformer extends BaseTransformer<Integer>
 {
-
+    public BinaryIntTransformer(){}
     @Override
     public Integer transformGene(Gene gene)
     {

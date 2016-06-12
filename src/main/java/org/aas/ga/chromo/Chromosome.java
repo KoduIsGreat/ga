@@ -12,6 +12,7 @@ import java.util.List;
 public interface Chromosome extends Comparable<Chromosome>{
     public Chromosome crossover(Chromosome other, int p);
     public void mutate(double p);
+    public int length();
     public Chromosome copy();
     public Chromosome createRandom();
     public List<Gene> getGenes();

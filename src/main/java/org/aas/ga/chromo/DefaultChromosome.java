@@ -69,7 +69,10 @@ public class DefaultChromosome implements Chromosome
             newGenes.add(gene_type.createRandom());
         return new DefaultChromosome(newGenes,gene_type,this.length);
     }
-
+    @Override
+    public int length(){
+        return length;
+    }
     @Override
     public int compareTo(Chromosome o)
     {
@@ -108,10 +111,10 @@ public class DefaultChromosome implements Chromosome
 
     public static class ChromosomeFactory
     {
-        public static ArrayList<Chromosome> createChromosomes(Gene gene_type,int chromo_len,int n)
+        public static List<Chromosome> createChromosomes(Gene gene_type,int chromo_len,int n)
         {
             DefaultChromosome chromosome = new DefaultChromosome(chromo_len,gene_type);
-            ArrayList<Chromosome> population = new ArrayList<>();
+            List<Chromosome> population = new ArrayList<>();
             for(int i = population.size() ; i <n ;i++)
                 population.add(chromosome.createRandom());
             return population;

@@ -1,41 +1,50 @@
 package org.aas.ga.util;
 
-import org.aas.ga.algo.GeneticAlgorithm;
+
 import org.aas.ga.chromo.Chromosome;
+import java.util.*;
 
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by Adam on 6/12/2016.
  */
-public class GeneticUtil {
-    public List<Double> computeFitnessCDF(List<Chromosome> survivors ,GeneticAlgorithm ga){
-
-        List<Double> fitness = new ArrayList();
-        for(Chromosome c : ga.getPopulation())
-        {
-            ga.evaluateFitness(c);
-            fitness.add(c.getFitness());
-        }
-
-        ga.sort();
-        Double min = ga.getWeakest().getFitness();
-        Double range = ga.getFittest().getFitness() - min;
+public class GeneticUtil
+{
+    public static Map<Double,Chromosome> computeFitnessCDF(List<Chromosome> survivors )
+    {
+        Collections.sort(survivors);
+        Double min = Collections.min(survivors).getFitness();
+        Double range = Collections.max(survivors).getFitness() -min ;
         if(range == 0)
         {
-            List<Double> defaultCdf = new ArrayList();
-            double n = ga.getPopulation().size();
-            for(int i = 1 ; i < n ; i ++)
-                defaultCdf.add(i/n);
+            Map<Double,Chromosome> defaultCdf = new LinkedHashMap<>();
+            for(Chromosome c : survivors)
+            {
+                double fit = c.getFitness();
+                defaultCdf.put(((fit-min)/range),c);
+            }
             return defaultCdf;
         }
         else
         {
-            List<Double> cdf = fitness.stream().map(fit -> (fit - min) / range).collect(Collectors.toList());
+            Map<Double,Chromosome> cdf = new LinkedHashMap<>();
+            for(Chromosome c : survivors)
+            {
+                double fit = c.getFitness();
+                cdf.put(((fit-min)/range),c);
+            }
             return cdf;
         }
+    }
+
+    public static Chromosome weightedChoice(Map<Double,Chromosome> survivorCdfMap)
+    {
+        Random rand = new Random();
+        for(Double cdf : survivorCdfMap.keySet()){
+            if(rand.nextDouble() < cdf)
+                return survivorCdfMap.get(cdf);
+        }
+
+        return survivorCdfMap.get(rand.nextInt(survivorCdfMap.size()));
     }
 }
