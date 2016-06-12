@@ -53,7 +53,7 @@ public abstract class AbstractGeneticAlgorithm implements GeneticAlgorithm {
         this.do_elitism = false;
         this.gen_to_quit_after= 500;
         this.gen_to_refresh_after =300;
-
+        this.num_generations = gen;
         this.minRunFit = Double.MAX_VALUE;
         this.maxRunFit = Double.MIN_VALUE;
     }
