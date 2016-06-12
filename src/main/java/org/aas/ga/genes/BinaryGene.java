@@ -17,7 +17,7 @@ import java.util.List;
 public class BinaryGene extends AbstractGene<Integer> implements Gene
 {
 
-    public BinaryGene(int length, boolean suppressed) throws InvalidGeneticOperatorException
+    public BinaryGene(int length, boolean suppressed)
     {      
         super(Arrays.asList(0,1),length,suppressed);
     }

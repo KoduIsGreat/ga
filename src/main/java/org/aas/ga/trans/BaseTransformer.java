@@ -9,7 +9,7 @@ package org.aas.ga.trans;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.aas.ga.chromo.Chromosome;
+import org.aas.ga.chromo.DefaultChromosome;
 import org.aas.ga.genes.Gene;
 
 /**
@@ -22,7 +22,7 @@ public abstract class BaseTransformer<E>
     
     public abstract E transformGene(Gene gene);
     
-    public List<E> transformChromosome(Chromosome chromo)
+    public List<E> transformChromosome(DefaultChromosome chromo)
     {        
         List<Gene> genes = chromo.getGenes();
         List<E> transformed = new ArrayList();

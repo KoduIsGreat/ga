@@ -1,58 +1,23 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.aas.ga.chromo;
 
+import org.aas.ga.genes.Gene;
+
 import java.util.ArrayList;
-
-import org.aas.ga.genes.*;
-
+import java.util.Iterator;
+import java.util.List;
 
 /**
- *
- * @author Adam
- * 
+ * Created by Adam on 6/11/2016.
  */
-public class Chromosome<T extends Gene>
-{
+public interface Chromosome {
+    public Chromosome crossover(Chromosome other, int p);
+    public void mutate(double p);
+    public Chromosome copy();
+    public Chromosome createRandom();
+    public List<Gene> getGenes();
+    public void setGenes(ArrayList<Gene> genes);
+    public Double getFitness();
+    public void setFitness(Double f);
+    public Iterator<Gene> iterator();
 
-    private ArrayList<Gene> genes = new ArrayList();
-
-    private Double fitness;
-    
-    public Chromosome(int gene_len, int chromo_len, T gene)
-    {
-        fitness = Double.NaN;
-        gene.setLength(gene_len);
-        for(int i =0 ; i <chromo_len ; i ++)
-            genes.add(gene.createRandom());
-    }
-    
-
-    
-    public ArrayList<Gene> getGenes()
-    {
-        return genes;
-    }
-
-    public void setGenes(ArrayList<Gene> genes)
-    {
-        this.genes = genes;
-    }
-
-    public Double getFitness()
-    {
-        return fitness;
-    }
-
-    public void setFitness(Double fitness)
-    {
-        this.fitness = fitness;
-    }
 }
-
-
-
-
