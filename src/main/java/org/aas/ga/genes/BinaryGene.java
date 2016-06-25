@@ -18,9 +18,9 @@ import java.util.Random;
 public class BinaryGene extends AbstractGene<Integer> implements Gene
 {
 
-    public BinaryGene(int length, boolean suppressed)
+    public BinaryGene(int length, boolean suppressed,boolean dominant)
     {      
-        super(Arrays.asList(0,1),length,suppressed);
+        super(Arrays.asList(0,1),length,suppressed,dominant);
     }
     
     public BinaryGene(int length)

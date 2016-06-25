@@ -7,6 +7,13 @@
     <groupId>org.aas</groupId>
     <artifactId>ga</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>LATEST</version>
+        </dependency>
+    </dependencies>
     <build>
         <plugins>
             <plugin>

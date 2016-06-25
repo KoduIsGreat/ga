@@ -23,6 +23,9 @@ public abstract class AbstractGene<T> implements Gene
     protected List<T> GENETIC_MATERIAL_OPTIONS = new ArrayList();
 
     private boolean suppressed;
+
+
+    private boolean dominant;
     private int length;
     private List<T> dna;
     
@@ -31,23 +34,24 @@ public abstract class AbstractGene<T> implements Gene
         this.GENETIC_MATERIAL_OPTIONS = options;
         this.length = length;
         this.suppressed =false;
-        
+        this.dominant = false;
     }
     
-    protected AbstractGene(List<T>options,int length, boolean suppressed)
+    protected AbstractGene(List<T>options,int length, boolean suppressed,boolean dominant)
     {
         this.GENETIC_MATERIAL_OPTIONS = options;
         this.length = length;
         this.suppressed =suppressed;
-
+        this.dominant = dominant;
     }
     
-    private AbstractGene(List<T> dna, List<T>options,int length, boolean suppressed)
+    private AbstractGene(List<T> dna, List<T>options,int length, boolean suppressed,boolean dominant)
     {
         this.GENETIC_MATERIAL_OPTIONS = options;
         this.dna =dna;
         this.length = length;
-        this.suppressed = suppressed;        
+        this.suppressed = suppressed;
+        this.dominant = dominant;
     }
   
     protected AbstractGene(List<T> options)
@@ -117,7 +121,7 @@ public abstract class AbstractGene<T> implements Gene
         while(dna.size() < this.length)
             dna.add(getRandomGeneticMaterial());
      
-        return new AbstractGene(dna,this.GENETIC_MATERIAL_OPTIONS,this.length,this.suppressed) {};
+        return new AbstractGene(dna,this.GENETIC_MATERIAL_OPTIONS,this.length,this.suppressed,this.dominant) {};
     }
     
     @Override
@@ -141,7 +145,7 @@ public abstract class AbstractGene<T> implements Gene
     @Override
     public Gene copy()
     {
-        return new AbstractGene(this.GENETIC_MATERIAL_OPTIONS,this.dna,this.length,this.suppressed) {};
+        return new AbstractGene(this.GENETIC_MATERIAL_OPTIONS,this.dna,this.length,this.suppressed,this.dominant) {};
     }
     @Override
     public List<T> getDna()
@@ -173,6 +177,14 @@ public abstract class AbstractGene<T> implements Gene
     public void setLength(int length)
     {
         this.length = length;
+    }
+    @Override
+    public boolean isDominant() {
+        return dominant;
+    }
+    @Override
+    public void setDominant(boolean dominant) {
+        this.dominant = dominant;
     }
 }
 

@@ -15,9 +15,9 @@ import java.util.Arrays;
 public class Base10Gene extends AbstractGene<Integer>
 {
 
-    public Base10Gene(int length, boolean suppressed)
+    public Base10Gene(int length, boolean suppressed,boolean dominant)
     {
-        super(Arrays.asList(0,1,2,3,4,5,6,7,8,9),length, suppressed);
+        super(Arrays.asList(0,1,2,3,4,5,6,7,8,9),length, suppressed,dominant);
     }
  
     public Base10Gene(int length)

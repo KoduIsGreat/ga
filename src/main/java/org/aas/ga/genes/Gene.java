@@ -22,5 +22,8 @@ public interface Gene<T>
     public Gene copy();
     public void setSuppressed(boolean suppressed);
     public boolean isSuppressed();
+    public boolean isDominant();
+
+    public void setDominant(boolean dominant);
 
 }

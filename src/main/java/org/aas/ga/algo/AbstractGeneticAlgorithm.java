@@ -191,7 +191,7 @@ public abstract class AbstractGeneticAlgorithm implements GeneticAlgorithm {
                 overall_fittest = getFittest();
 
             generationFittest  = getFittest();
-            System.out.println("Generation "+gen+" Fittest: "+generationFittest);
+            System.out.println("Generation "+gen+" Fittest: "+generationFittest + " Fitness : "+ generationFittest.getFitness());
             if((generationFittest.getFitness() > overall_fittest.getFitness() && !this.inverseFitnessRanking) ||
                     (generationFittest.getFitness()<overall_fittest.getFitness() && this.inverseFitnessRanking))
             {

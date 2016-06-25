@@ -15,9 +15,9 @@ import java.util.Arrays;
 public class DNAGene extends AbstractGene<String> implements Gene
 {
 
-    public DNAGene(int length, boolean suppressed)
+    public DNAGene(int length, boolean suppressed,boolean dominant)
     {
-        super(Arrays.asList("A","C","T","G"),length, suppressed);
+        super(Arrays.asList("A","C","T","G"),length, suppressed,dominant);
     }
     
     public DNAGene(int length)

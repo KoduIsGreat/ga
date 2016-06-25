@@ -1,5 +1,6 @@
-package org.aas.ga.algo;
+package org.aas.ga.examples;
 
+import org.aas.ga.algo.AbstractGeneticAlgorithm;
 import org.aas.ga.chromo.Chromosome;
 import org.aas.ga.chromo.ChromosomeFactory;
 import org.aas.ga.genes.AsciiGene;
@@ -42,9 +43,9 @@ public class AsciiMatcherGA extends AbstractGeneticAlgorithm {
             {
                 int geneFit = HammingDistance(target.get(i).getBytes(), s.get(j).getBytes());
 
-                if(geneFit == 0 && !gene.isSuppressed())
+                if(geneFit == 0 && !gene.isDominant())
                 {
-                    gene.setSuppressed(true);
+                    gene.setDominant(true);
                 }
                 i++;
                 fit += geneFit;
@@ -72,7 +73,7 @@ public class AsciiMatcherGA extends AbstractGeneticAlgorithm {
     public static void main(String[] args)
     {
         String [] input = {"h","e","l","l","o"," "," ","w","o","r","l","d"};
-        AsciiMatcherGA ga = new AsciiMatcherGA(ChromosomeFactory.createDefaultChromosomes(new AsciiGene(1),input.length,200),50000,.6,.4,.5,.5,input);
+        AsciiMatcherGA ga = new AsciiMatcherGA(ChromosomeFactory.createDefaultChromosomes(new AsciiGene(1),input.length,2000),50000,.5,.5,.5,.5,input);
         ga.setInverseFitnessRanking(true);
         ga.run();
     }
