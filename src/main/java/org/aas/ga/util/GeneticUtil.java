@@ -1,6 +1,7 @@
 package org.aas.ga.util;
 
 
+import org.aas.ga.algo.GeneticAlgorithm;
 import org.aas.ga.chromo.Chromosome;
 import java.util.*;
 
@@ -10,41 +11,62 @@ import java.util.*;
  */
 public class GeneticUtil
 {
-    public static Map<Double,Chromosome> computeFitnessCDF(List<Chromosome> survivors )
+    public static Map<Chromosome,Double> computeFitnessCDF(List<Chromosome> survivors, GeneticAlgorithm ga)
     {
-        Collections.sort(survivors);
-        Double min = Collections.min(survivors).getFitness();
-        Double range = Collections.max(survivors).getFitness() -min ;
+
+        Double min = ga.getWeakest().getFitness();
+        Double range = Math.abs(ga.getFittest().getFitness() - min) ;
         if(range == 0)
         {
-            Map<Double,Chromosome> defaultCdf = new LinkedHashMap<>();
-            for(Chromosome c : survivors)
+            Map<Chromosome,Double> defaultCdf = new LinkedHashMap<>();
+            Random rand = new Random();
+            for(Chromosome chromo : survivors)
             {
-                double fit = c.getFitness();
-                defaultCdf.put(((fit-min)/range),c);
+                defaultCdf.put(chromo,rand.nextDouble());
             }
             return defaultCdf;
         }
         else
         {
-            Map<Double,Chromosome> cdf = new LinkedHashMap<>();
+            Map<Chromosome,Double> cdf = new LinkedHashMap<>();
             for(Chromosome c : survivors)
             {
                 double fit = c.getFitness();
-                cdf.put(((fit-min)/range),c);
+                cdf.put(c,((Math.abs(fit-min))/range));
             }
             return cdf;
         }
     }
 
-    public static Chromosome weightedChoice(Map<Double,Chromosome> survivorCdfMap)
+    public static Chromosome weightedChoice(Map<Chromosome,Double> survivorCdfMap)
     {
         Random rand = new Random();
-        for(Double cdf : survivorCdfMap.keySet()){
-            if(rand.nextDouble() < cdf)
-                return survivorCdfMap.get(cdf);
+        for(Chromosome chromo : survivorCdfMap.keySet()){
+            if(rand.nextDouble() < survivorCdfMap.get(chromo))
+                return chromo;
         }
 
-        return survivorCdfMap.get(rand.nextInt(survivorCdfMap.size()));
+        return choice(survivorCdfMap.keySet(),rand);
+    }
+
+    public static Chromosome choice(Collection<? extends Chromosome> coll, Random rand) {
+        if (coll.size() == 0) {
+            return null; // or throw IAE, if you prefer
+        }
+
+        int index = rand.nextInt(coll.size());
+        if (coll instanceof List)
+        { // optimization
+            return ((List<? extends Chromosome>) coll).get(index);
+        }
+        else
+        {
+            Iterator<? extends Chromosome> iter = coll.iterator();
+            for (int i = 0; i < index; i++)
+            {
+                iter.next();
+            }
+            return iter.next();
+        }
     }
 }

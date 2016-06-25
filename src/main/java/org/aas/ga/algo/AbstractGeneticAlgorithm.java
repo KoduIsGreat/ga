@@ -24,6 +24,9 @@ public abstract class AbstractGeneticAlgorithm implements GeneticAlgorithm {
     private Integer gen_to_quit_after ;
     private Integer gen_to_refresh_after;
     private boolean do_elitism;
+    private Map<Integer,Chromosome> new_overall_fittness_map = new LinkedHashMap<>();
+
+    private boolean inverseFitnessRanking;
 
     private Chromosome overall_fittest;
     private final double REFRESH_RATE = .5;
@@ -40,6 +43,7 @@ public abstract class AbstractGeneticAlgorithm implements GeneticAlgorithm {
         this.do_elitism = elitist;
         this.gen_to_quit_after = quit_after;
         this.gen_to_refresh_after = refresh_after;
+        this.inverseFitnessRanking = false;
         this.minRunFit = Double.MAX_VALUE;
         this.maxRunFit = Double.MIN_VALUE;
     }
@@ -51,9 +55,10 @@ public abstract class AbstractGeneticAlgorithm implements GeneticAlgorithm {
         this.p_mutate = p_mutate;
         this.p_crossover = p_crossover;
         this.do_elitism = false;
-        this.gen_to_quit_after= 500;
-        this.gen_to_refresh_after =300;
+        this.gen_to_quit_after= null;
+        this.gen_to_refresh_after =null;
         this.num_generations = gen;
+        this.inverseFitnessRanking = false;
         this.minRunFit = Double.MAX_VALUE;
         this.maxRunFit = Double.MIN_VALUE;
     }
@@ -61,18 +66,21 @@ public abstract class AbstractGeneticAlgorithm implements GeneticAlgorithm {
     @Override
     public Chromosome getWeakest() {
 
-        return Collections.min(population);
+        return inverseFitnessRanking ? Collections.max(population) : Collections.min(population);
     }
 
     @Override
     public Chromosome getFittest() {
-        return Collections.max(population);
+        return inverseFitnessRanking ? Collections.min(population) : Collections.max(population);
     }
 
     @Override
     public List<Chromosome> sort(List<Chromosome> chromosomes)
     {
         Collections.sort(chromosomes);
+        if(inverseFitnessRanking)
+            Collections.reverse(chromosomes);
+
         return chromosomes;
     }
 
@@ -84,20 +92,20 @@ public abstract class AbstractGeneticAlgorithm implements GeneticAlgorithm {
         double minFit = getWeakest().getFitness();
         double maxFit = getFittest().getFitness();
 
-        if(minFit<this.minRunFit)
+        if(inverseFitnessRanking ? minFit>this.minRunFit : minFit<this.minRunFit)
             this.minRunFit=minFit;
-        if(maxFit>this.maxRunFit)
+        if(inverseFitnessRanking ? maxFit<this.maxRunFit : maxFit>this.maxRunFit)
             this.maxRunFit=maxFit;
 
-        double overallFitnessRange = this.maxRunFit -this.minRunFit;
-        double relativeFitnessRange = maxFit - minFit;
+        double overallFitnessRange = Math.abs(this.maxRunFit -this.minRunFit);
+        double relativeFitnessRange = Math.abs(maxFit - minFit);
         List<Chromosome> survivors = new ArrayList();
 
         for(Chromosome c : population)
         {
             double fitness = c.getFitness();
-            double p_abs = (overallFitnessRange != 0) ? ((fitness - this.minRunFit)/overallFitnessRange) : 1;
-            double p_rel = (relativeFitnessRange != 0) ?((fitness - minFit)/relativeFitnessRange) : 1;
+            double p_abs = (overallFitnessRange != 0) ? ((Math.abs(fitness - this.minRunFit))/overallFitnessRange) : 1;
+            double p_rel = (relativeFitnessRange != 0)? ((Math.abs(fitness - minFit))/relativeFitnessRange) : 1;
 
             double p_survival = p_abs*this.absFitWeight + p_rel*this.relFitWeight;
 
@@ -113,7 +121,7 @@ public abstract class AbstractGeneticAlgorithm implements GeneticAlgorithm {
     @Override
     public void calculatePopulationFitness()
     {
-        population.stream().filter(c -> c.getFitness() == null).forEach(this::evaluateFitness);
+        population.stream().filter(c -> Double.isNaN(c.getFitness())).forEach(this::evaluateFitness);
     }
 
     @Override
@@ -125,7 +133,7 @@ public abstract class AbstractGeneticAlgorithm implements GeneticAlgorithm {
 
         int numSurvivors = survivors.size();
         List<Chromosome> offspring = new ArrayList<>();
-        Map<Double,Chromosome> survivorCDF = GeneticUtil.computeFitnessCDF(survivors);
+        Map<Chromosome,Double> survivorCDF = GeneticUtil.computeFitnessCDF(survivors, this);
         while(survivors.size()+offspring.size() < targetSize)
         {
             Chromosome c1 = GeneticUtil.weightedChoice(survivorCDF).copy();
@@ -133,7 +141,9 @@ public abstract class AbstractGeneticAlgorithm implements GeneticAlgorithm {
             {
                 Chromosome c2 = survivors.get(rand.nextInt(numSurvivors));
                 int crosspoint = rand.nextInt(c2.length());
-                offspring.add(c1.crossover(c2,crosspoint));
+                Chromosome baby =c1.crossover(c2,crosspoint);
+                this.evaluateFitness(baby);
+                offspring.add(baby);
             }
         }
         survivors.addAll(offspring);
@@ -170,18 +180,23 @@ public abstract class AbstractGeneticAlgorithm implements GeneticAlgorithm {
         long start = System.currentTimeMillis();
         int generationsSinceUpset = 0;
         Chromosome generationFittest;
-        Map<Integer,Chromosome> new_overall_fittness_map = new LinkedHashMap<>();
+
         for(int gen = 1; gen <=num_generations; gen ++)
         {
             List<Chromosome> survivors = compete();
             population = reproduce(survivors,p_crossover);
             mutate(p_mutate);
 
-            generationFittest = getFittest();
+            if(gen == 1)
+                overall_fittest = getFittest();
 
-            if(generationFittest.getFitness() > overall_fittest.getFitness())
+            generationFittest  = getFittest();
+            System.out.println("Generation "+gen+" Fittest: "+generationFittest);
+            if((generationFittest.getFitness() > overall_fittest.getFitness() && !this.inverseFitnessRanking) ||
+                    (generationFittest.getFitness()<overall_fittest.getFitness() && this.inverseFitnessRanking))
             {
                 overall_fittest = generationFittest;
+                System.out.println("new overall fittest found on gen "+gen +": "+overall_fittest);
                 new_overall_fittness_map.put(gen,generationFittest);
                 generationsSinceUpset = 0;
             }
@@ -218,26 +233,6 @@ public abstract class AbstractGeneticAlgorithm implements GeneticAlgorithm {
         this.population = population;
     }
 
-    public void setOrigPopSize(int origPopSize) {
-        this.origPopSize = origPopSize;
-    }
-
-    public double getAbsFitWeight() {
-        return absFitWeight;
-    }
-
-    public void setAbsFitWeight(double absFitWeight) {
-        this.absFitWeight = absFitWeight;
-    }
-
-    public double getMaxRunFit() {
-        return maxRunFit;
-    }
-
-    public void setMaxRunFit(double maxRunFit) {
-        this.maxRunFit = maxRunFit;
-    }
-
     public Transformer getTransformer() {
         return transformer;
     }
@@ -246,73 +241,22 @@ public abstract class AbstractGeneticAlgorithm implements GeneticAlgorithm {
         this.transformer = transformer;
     }
 
-    public int getOrigPopSize() {
-        return origPopSize;
+    public boolean isInverseFitnessRanking() {
+        return inverseFitnessRanking;
     }
 
-
-    public double getMinRunFit() {
-        return minRunFit;
-    }
-
-    public void setMinRunFit(double minRunFit) {
-        this.minRunFit = minRunFit;
-    }
-
-    public double getRelFitWeight() {
-        return relFitWeight;
-    }
-
-    public void setRelFitWeight(double relFitWeight) {
-        this.relFitWeight = relFitWeight;
-    }
-
-    public double getP_mutate() {
-        return p_mutate;
-    }
-
-    public void setP_mutate(double p_mutate) {
-        this.p_mutate = p_mutate;
-    }
-
-    public double getP_crossover() {
-        return p_crossover;
-    }
-
-    public void setP_crossover(double p_crossover) {
-        this.p_crossover = p_crossover;
-    }
-
-    public int getNum_generations() {
-        return num_generations;
-    }
-
-    public void setNum_generations(int num_generations) {
-        this.num_generations = num_generations;
-    }
-
-    public int getGen_to_quit_after() {
-        return gen_to_quit_after;
-    }
-
-    public void setGen_to_quit_after(int gen_to_quit_after) {
-        this.gen_to_quit_after = gen_to_quit_after;
-    }
-
-    public int getGen_to_refresh_after() {
-        return gen_to_refresh_after;
-    }
-
-    public void setGen_to_refresh_after(int gen_to_refresh_after) {
-        this.gen_to_refresh_after = gen_to_refresh_after;
-    }
-
-    public boolean isDo_elitism() {
-        return do_elitism;
-    }
-
-    public void setDo_elitism(boolean do_elitism) {
-        this.do_elitism = do_elitism;
+    public void setInverseFitnessRanking(boolean inverseFitnessRanking) {
+        this.inverseFitnessRanking = inverseFitnessRanking;
+        if(inverseFitnessRanking)
+        {
+            this.minRunFit = Double.MIN_VALUE;
+            this.maxRunFit = Double.MAX_VALUE;
+        }
+        else
+        {
+            this.minRunFit = Double.MAX_VALUE;
+            this.maxRunFit = Double.MIN_VALUE;
+        }
     }
 
 }

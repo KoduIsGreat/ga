@@ -5,16 +5,22 @@
  */
 package org.aas.ga.genes;
 
+import java.util.List;
+
 /**
  *
  * @author Adam
  */
-public interface Gene
+public interface Gene<T>
 {
     public void setLength(int len);
     public int getLength();
+    public List<T> getDna();
+    public void setDna(List<T> dna);
     public void mutate(double p);
     public Gene createRandom();
     public Gene copy();
+    public void setSuppressed(boolean suppressed);
+    public boolean isSuppressed();
 
 }

@@ -9,6 +9,7 @@ package org.aas.ga.genes;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 /**
  *
@@ -33,11 +34,14 @@ public class BinaryGene extends AbstractGene<Integer> implements Gene
     @Override
     public void mutate(double p)
     {
+        Random rand = new Random();
         List<Integer> new_dna = new ArrayList();
         for(Integer bit : this.getDna())
         {
-            Integer new_bit = (bit == 1) ? 0 : 1;
-            new_dna.add(new_bit);
+            if(rand.nextDouble() < p)
+                 new_dna.add((bit == 1) ? 0 : 1);
+            else
+                 new_dna.add(bit);
         }
     }
 }

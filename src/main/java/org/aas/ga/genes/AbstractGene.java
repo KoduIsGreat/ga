@@ -72,7 +72,10 @@ public abstract class AbstractGene<T> implements Gene
     @Override
     public String toString()
     {
-        return "Gene{" + "GENETIC_MATERIAL_OPTIONS=" + GENETIC_MATERIAL_OPTIONS + ", suppressed=" + suppressed + ", length=" + length + ", dna=" + dna + '}';
+        StringBuilder sb = new StringBuilder();
+        for (T data : dna)
+            sb.append(data);
+        return sb.toString();
     }
     
     @Override
@@ -111,7 +114,7 @@ public abstract class AbstractGene<T> implements Gene
     public Gene createRandom()
     {
         List<T> dna = new ArrayList();
-        while(dna.size() <= this.length)
+        while(dna.size() < this.length)
             dna.add(getRandomGeneticMaterial());
      
         return new AbstractGene(dna,this.GENETIC_MATERIAL_OPTIONS,this.length,this.suppressed) {};
@@ -123,7 +126,7 @@ public abstract class AbstractGene<T> implements Gene
         List<T> new_dna = new ArrayList();
         for(T strand : dna)
         {
-            if(rand.nextDouble() < p)
+            if(rand.nextDouble() < p && !this.suppressed)
             {
                 new_dna.add(getRandomGeneticMaterial());
             }
@@ -140,23 +143,23 @@ public abstract class AbstractGene<T> implements Gene
     {
         return new AbstractGene(this.GENETIC_MATERIAL_OPTIONS,this.dna,this.length,this.suppressed) {};
     }
-    
+    @Override
     public List<T> getDna()
     {
         return this.dna;
     }
 
-    public void setDna(List<T> dna)
-    {
+    @Override
+    public void setDna(List dna){
         this.dna = dna;
     }
 
-    
+    @Override
     public boolean isSuppressed()
     {
         return suppressed;
     }
-
+    @Override
     public void setSuppressed(boolean suppressed)
     {
         this.suppressed = suppressed;

@@ -42,7 +42,7 @@ public class DefaultChromosome implements Chromosome
     public Chromosome crossover(Chromosome other, int p) {
         ArrayList<Gene> childDNA = new ArrayList();
         childDNA.addAll(this.genes.subList(0,p));
-        childDNA.addAll(other.getGenes().subList(p,other.getGenes().size()+1));
+        childDNA.addAll(other.getGenes().subList(p,other.getGenes().size()));
 
         return new DefaultChromosome(childDNA,this.gene_type,this.length);
     }
@@ -109,15 +109,14 @@ public class DefaultChromosome implements Chromosome
         return this.genes.iterator();
     }
 
-    public static class ChromosomeFactory
-    {
-        public static List<Chromosome> createChromosomes(Gene gene_type,int chromo_len,int n)
-        {
-            DefaultChromosome chromosome = new DefaultChromosome(chromo_len,gene_type);
-            List<Chromosome> population = new ArrayList<>();
-            for(int i = population.size() ; i <n ;i++)
-                population.add(chromosome.createRandom());
-            return population;
+    @Override
+    public String toString(){
+        Iterator<Gene> itr = iterator();
+        StringBuilder sb = new StringBuilder();
+        while(itr.hasNext()){
+            sb.append(itr.next().toString());
         }
+        return sb.toString();
     }
+
 }
