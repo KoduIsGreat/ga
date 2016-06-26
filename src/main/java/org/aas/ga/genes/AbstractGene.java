@@ -5,12 +5,7 @@
  */
 package org.aas.ga.genes;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
-
+import java.util.*;
 
 
 /**
@@ -34,6 +29,13 @@ public abstract class AbstractGene<T> implements Gene
         this.GENETIC_MATERIAL_OPTIONS = options;
         this.length = length;
         this.suppressed =false;
+        this.dominant = false;
+    }
+
+    public AbstractGene(List<T>options, T... data){
+        this.dna = Arrays.asList(data);
+        this.GENETIC_MATERIAL_OPTIONS =options;
+        this.suppressed = false;
         this.dominant = false;
     }
     
@@ -130,7 +132,7 @@ public abstract class AbstractGene<T> implements Gene
         List<T> new_dna = new ArrayList();
         for(T strand : dna)
         {
-            if(rand.nextDouble() < p && !this.suppressed)
+            if(rand.nextDouble() < p && !this.dominant)
             {
                 new_dna.add(getRandomGeneticMaterial());
             }

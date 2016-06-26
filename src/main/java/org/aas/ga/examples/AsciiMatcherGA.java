@@ -16,52 +16,45 @@ import java.util.List;
  */
 public class AsciiMatcherGA extends AbstractGeneticAlgorithm {
 
-    private final List<String> target;
+    private final String target;
 
-    public AsciiMatcherGA(List<Chromosome> pop, double absW, double relW, double p_mutate, double p_crossover, int gen, boolean elitist, int quit_after, int refresh_after, String[] target) {
+    public AsciiMatcherGA(List<Chromosome> pop, double absW, double relW, double p_mutate, double p_crossover, int gen, boolean elitist, int quit_after, int refresh_after, String target) {
         super(pop, absW, relW, p_mutate, p_crossover, gen, elitist, quit_after, refresh_after);
-        this.target = Arrays.asList(target);
+        this.target = target;
     }
 
-    public AsciiMatcherGA(List<Chromosome> pop, int gen, double absW, double relW, double p_mutate, double p_crossover, String[] target) {
+    public AsciiMatcherGA(List<Chromosome> pop, int gen, double absW, double relW, double p_mutate, double p_crossover, String target) {
         super(pop, gen, absW, relW, p_mutate, p_crossover);
-        this.target =Arrays.asList(target);
+        this.target =target;
     }
-
+    public AsciiMatcherGA(List<Chromosome>pop,String target){
+        super(pop,50000,.5,.5,.5,.5);
+        this.target = target;
+    }
+    public AsciiMatcherGA(String target){this.target = target;}
 
     @Override
     public void evaluateFitness(Chromosome chromo)
     {
         Double fit = 0.0;
-        List<String> s = new ArrayList<>();
-        int i = 0;
-        for (Gene gene : chromo.getGenes())
+        String stringChromo = chromo.toString();
+        for(int k =0; k<stringChromo.length(); k ++)
         {
-            s.clear();
-            s.addAll(gene.getDna());
-            for(int j = 0; j < gene.getDna().size(); j++)
+            int geneFit = HammingDistance((byte)stringChromo.charAt(k),(byte)target.charAt(k));
+            if(geneFit == 0 && !chromo.getGenes().get(k).isDominant())
             {
-                int geneFit = HammingDistance(target.get(i).getBytes(), s.get(j).getBytes());
-
-                if(geneFit == 0 && !gene.isDominant())
-                {
-                    gene.setDominant(true);
-                }
-                i++;
-                fit += geneFit;
+                chromo.getGenes().get(k).setDominant(true);
             }
+            fit += geneFit;
         }
         chromo.setFitness(fit);
     }
 
-    private int HammingDistance(byte[] a, byte[] b)
+    private int HammingDistance(byte a, byte b)
     {
-        int dist = a.length;
-        for(int i =0 ; i < a.length ; i++) {
-            if (a[i] == b[i])
-                dist--;
-        }
-
+        int dist = 1;
+        if (a == b)
+            dist--;
         return dist;
     }
 
@@ -72,8 +65,10 @@ public class AsciiMatcherGA extends AbstractGeneticAlgorithm {
 
     public static void main(String[] args)
     {
-        String [] input = {"h","e","l","l","o"," "," ","w","o","r","l","d"};
-        AsciiMatcherGA ga = new AsciiMatcherGA(ChromosomeFactory.createDefaultChromosomes(new AsciiGene(1),input.length,2000),50000,.5,.5,.5,.5,input);
+
+        String input2 = "Hello, World!";
+        String input = "In a hole in the ground there lived a hobbit. Not a nasty, dirty, wet hole, filled with the ends of worms and an oozy smell, nor yet a dry, bare, sandy hole with nothing in it to sit down on or to eat: it was a hobbit-hole and that means comfort.";
+        AsciiMatcherGA ga = new AsciiMatcherGA(ChromosomeFactory.createDefaultChromosomes(new AsciiGene(1),input2.length(),200),50000,.6,.4,.6,.5,input2);
         ga.setInverseFitnessRanking(true);
         ga.run();
     }

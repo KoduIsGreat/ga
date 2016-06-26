@@ -12,10 +12,10 @@ public class ChromosomeFactory
 {
     public static List<Chromosome> createDefaultChromosomes(Gene gene_type, int chromo_len, int n)
     {
-        DefaultChromosome chromosome = new DefaultChromosome(chromo_len,gene_type);
+        DefaultChromosome chromosome = new DefaultChromosome(gene_type);
         List<Chromosome> population = new ArrayList<>();
         for(int i = population.size() ; i <n ;i++)
-            population.add(chromosome.createRandom());
+            population.add(chromosome.createRandom(chromo_len));
         return population;
     }
 }

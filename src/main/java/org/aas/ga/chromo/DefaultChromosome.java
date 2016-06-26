@@ -23,18 +23,19 @@ public class DefaultChromosome implements Chromosome
     private ArrayList<Gene> genes = new ArrayList();
     private Gene gene_type;
     private Double fitness;
-    private int length;
-    protected DefaultChromosome(int chromo_len, Gene gene)
+
+    public DefaultChromosome(){
+
+    }
+    protected DefaultChromosome(Gene gene)
     {
         fitness = Double.NaN;
         gene_type = gene;
-        length =chromo_len;
     }
 
-    private DefaultChromosome(ArrayList<Gene> genes, Gene gene_type, int length){
+    private DefaultChromosome(ArrayList<Gene> genes, Gene gene_type){
         this.gene_type = gene_type;
         this.genes = genes;
-        this.length =length;
         fitness = Double.NaN;
     }
 
@@ -44,7 +45,7 @@ public class DefaultChromosome implements Chromosome
         childDNA.addAll(this.genes.subList(0,p));
         childDNA.addAll(other.getGenes().subList(p,other.getGenes().size()));
 
-        return new DefaultChromosome(childDNA,this.gene_type,this.length);
+        return new DefaultChromosome(childDNA,this.gene_type);
     }
 
     @Override
@@ -57,21 +58,22 @@ public class DefaultChromosome implements Chromosome
     @Override
     public Chromosome copy()
     {
-        Chromosome chromo = new DefaultChromosome(this.genes,this.gene_type,this.length);
+        Chromosome chromo = new DefaultChromosome(this.genes,this.gene_type);
         chromo.setFitness(this.fitness);
         return chromo;
     }
 
     @Override
-    public Chromosome createRandom() {
+    public Chromosome createRandom(int length) {
         ArrayList<Gene> newGenes= new ArrayList();
-        for(int i =0 ; i <this.length ; i ++)
+        for(int i =0 ; i <length ; i ++)
             newGenes.add(gene_type.createRandom());
-        return new DefaultChromosome(newGenes,gene_type,this.length);
+        return new DefaultChromosome(newGenes,gene_type);
     }
+
     @Override
     public int length(){
-        return length;
+        return this.genes.size();
     }
     @Override
     public int compareTo(Chromosome o)

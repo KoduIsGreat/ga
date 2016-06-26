@@ -29,9 +29,11 @@ public abstract class AbstractGeneticAlgorithm implements GeneticAlgorithm {
     private boolean inverseFitnessRanking;
 
     private Chromosome overall_fittest;
-    private final double REFRESH_RATE = .5;
+    private final double REFRESH_RATE = .8;
     private final int NO_TARGET_SIZE_DEFINED =-1;
 
+    public AbstractGeneticAlgorithm(){
+    }
     public AbstractGeneticAlgorithm(List<Chromosome> pop,double absW, double relW,double p_mutate,double p_crossover,int gen, boolean elitist, int quit_after, int refresh_after){
         this.population = pop;
         this.origPopSize = pop.size();
@@ -56,7 +58,7 @@ public abstract class AbstractGeneticAlgorithm implements GeneticAlgorithm {
         this.p_crossover = p_crossover;
         this.do_elitism = false;
         this.gen_to_quit_after= null;
-        this.gen_to_refresh_after =null;
+        this.gen_to_refresh_after =500;
         this.num_generations = gen;
         this.inverseFitnessRanking = false;
         this.minRunFit = Double.MAX_VALUE;
@@ -65,12 +67,13 @@ public abstract class AbstractGeneticAlgorithm implements GeneticAlgorithm {
 
     @Override
     public Chromosome getWeakest() {
-
+       //  return population.get(population.size()-1);
         return inverseFitnessRanking ? Collections.max(population) : Collections.min(population);
     }
 
     @Override
     public Chromosome getFittest() {
+      //  return population.get(0);
         return inverseFitnessRanking ? Collections.min(population) : Collections.max(population);
     }
 
@@ -142,7 +145,6 @@ public abstract class AbstractGeneticAlgorithm implements GeneticAlgorithm {
                 Chromosome c2 = survivors.get(rand.nextInt(numSurvivors));
                 int crosspoint = rand.nextInt(c2.length());
                 Chromosome baby =c1.crossover(c2,crosspoint);
-                this.evaluateFitness(baby);
                 offspring.add(baby);
             }
         }

@@ -14,7 +14,7 @@ public interface Chromosome extends Comparable<Chromosome>{
     public void mutate(double p);
     public int length();
     public Chromosome copy();
-    public Chromosome createRandom();
+    public Chromosome createRandom(int length);
     public List<Gene> getGenes();
     public void setGenes(ArrayList<Gene> genes);
     public Double getFitness();

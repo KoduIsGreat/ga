@@ -50,15 +50,13 @@ public class GeneticUtil
     }
 
     public static Chromosome choice(Collection<? extends Chromosome> coll, Random rand) {
-        if (coll.size() == 0) {
-            return null; // or throw IAE, if you prefer
-        }
+
+        if (coll.isEmpty())
+            return null;
 
         int index = rand.nextInt(coll.size());
         if (coll instanceof List)
-        { // optimization
             return ((List<? extends Chromosome>) coll).get(index);
-        }
         else
         {
             Iterator<? extends Chromosome> iter = coll.iterator();
