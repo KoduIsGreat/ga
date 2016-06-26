@@ -1,6 +1,7 @@
 package org.aas.ga.examples.AsciiMatcher;
 
 import org.aas.ga.algo.AbstractGeneticAlgorithm;
+import org.aas.ga.chromo.AbstractCollectionChromosome;
 import org.aas.ga.chromo.Chromosome;
 import org.aas.ga.chromo.ChromosomeFactory;
 import org.aas.ga.chromo.ListChromosome;
@@ -12,7 +13,7 @@ import java.util.List;
 /**
  * Created by Adam on 6/16/2016.
  */
-public class AsciiMatcherGA<T extends Chromosome> extends AbstractGeneticAlgorithm<T> {
+public class AsciiMatcherGA<T extends AbstractCollectionChromosome> extends AbstractGeneticAlgorithm<T> {
 
     private final String target;
 
@@ -59,9 +60,7 @@ public class AsciiMatcherGA<T extends Chromosome> extends AbstractGeneticAlgorit
     }
 
     @Override
-    public boolean shouldTerminate(){
-        return this.getFittest().getFitness() == 0;
-    }
+    public boolean shouldTerminate(){return this.getFittest().getFitness() == 0;}
 
     public static void main(String[] args)
     {

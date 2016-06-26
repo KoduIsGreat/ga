@@ -1,17 +1,17 @@
 package org.aas.ga.algo;
 
+import org.aas.ga.chromo.AbstractCollectionChromosome;
 import org.aas.ga.chromo.Chromosome;
 import org.aas.ga.trans.Transformer;
-import org.aas.ga.util.GeneticUtil;
 
 import java.util.*;
 
 /**
  * Created by Adam on 6/12/2016.
  */
-public abstract class AbstractGeneticAlgorithm<T extends Chromosome> implements GeneticAlgorithm<T> {
+public abstract class AbstractGeneticAlgorithm<T extends AbstractCollectionChromosome> implements GeneticAlgorithm<T> {
 
-    private final double REFRESH_RATE = .8;
+    private final double REFRESH_RATE = 1;
     private final int NO_TARGET_SIZE_DEFINED =-1;
     private final Map<Integer,T> overallFitnessMap = new LinkedHashMap<>();
 
@@ -345,29 +345,6 @@ public abstract class AbstractGeneticAlgorithm<T extends Chromosome> implements 
         this.p_crossover = p_crossover;
     }
 
-    public double getMinRunFit() {
-        return minRunFit;
-    }
-
-    public void setMinRunFit(double minRunFit) {
-        this.minRunFit = minRunFit;
-    }
-
-    public double getMaxRunFit() {
-        return maxRunFit;
-    }
-
-    public void setMaxRunFit(double maxRunFit) {
-        this.maxRunFit = maxRunFit;
-    }
-
-    public int getOrigPopSize() {
-        return origPopSize;
-    }
-
-    public void setOrigPopSize(int origPopSize) {
-        this.origPopSize = origPopSize;
-    }
 
     public int getNumGeneration() {
         return numGeneration;

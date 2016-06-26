@@ -12,6 +12,7 @@ public abstract class AbstractCollectionChromosome<T extends Collection<Gene>>  
     protected T genes;
     protected Gene geneType;
     private Double fitness;
+
     private boolean reordering;
     public AbstractCollectionChromosome(){}
 
@@ -41,40 +42,20 @@ public abstract class AbstractCollectionChromosome<T extends Collection<Gene>>  
     }
 
     @Override
-    public Collection<Gene> crossover(Chromosome other, int p){
-
-        if(this.genes instanceof List)
-        {
-            List<Gene> list = (List) genes;
-            ArrayList<Gene> childDNA = new ArrayList();
-            childDNA.addAll(list.subList(0, p));
-            ArrayList<Gene> otherGenes = (ArrayList<Gene>) other.getGenes();
-            childDNA.addAll(otherGenes.subList(p, other.getGenes().size()));
-
-            return childDNA;
-        }
-        return null;
-    }
+    public abstract Collection<Gene> crossover(Chromosome other, int p);
 
     @Override
-    public Chromosome copy()
+    public abstract Chromosome copy();
+
+    @Override
+    public abstract Chromosome createRandom(T coll, int length);
+
+    @Override
+    public int length()
     {
-        Chromosome chromo = new AbstractCollectionChromosome(this.genes,this.geneType){};
-        chromo.setFitness(this.fitness);
-        return chromo;
-    }
-
-    @Override
-    public Chromosome createRandom(T coll, int length) {
-        for(int i =0 ; i <length ; i ++)
-            coll.add(geneType.createRandom());
-        return new AbstractCollectionChromosome(coll,geneType){};
-    }
-
-    @Override
-    public int length(){
         return this.genes.size();
     }
+
     @Override
     public int compareTo(Chromosome o)
     {
@@ -109,6 +90,16 @@ public abstract class AbstractCollectionChromosome<T extends Collection<Gene>>  
     public Iterator<Gene> iterator()
     {
         return this.genes.iterator();
+    }
+
+    @Override
+    public boolean isReordering() {
+        return reordering;
+    }
+
+    @Override
+    public void setReordering(boolean reordering) {
+        this.reordering = reordering;
     }
 
     @Override

@@ -13,16 +13,16 @@ import java.util.List;
  */
 public interface Gene<T>
 {
-    public void setLength(int len);
-    public int getLength();
-    public List<T> getDna();
-    public void setDna(List<T> dna);
-    public void mutate(double p);
-    public Gene createRandom();
-    public Gene copy();
-    public void setSuppressed(boolean suppressed);
-    public boolean isSuppressed();
-    public boolean isDominant();
+     void setLength(int len);
+     int getLength();
+     List<T> getDna();
+     void setDna(List<T> dna);
+     void mutate(double p);
+     Gene createRandom();
+     Gene copy();
+     void setSuppressed(boolean suppressed);
+     boolean isSuppressed();
+     boolean isDominant();
 
     public void setDominant(boolean dominant);
 
