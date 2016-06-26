@@ -1,8 +1,11 @@
 package factory;
 
 import org.aas.ga.chromo.Chromosome;
-import org.aas.ga.chromo.DefaultChromosome;
+import org.aas.ga.chromo.ListChromosome;
 import org.aas.ga.genes.AsciiGene;
+import org.aas.ga.genes.Gene;
+
+import java.util.ArrayList;
 
 /**
  * Created by Adam on 6/25/2016.
@@ -10,12 +13,13 @@ import org.aas.ga.genes.AsciiGene;
 public class EntityFactory {
 
     public static Chromosome createAsciiChromosome(String  data){
-        DefaultChromosome chromosome = new DefaultChromosome();
-
+        ListChromosome chromosome = new ListChromosome();
+        ArrayList<Gene> genes = new ArrayList<>();
         for(int i = 0; i < data.length();i++ )
         {
-            chromosome.getGenes().add(new AsciiGene(data.substring(i,i+1)));
+            genes.add(new AsciiGene(data.substring(i,i+1)));
         }
+        chromosome.setGenes(genes);
         return chromosome;
     }
 }

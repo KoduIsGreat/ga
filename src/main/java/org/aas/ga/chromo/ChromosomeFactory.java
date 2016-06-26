@@ -10,12 +10,15 @@ import java.util.List;
  */
 public class ChromosomeFactory
 {
-    public static List<Chromosome> createDefaultChromosomes(Gene gene_type, int chromo_len, int n)
+    public static List<Chromosome> createListChromosomes(Gene gene_type, int chromo_len, int n)
     {
-        DefaultChromosome chromosome = new DefaultChromosome(gene_type);
+        ListChromosome chromosome = new ListChromosome(gene_type);
         List<Chromosome> population = new ArrayList<>();
-        for(int i = population.size() ; i <n ;i++)
-            population.add(chromosome.createRandom(chromo_len));
+
+        for(int i = population.size() ; i <n ;i++) {
+            ArrayList<Gene> genes = new ArrayList<>();
+            population.add(chromosome.createRandom(genes, chromo_len));
+        }
         return population;
     }
 }

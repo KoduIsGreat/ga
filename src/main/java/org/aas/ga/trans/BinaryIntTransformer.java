@@ -8,11 +8,13 @@ package org.aas.ga.trans;
 import org.aas.ga.genes.BinaryGene;
 import org.aas.ga.genes.Gene;
 
+import java.util.Collection;
+
 /**
  *
  * @author Adam
  */
-public class BinaryIntTransformer extends BaseTransformer<Integer>
+public class BinaryIntTransformer extends AbstractTransformer<Collection<Integer>,Integer>
 {
     public BinaryIntTransformer(){}
     @Override

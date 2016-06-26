@@ -7,17 +7,17 @@ import java.util.List;
 /**
  * Created by Adam on 6/12/2016.
  */
-public interface GeneticAlgorithm extends Runnable
+public interface GeneticAlgorithm<T extends Chromosome> extends Runnable
 {
 
-     Chromosome getWeakest();
-     Chromosome getFittest();
-     List<Chromosome> compete();
-     List<Chromosome> reproduce(List<Chromosome> survivors, double pCrossover, int targetSize);
-     List<Chromosome> reproduce(List<Chromosome> survivors, double pCrossover);
-     List<Chromosome> getPopulation();
-     void setPopulation(List<Chromosome> population);
-     void sort(List<Chromosome> chromosomes);
+     T getWeakest();
+     T getFittest();
+     List<T> compete();
+     List<T> reproduce(List<T> survivors, double pCrossover, int targetSize);
+     List<T> reproduce(List<T> survivors, double pCrossover);
+     List<T> getPopulation();
+     void setPopulation(List<T> population);
+     void sort(List<T> chromosomes);
      void calculateFitness();
      void evaluateFitness(Chromosome chromo);
      void mutate(double p);

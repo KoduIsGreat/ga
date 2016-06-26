@@ -2,12 +2,8 @@ package org.aas.ga.examples;
 
 import factory.EntityFactory;
 import org.aas.ga.chromo.Chromosome;
-import org.aas.ga.chromo.DefaultChromosome;
-import org.aas.ga.genes.AsciiGene;
+import org.aas.ga.examples.AsciiMatcher.AsciiMatcherGA;
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.*;
 

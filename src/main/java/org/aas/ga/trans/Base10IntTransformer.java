@@ -8,11 +8,13 @@ package org.aas.ga.trans;
 import org.aas.ga.genes.Base10Gene;
 import org.aas.ga.genes.Gene;
 
+import java.util.Collection;
+
 /**
  *
  * @author Adam
  */
-public class Base10IntTransformer extends BaseTransformer<Integer>
+public class Base10IntTransformer extends AbstractTransformer<Collection<Integer>,Integer>
 {
     public Base10IntTransformer(){}
     @Override

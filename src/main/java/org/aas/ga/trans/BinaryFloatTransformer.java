@@ -9,11 +9,13 @@ package org.aas.ga.trans;
 import org.aas.ga.genes.BinaryGene;
 import org.aas.ga.genes.Gene;
 
+import java.util.Collection;
+
 /**
  *
  * @author Adam
  */
-public class BinaryFloatTransformer extends BaseTransformer<Double>
+public class BinaryFloatTransformer extends AbstractTransformer<Collection<Double>,Double>
 {
     private int sig_len;
     private boolean signed;
