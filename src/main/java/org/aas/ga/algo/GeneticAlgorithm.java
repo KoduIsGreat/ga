@@ -10,19 +10,20 @@ import java.util.List;
 public interface GeneticAlgorithm extends Runnable
 {
 
-    public Chromosome getWeakest();
-    public Chromosome getFittest();
-    public List<Chromosome> sort(List<Chromosome> chromosomes);
-    public List<Chromosome> compete();
-    public List<Chromosome> reproduce(List<Chromosome> survivors, double pCrossover, int targetSize);
-    public List<Chromosome> reproduce(List<Chromosome> survivors, double pCrossover);
-    public List<Chromosome> getPopulation();
-    public void calculatePopulationFitness();
-    public void evaluateFitness(Chromosome chromo);
-    public void mutate(double p);
-    public void refresh();
-    public void setPopulation(List<Chromosome> population);
-    public boolean shouldTerminate();
+     Chromosome getWeakest();
+     Chromosome getFittest();
+
+     List<Chromosome> compete();
+     List<Chromosome> reproduce(List<Chromosome> survivors, double pCrossover, int targetSize);
+     List<Chromosome> reproduce(List<Chromosome> survivors, double pCrossover);
+     List<Chromosome> getPopulation();
+     void sort(List<Chromosome> chromosomes);
+     void calculatePopulationFitness();
+     void evaluateFitness(Chromosome chromo);
+     void mutate(double p);
+     void refresh();
+     void setPopulation(List<Chromosome> population);
+     boolean shouldTerminate();
 
 
 }

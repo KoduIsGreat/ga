@@ -39,6 +39,7 @@ public abstract class AbstractGeneticAlgorithm implements GeneticAlgorithm {
         this.origPopSize = pop.size();
         this.absFitWeight = absW;
         this.relFitWeight = relW;
+        assert relW+absW == 1;
         this.p_mutate = p_mutate;
         this.p_crossover = p_crossover;
         this.num_generations = gen;
@@ -78,19 +79,16 @@ public abstract class AbstractGeneticAlgorithm implements GeneticAlgorithm {
     }
 
     @Override
-    public List<Chromosome> sort(List<Chromosome> chromosomes)
+    public void sort(List<Chromosome> chromosomes)
     {
         Collections.sort(chromosomes);
         if(inverseFitnessRanking)
             Collections.reverse(chromosomes);
-
-        return chromosomes;
     }
 
     @Override
     public List<Chromosome> compete()
     {
-        calculatePopulationFitness();
         Random rand = new Random();
         double minFit = getWeakest().getFitness();
         double maxFit = getFittest().getFitness();
@@ -124,7 +122,7 @@ public abstract class AbstractGeneticAlgorithm implements GeneticAlgorithm {
     @Override
     public void calculatePopulationFitness()
     {
-        population.stream().filter(c -> Double.isNaN(c.getFitness())).forEach(this::evaluateFitness);
+        population.stream().forEach(this::evaluateFitness);
     }
 
     @Override
@@ -143,7 +141,7 @@ public abstract class AbstractGeneticAlgorithm implements GeneticAlgorithm {
             if(rand.nextDouble()<pCrossover)
             {
                 Chromosome c2 = survivors.get(rand.nextInt(numSurvivors));
-                int crosspoint = rand.nextInt(c2.length());
+                int crosspoint = rand.nextInt(c2.length())+1;
                 Chromosome baby =c1.crossover(c2,crosspoint);
                 offspring.add(baby);
             }
@@ -188,9 +186,10 @@ public abstract class AbstractGeneticAlgorithm implements GeneticAlgorithm {
             List<Chromosome> survivors = compete();
             population = reproduce(survivors,p_crossover);
             mutate(p_mutate);
+            calculatePopulationFitness();
 
             if(gen == 1)
-                overall_fittest = getFittest();
+                overall_fittest = getFittest().copy();
 
             generationFittest  = getFittest();
             System.out.println("Generation "+gen+" Fittest: "+generationFittest + " Fitness : "+ generationFittest.getFitness());

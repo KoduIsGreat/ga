@@ -25,7 +25,10 @@ public class AsciiMatcherGATest {
         ga.evaluateFitness(chromosome);
         double val  = chromosome.getFitness();
         assertTrue(val==0.0);
-
+        Chromosome chromosome1 = EntityFactory.createAsciiChromosome("Heclo, World!");
+        ga.evaluateFitness(chromosome1);
+        double val1 = chromosome1.getFitness();
+        assertTrue(val1==1);
 
 
     }
