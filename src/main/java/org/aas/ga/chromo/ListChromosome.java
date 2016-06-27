@@ -31,11 +31,17 @@ public class ListChromosome extends AbstractCollectionChromosome<List<Gene>>
     }
 
     public ListChromosome(List<Gene> genes, Gene gene_type){
-        super(genes,gene_type);
+        super(genes,false,gene_type);
+    }
+
+    public ListChromosome(List<Gene> genes,boolean reordering, Gene gene_type){
+        super(genes,reordering,gene_type);
     }
 
     @Override
-    public Collection<Gene> crossover(Chromosome other,int p){
+    public Collection<Gene> crossover(Chromosome other,int p)
+    {
+
         List<Gene> list = (List) genes;
         ArrayList<Gene> childDNA = new ArrayList();
         childDNA.addAll(list.subList(0, p));

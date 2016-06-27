@@ -18,7 +18,7 @@ public abstract class AbstractGene<T> implements Gene
     protected List<T> GENETIC_MATERIAL_OPTIONS = new ArrayList();
 
     private boolean suppressed;
-    Random rand = new Random();
+
 
     private boolean dominant;
     private int length;
@@ -63,12 +63,13 @@ public abstract class AbstractGene<T> implements Gene
     
     public T getRandomGeneticMaterial()
     {
-
+        Random rand = new Random();
         return GENETIC_MATERIAL_OPTIONS.get(rand.nextInt(GENETIC_MATERIAL_OPTIONS.size()));
     }
 
     public T getRandomGeneticMaterial(List<T> GENETIC_MATERIAL_OPTIONS)
     {
+        Random rand = new Random();
         return GENETIC_MATERIAL_OPTIONS.remove(rand.nextInt(GENETIC_MATERIAL_OPTIONS.size()));
     }
 
@@ -140,6 +141,7 @@ public abstract class AbstractGene<T> implements Gene
     @Override
     public void mutate(double p)
     {
+        Random rand = new Random();
         List<T> new_dna = new ArrayList();
         for(T strand : dna)
         {

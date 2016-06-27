@@ -12,24 +12,20 @@ public abstract class AbstractCollectionChromosome<T extends Collection<Gene>>  
     protected T genes;
     protected Gene geneType;
     private Double fitness;
-
     private boolean reordering;
+
     public AbstractCollectionChromosome(){}
 
     public AbstractCollectionChromosome(Gene gene)
     {
-       this(null,gene);
+       this(null,false,gene);
     }
 
-    public AbstractCollectionChromosome(T genes, Gene type){
+    public AbstractCollectionChromosome(T genes,boolean reordering, Gene type)
+    {
         this.geneType = type;
         this.genes = genes;
-
-        if(genes instanceof Set)
-            this.reordering = true;
-        else
-            this.reordering = false;
-
+        this.reordering = reordering;
         fitness = Double.NaN;
     }
 
@@ -38,7 +34,6 @@ public abstract class AbstractCollectionChromosome<T extends Collection<Gene>>  
     {
         for (Gene gene : genes)
             gene.mutate(p);
-
     }
 
     @Override
