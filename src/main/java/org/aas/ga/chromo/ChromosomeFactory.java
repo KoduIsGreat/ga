@@ -19,8 +19,7 @@ public class ChromosomeFactory
 
         for(int i = population.size() ; i <n ;i++)
         {
-            ArrayList<Gene> genes = new ArrayList<>();
-            population.add(chromosome.createRandom(genes, chromo_len));
+            population.add(chromosome.createRandom(chromo_len));
         }
         return population;
     }
@@ -32,8 +31,7 @@ public class ChromosomeFactory
 
         for(int i = population.size() ; i <n ;i++)
         {
-            Set<Gene> genes = new LinkedHashSet<>();
-            population.add(chromosome.createRandom(genes, chromo_len));
+            population.add(chromosome.createRandom(chromo_len));
         }
         return population;
     }

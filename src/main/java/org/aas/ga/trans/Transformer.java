@@ -11,5 +11,5 @@ import java.util.Collection;
  */
 public interface Transformer<E> {
     public E transformGene(Gene gene);
-    public Collection<E> transformChromosome(Chromosome chromo);
+    public Collection<E> transformChromosome(Chromosome chromo,Collection<E> coll);
 }

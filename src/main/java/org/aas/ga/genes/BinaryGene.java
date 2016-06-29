@@ -15,7 +15,7 @@ import java.util.Random;
  *
  * @author Adam
  */
-public class BinaryGene extends AbstractGene<Integer> implements Gene
+public class BinaryGene extends AbstractGene<Integer>
 {
 
     public BinaryGene(int length, boolean suppressed,boolean dominant)

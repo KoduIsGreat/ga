@@ -60,7 +60,7 @@ public class ListChromosome extends AbstractCollectionChromosome<List<Gene>>
     }
 
     @Override
-    public Chromosome createRandom(List<Gene> coll, int length) {
+    public Chromosome createRandom( int length) {
         List<Gene> genes = new ArrayList<>();
         for(int i =0 ; i <length ; i ++)
             genes.add(geneType.createRandom());

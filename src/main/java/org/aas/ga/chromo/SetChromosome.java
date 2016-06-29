@@ -31,13 +31,23 @@ public class SetChromosome extends AbstractCollectionChromosome<LinkedHashSet<Ge
     {
         ArrayList<Gene> otherList = new ArrayList<>(other.getGenes());
         ArrayList<Gene> list = new ArrayList<>(genes);
-        ArrayList<Gene> childDNA = new ArrayList();
+        LinkedHashSet<Gene> childDNA = new LinkedHashSet();
         childDNA.addAll(list.subList(0,p));
         childDNA.addAll(otherList.subList(p,otherList.size()));
+        if(!childDNA.containsAll(genes))
+            childDNA.addAll(genes);
+
         genes = new LinkedHashSet<>(childDNA);
+
+
         return genes;
     }
+    private void repair(List geneticOptions,LinkedHashSet<Gene> genes)
+    {
+        if(!genes.containsAll(geneticOptions))
+            genes.addAll(geneticOptions);
 
+    }
     @Override
     public void mutate(double p)
     {
@@ -64,11 +74,14 @@ public class SetChromosome extends AbstractCollectionChromosome<LinkedHashSet<Ge
     }
 
     @Override
-    public Chromosome createRandom(LinkedHashSet<Gene> coll, int length)
+    public Chromosome createRandom(int length)
     {
+        //here lies the problem
+        Random rand = new Random();
+        List list = new ArrayList(geneType.getGENETIC_MATERIAL_OPTIONS());
         LinkedHashSet<Gene> genes = new LinkedHashSet<>();
         for(int i =0 ; i <length ; i ++)
-            genes.add(geneType.createRandom());
+            genes.add(geneType.createRandom(list));
 
         return  new SetChromosome(genes,geneType);
     }

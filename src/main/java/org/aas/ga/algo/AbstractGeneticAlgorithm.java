@@ -25,11 +25,13 @@ public abstract class AbstractGeneticAlgorithm<T extends AbstractCollectionChrom
     private double maxRunFit;
     private int origPopSize;
     private int numGeneration;
+    private int maxNumRefreshes;
     private Integer quitAfterGen;
     private Integer refreshAfter;
     private boolean doElitism;
     private boolean inverseFitnessRanking;
 
+    private boolean printGenerationInfo;
 
     private T overall_fittest;
 
@@ -61,6 +63,8 @@ public abstract class AbstractGeneticAlgorithm<T extends AbstractCollectionChrom
         this.quitAfterGen = quit_after;
         this.refreshAfter = refresh_after;
         this.inverseFitnessRanking = inverseFitRanking;
+        printGenerationInfo =false;
+        maxNumRefreshes=8;
         if(inverseFitnessRanking)
         {
             this.minRunFit = Double.MIN_VALUE;
@@ -155,7 +159,7 @@ public abstract class AbstractGeneticAlgorithm<T extends AbstractCollectionChrom
             if(rand.nextDouble()<pCrossover)
             {
                 T c2 = survivors.get(rand.nextInt(numSurvivors));
-                int crosspoint = rand.nextInt(c2.length())+1;
+                int crosspoint = rand.nextInt(c2.length());
                 c1.setGenes(c1.crossover(c2,crosspoint));
                 offspring.add(c1);
             }
@@ -194,6 +198,7 @@ public abstract class AbstractGeneticAlgorithm<T extends AbstractCollectionChrom
         overall_fittest = null;
         long start = System.currentTimeMillis();
         int generationsSinceUpset = 0;
+        int refreshCount =  0;
         T generationFittest;
 
         for(int gen = 1; gen <= numGeneration; gen ++)
@@ -203,21 +208,22 @@ public abstract class AbstractGeneticAlgorithm<T extends AbstractCollectionChrom
             calculateFitness();
 
             if(gen == 1)
-                overall_fittest = getFittest();
+                overall_fittest = (T) getFittest().copy();
 
-            generationFittest  = getFittest();
+            generationFittest  = (T) getFittest().copy();
 
             if((generationFittest.getFitness() > overall_fittest.getFitness() && !this.inverseFitnessRanking) ||
                     (generationFittest.getFitness()<overall_fittest.getFitness() && this.inverseFitnessRanking))
             {
-                overall_fittest = generationFittest;
-                System.out.println("New overall fittest found on gen "+gen +": "+overall_fittest);
+                overall_fittest = (T)generationFittest.copy();
+                System.out.println("New overall fittest found on gen "+gen +": "+overall_fittest + " Fitness: "+overall_fittest.getFitness());
                 overallFitnessMap.put(gen,generationFittest);
                 generationsSinceUpset = 0;
             }
             else
             {
-                System.out.println("Generation "+gen+" Fittest: "+generationFittest + " Fitness : "+ generationFittest.getFitness());
+                if(printGenerationInfo)
+                    System.out.println("Generation "+gen+" Fittest: "+generationFittest + " Fitness : "+ generationFittest.getFitness());
                 generationsSinceUpset++;
             }
             if(quitAfterGen != null && generationsSinceUpset > quitAfterGen){
@@ -225,12 +231,14 @@ public abstract class AbstractGeneticAlgorithm<T extends AbstractCollectionChrom
                 break;
             }
 
-            if(refreshAfter != null && generationsSinceUpset> refreshAfter){
+            if(refreshAfter != null && generationsSinceUpset> refreshAfter)
+            {
                 System.out.println("Refreshing on gen "+gen);
                 refresh();
+                refreshCount++;
                 generationsSinceUpset = 0;
             }
-            if(shouldTerminate())
+            if(shouldTerminate() || refreshCount ==maxNumRefreshes)
                 break;
 
         }

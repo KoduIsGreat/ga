@@ -25,17 +25,11 @@ public abstract class AbstractTransformer<T extends Collection,E> implements Tra
 {
 
     @Override
-    public Collection<E> transformChromosome(Chromosome chromo)
+    public Collection<E> transformChromosome(Chromosome chromo, Collection<E> coll)
     {        
         Collection<Gene> genes = chromo.getGenes();
-        Collection<E> transformed;
-        if( chromo instanceof ListChromosome)
-            transformed = new ArrayList();
-        else
-            transformed = new LinkedHashSet<>();
-
         for(Gene gene : genes)
-            transformed.add(transformGene(gene));
-        return transformed;
+            coll.add(transformGene(gene));
+        return coll;
     }
 }

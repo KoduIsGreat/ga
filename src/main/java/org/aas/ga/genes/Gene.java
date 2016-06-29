@@ -19,11 +19,12 @@ public interface Gene<T>
      void setDna(List<T> dna);
      void mutate(double p);
      Gene createRandom();
+     Gene createRandom(List<T> options);
      Gene copy();
      void setSuppressed(boolean suppressed);
      boolean isSuppressed();
      boolean isDominant();
-
-    public void setDominant(boolean dominant);
+     void setDominant(boolean dominant);
+     List<T> getGENETIC_MATERIAL_OPTIONS();
 
 }

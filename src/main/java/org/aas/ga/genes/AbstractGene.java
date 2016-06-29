@@ -13,13 +13,13 @@ import java.util.*;
  * @author Adam
  * @param <T>
  */
-public abstract class AbstractGene<T> implements Gene
+public abstract class AbstractGene<T> implements Gene<T>
 {
+
+
     protected List<T> GENETIC_MATERIAL_OPTIONS = new ArrayList();
 
     private boolean suppressed;
-
-
     private boolean dominant;
     private int length;
     private List<T> dna;
@@ -47,7 +47,7 @@ public abstract class AbstractGene<T> implements Gene
         this.dominant = dominant;
     }
     
-    private AbstractGene(List<T> dna, List<T>options,int length, boolean suppressed,boolean dominant)
+    protected AbstractGene(List<T> dna, List<T>options,int length, boolean suppressed,boolean dominant)
     {
         this.GENETIC_MATERIAL_OPTIONS = options;
         this.dna =dna;
@@ -88,7 +88,7 @@ public abstract class AbstractGene<T> implements Gene
     {
         StringBuilder sb = new StringBuilder();
         for (T data : dna)
-            sb.append(data);
+            sb.append(data.toString());
         return sb.toString();
     }
     
@@ -137,7 +137,18 @@ public abstract class AbstractGene<T> implements Gene
      
         return new AbstractGene(dna,this.GENETIC_MATERIAL_OPTIONS,this.length,this.suppressed,this.dominant) {};
     }
-    
+
+
+
+    @Override
+    public Gene createRandom(List<T> options)
+    {
+        List<T> dna = new ArrayList();
+        while(dna.size() < this.length)
+            dna.add(getRandomGeneticMaterial(options));
+
+        return new AbstractGene(dna,this.GENETIC_MATERIAL_OPTIONS,this.length,this.suppressed,this.dominant) {};
+    }
     @Override
     public void mutate(double p)
     {
@@ -200,6 +211,11 @@ public abstract class AbstractGene<T> implements Gene
     @Override
     public void setDominant(boolean dominant) {
         this.dominant = dominant;
+    }
+
+    @Override
+    public List<T> getGENETIC_MATERIAL_OPTIONS(){
+        return this.GENETIC_MATERIAL_OPTIONS;
     }
 }
 

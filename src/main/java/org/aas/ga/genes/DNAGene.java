@@ -12,7 +12,7 @@ import java.util.Arrays;
  *
  * @author Adam
  */
-public class DNAGene extends AbstractGene<String> implements Gene
+public class DNAGene extends AbstractGene<String>
 {
 
     public DNAGene(int length, boolean suppressed,boolean dominant)

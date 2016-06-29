@@ -43,7 +43,7 @@ public abstract class AbstractCollectionChromosome<T extends Collection<Gene>>  
     public abstract Chromosome copy();
 
     @Override
-    public abstract Chromosome createRandom(T coll, int length);
+    public abstract Chromosome createRandom( int length);
 
     @Override
     public int length()
