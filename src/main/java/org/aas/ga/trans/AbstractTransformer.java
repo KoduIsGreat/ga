@@ -7,13 +7,9 @@ package org.aas.ga.trans;
 
 
 
-import java.util.ArrayList;
+
 import java.util.Collection;
-import java.util.LinkedHashSet;
-
-
 import org.aas.ga.chromo.Chromosome;
-import org.aas.ga.chromo.ListChromosome;
 import org.aas.ga.genes.Gene;
 
 /**
@@ -21,7 +17,7 @@ import org.aas.ga.genes.Gene;
  * @author Adam
  * @param <E>
  */
-public abstract class AbstractTransformer<T extends Collection,E> implements Transformer<E>
+public abstract class AbstractTransformer<E> implements Transformer<E>
 {
 
     @Override

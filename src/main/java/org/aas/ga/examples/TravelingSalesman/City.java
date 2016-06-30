@@ -1,6 +1,6 @@
 package org.aas.ga.examples.TravelingSalesman;
 
-import java.text.DecimalFormat;
+
 import java.util.*;
 
 /**
@@ -13,7 +13,7 @@ public class City {
     Double xCoordinate;
     Double yCoordinate;
 
-    public City(Double x, Double y)
+    private City(Double x, Double y)
     {
 
         xCoordinate = x;
@@ -50,17 +50,16 @@ public class City {
     public String toString()
     {
         StringBuilder sb = new StringBuilder();
-        DecimalFormat df = new DecimalFormat("#0.00");
         sb.append(" id:").append(id);
         return sb.toString();
     }
+
     public static Set<City> createRandomCities(int n)
     {
         HashSet<City> cities = new HashSet<>();
         Random rand = new Random();
         while(cities.size()<n)
         {
-            int id =  rand.nextInt(100-10)+10;
             Double x = rand.nextDouble() * 100;
             Double y = rand.nextDouble() * 100;
             cities.add(new City(x,y));

@@ -12,20 +12,18 @@ public abstract class AbstractCollectionChromosome<T extends Collection<Gene>>  
     protected T genes;
     protected Gene geneType;
     private Double fitness;
-    private boolean reordering;
 
     public AbstractCollectionChromosome(){}
 
     public AbstractCollectionChromosome(Gene gene)
     {
-       this(null,false,gene);
+       this(null,gene);
     }
 
-    public AbstractCollectionChromosome(T genes,boolean reordering, Gene type)
+    public AbstractCollectionChromosome(T genes, Gene type)
     {
         this.geneType = type;
         this.genes = genes;
-        this.reordering = reordering;
         fitness = Double.NaN;
     }
 
@@ -85,16 +83,6 @@ public abstract class AbstractCollectionChromosome<T extends Collection<Gene>>  
     public Iterator<Gene> iterator()
     {
         return this.genes.iterator();
-    }
-
-    @Override
-    public boolean isReordering() {
-        return reordering;
-    }
-
-    @Override
-    public void setReordering(boolean reordering) {
-        this.reordering = reordering;
     }
 
     @Override

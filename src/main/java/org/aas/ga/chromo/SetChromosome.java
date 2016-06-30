@@ -18,13 +18,9 @@ public class SetChromosome extends AbstractCollectionChromosome<LinkedHashSet<Ge
 
     public SetChromosome(LinkedHashSet<Gene> genes, Gene gene_type)
     {
-        super(genes,false,gene_type);
+        super(genes,gene_type);
     }
 
-    public SetChromosome(LinkedHashSet<Gene> genes,boolean reordering, Gene gene_type)
-    {
-        super(genes,reordering,gene_type);
-    }
 
     @Override
     public Collection<Gene> crossover(Chromosome other, int p)
@@ -76,8 +72,7 @@ public class SetChromosome extends AbstractCollectionChromosome<LinkedHashSet<Ge
     @Override
     public Chromosome createRandom(int length)
     {
-        //here lies the problem
-        Random rand = new Random();
+
         List list = new ArrayList(geneType.getGENETIC_MATERIAL_OPTIONS());
         LinkedHashSet<Gene> genes = new LinkedHashSet<>();
         for(int i =0 ; i <length ; i ++)

@@ -23,6 +23,4 @@ public interface Chromosome<T extends Collection<Gene>> extends Comparable<Chrom
      Double getFitness();
      void setFitness(Double f);
      Iterator<Gene> iterator();
-     boolean isReordering();
-     void setReordering(boolean reordering);
 }

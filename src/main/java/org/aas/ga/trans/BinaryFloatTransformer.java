@@ -15,7 +15,7 @@ import java.util.Collection;
  *
  * @author Adam
  */
-public class BinaryFloatTransformer extends AbstractTransformer<Collection<Double>,Double>
+public class BinaryFloatTransformer extends AbstractTransformer<Double>
 {
     private int sig_len;
     private boolean signed;

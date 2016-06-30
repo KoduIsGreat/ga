@@ -14,7 +14,7 @@ import java.util.Collection;
  *
  * @author Adam
  */
-public class Base10IntTransformer extends AbstractTransformer<Collection<Integer>,Integer>
+public class Base10IntTransformer extends AbstractTransformer<Integer>
 {
     public Base10IntTransformer(){}
     @Override

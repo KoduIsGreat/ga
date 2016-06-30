@@ -9,7 +9,7 @@ import java.util.*;
 /**
  * Created by Adam on 6/12/2016.
  */
-public abstract class AbstractGeneticAlgorithm<T extends AbstractCollectionChromosome> implements GeneticAlgorithm<T> {
+public abstract class AbstractGeneticAlgorithm<T extends Chromosome> implements GeneticAlgorithm<T> {
 
     private final double REFRESH_RATE = 1;
     private final int NO_TARGET_SIZE_DEFINED =-1;
@@ -19,8 +19,8 @@ public abstract class AbstractGeneticAlgorithm<T extends AbstractCollectionChrom
     private Transformer transformer;
     private double absFitWeight;
     private double relFitWeight;
-    private double p_mutate;
-    private double p_crossover;
+    private double pMutate;
+    private double pCrossover;
     private double minRunFit;
     private double maxRunFit;
     private int origPopSize;
@@ -46,18 +46,18 @@ public abstract class AbstractGeneticAlgorithm<T extends AbstractCollectionChrom
         this(pop,absW,relW,.5,.5,50000);
     }
 
-    public AbstractGeneticAlgorithm(List<T>pop, double absW, double relW, double p_mutate, double p_crossover,int gen){
-        this(pop,absW,relW,p_mutate,p_crossover,gen,false,false,2500,1000);
+    public AbstractGeneticAlgorithm(List<T>pop, double absW, double relW, double pMutate, double pCrossover, int gen){
+        this(pop,absW,relW, pMutate, pCrossover,gen,false,false,2500,1000);
     }
 
-    public AbstractGeneticAlgorithm(List<T> pop,double absW, double relW,double p_mutate,double p_crossover,int gen, boolean elitist,boolean inverseFitRanking, int quit_after, int refresh_after){
+    public AbstractGeneticAlgorithm(List<T> pop, double absW, double relW, double pMutate, double pCrossover, int gen, boolean elitist, boolean inverseFitRanking, int quit_after, int refresh_after){
         if (relW + absW != 1) throw new AssertionError("Absolute and relative weighting Factors must add to 1");
         this.population = pop;
         this.origPopSize = pop.size();
         this.absFitWeight = absW;
         this.relFitWeight = relW;
-        this.p_mutate = p_mutate;
-        this.p_crossover = p_crossover;
+        this.pMutate = pMutate;
+        this.pCrossover = pCrossover;
         this.numGeneration = gen;
         this.doElitism = elitist;
         this.quitAfterGen = quit_after;
@@ -78,6 +78,7 @@ public abstract class AbstractGeneticAlgorithm<T extends AbstractCollectionChrom
     }
     @Override
     public abstract void evaluateFitness(Chromosome chromo);
+
     @Override
     public T getWeakest() {
         return inverseFitnessRanking ? (T)Collections.max(population) : (T) Collections.min(population);
@@ -144,7 +145,8 @@ public abstract class AbstractGeneticAlgorithm<T extends AbstractCollectionChrom
     }
 
     @Override
-    public List<T> reproduce(List<T> survivors, double pCrossover, int targetSize){
+    public List<T> reproduce(List<T> survivors, double pCrossover, int targetSize)
+    {
         Random rand = new Random();
         if(targetSize == NO_TARGET_SIZE_DEFINED)
             targetSize = this.origPopSize;
@@ -203,8 +205,8 @@ public abstract class AbstractGeneticAlgorithm<T extends AbstractCollectionChrom
 
         for(int gen = 1; gen <= numGeneration; gen ++)
         {
-            population = reproduce(compete(),p_crossover);
-            mutate(p_mutate);
+            population = reproduce(compete(), pCrossover);
+            mutate(pMutate);
             calculateFitness();
 
             if(gen == 1)
@@ -338,20 +340,20 @@ public abstract class AbstractGeneticAlgorithm<T extends AbstractCollectionChrom
         this.relFitWeight = relFitWeight;
     }
 
-    public double getP_mutate() {
-        return p_mutate;
+    public double getpMutate() {
+        return pMutate;
     }
 
-    public void setP_mutate(double p_mutate) {
-        this.p_mutate = p_mutate;
+    public void setpMutate(double pMutate) {
+        this.pMutate = pMutate;
     }
 
-    public double getP_crossover() {
-        return p_crossover;
+    public double getpCrossover() {
+        return pCrossover;
     }
 
-    public void setP_crossover(double p_crossover) {
-        this.p_crossover = p_crossover;
+    public void setpCrossover(double pCrossover) {
+        this.pCrossover = pCrossover;
     }
 
 

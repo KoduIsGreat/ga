@@ -14,7 +14,7 @@ import java.util.Collection;
  *
  * @author Adam
  */
-public class BinaryIntTransformer extends AbstractTransformer<Collection<Integer>,Integer>
+public class BinaryIntTransformer extends AbstractTransformer<Integer>
 {
     public BinaryIntTransformer(){}
     @Override

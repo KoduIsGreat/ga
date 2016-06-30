@@ -31,12 +31,9 @@ public class ListChromosome extends AbstractCollectionChromosome<List<Gene>>
     }
 
     public ListChromosome(List<Gene> genes, Gene gene_type){
-        super(genes,false,gene_type);
+        super(genes,gene_type);
     }
 
-    public ListChromosome(List<Gene> genes,boolean reordering, Gene gene_type){
-        super(genes,reordering,gene_type);
-    }
 
     @Override
     public Collection<Gene> crossover(Chromosome other,int p)
