@@ -219,6 +219,7 @@ public abstract class AbstractGeneticAlgorithm<T extends AbstractCollectionChrom
                 System.out.println("New overall fittest found on gen "+gen +": "+overall_fittest + " Fitness: "+overall_fittest.getFitness());
                 overallFitnessMap.put(gen,generationFittest);
                 generationsSinceUpset = 0;
+                refreshCount = 0;
             }
             else
             {
