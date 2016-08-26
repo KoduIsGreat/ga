@@ -3,8 +3,9 @@ package org.aas.ga.examples.TravelingSalesman;
 import org.aas.ga.algo.AbstractGeneticAlgorithm;
 import org.aas.ga.chromo.AbstractCollectionChromosome;
 import org.aas.ga.chromo.Chromosome;
-import org.aas.ga.chromo.ChromosomeFactory;
 import org.aas.ga.chromo.SetChromosome;
+import org.aas.ga.factory.ChromosomeFactory;
+import org.aas.ga.factory.GeneFactory;
 import org.aas.ga.genes.Gene;
 
 import java.util.*;
@@ -37,8 +38,11 @@ public class TravelingSalesmanGA<T extends AbstractCollectionChromosome> extends
 
     public static void main(String[] args)
     {
-        Set<City> cities = City.createRandomCities(20);
-        List<Chromosome> population = ChromosomeFactory.createSetChromosomes(new CityGene(new ArrayList<>(cities),1),cities.size(),200);
+
+        GeneFactory geneFactory = new GeneFactory(CityGene.class);
+        geneFactory.setGENETIC_MATERIAL_OPTIONS(City.createRandomCities(20));
+        ChromosomeFactory chromosomeFactory = new ChromosomeFactory(SetChromosome.class,geneFactory,CityGene.getNumOfCities());
+        List<Chromosome>  population = chromosomeFactory.populate(200);
         TravelingSalesmanGA<SetChromosome> ga = new TravelingSalesmanGA(population);
         ga.setInverseFitnessRanking(true);
         ga.setDoElitism(true);

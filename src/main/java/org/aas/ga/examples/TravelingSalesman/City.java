@@ -66,4 +66,8 @@ public class City {
         }
         return cities;
     }
+    public static List<City> createRandomCitiesAsList(int n)
+    {
+        return new ArrayList<>(createRandomCities(n));
+    }
 }

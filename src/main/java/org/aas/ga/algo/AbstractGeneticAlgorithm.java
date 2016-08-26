@@ -197,6 +197,7 @@ public abstract class AbstractGeneticAlgorithm<T extends Chromosome> implements 
     @Override
     public void run()
     {
+        calculateFitness();
         overall_fittest = null;
         long start = System.currentTimeMillis();
         int generationsSinceUpset = 0;

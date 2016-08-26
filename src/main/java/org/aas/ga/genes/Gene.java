@@ -5,7 +5,9 @@
  */
 package org.aas.ga.genes;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -25,6 +27,7 @@ public interface Gene<T>
      boolean isSuppressed();
      boolean isDominant();
      void setDominant(boolean dominant);
-     List<T> getGENETIC_MATERIAL_OPTIONS();
+     Set<T> getGENETIC_MATERIAL_OPTIONS();
+     void setGENETIC_MATERIAL_OPTIONS(Collection<T> options);
 
 }

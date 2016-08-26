@@ -17,16 +17,16 @@ public abstract class AbstractGene<T> implements Gene<T>
 {
 
 
-    protected List<T> GENETIC_MATERIAL_OPTIONS = new ArrayList();
-
+    protected Set<T> GENETIC_MATERIAL_OPTIONS = new LinkedHashSet<>();
+    private List<T> dna = new ArrayList<>();
     private boolean suppressed;
     private boolean dominant;
     private int length;
-    private List<T> dna;
-    
+
+    protected AbstractGene(){}
     protected AbstractGene(List<T>options,int length)
     {
-        this.GENETIC_MATERIAL_OPTIONS = options;
+        this.GENETIC_MATERIAL_OPTIONS.addAll(options);
         this.length = length;
         this.suppressed =false;
         this.dominant = false;
@@ -34,12 +34,12 @@ public abstract class AbstractGene<T> implements Gene<T>
 
     public AbstractGene(List<T>options, T... data){
         this.dna = Arrays.asList(data);
-        this.GENETIC_MATERIAL_OPTIONS =options;
+        this.GENETIC_MATERIAL_OPTIONS.addAll(options);
         this.suppressed = false;
         this.dominant = false;
     }
     
-    protected AbstractGene(List<T>options,int length, boolean suppressed,boolean dominant)
+    protected AbstractGene(Set<T>options,int length, boolean suppressed,boolean dominant)
     {
         this.GENETIC_MATERIAL_OPTIONS = options;
         this.length = length;
@@ -47,9 +47,9 @@ public abstract class AbstractGene<T> implements Gene<T>
         this.dominant = dominant;
     }
     
-    protected AbstractGene(List<T> dna, List<T>options,int length, boolean suppressed,boolean dominant)
+    protected AbstractGene(List<T> options, List<T> dna, int length, boolean suppressed, boolean dominant)
     {
-        this.GENETIC_MATERIAL_OPTIONS = options;
+        this.GENETIC_MATERIAL_OPTIONS.addAll(options);
         this.dna =dna;
         this.length = length;
         this.suppressed = suppressed;
@@ -58,13 +58,19 @@ public abstract class AbstractGene<T> implements Gene<T>
   
     protected AbstractGene(List<T> options)
     {
-        this.GENETIC_MATERIAL_OPTIONS = options;
+        this.GENETIC_MATERIAL_OPTIONS.addAll(options);
     }
-    
+    protected AbstractGene(List<T> dna, int length, boolean suppressed, boolean dominant){
+        this.dna = dna;
+        this.length = length;
+        this.suppressed = suppressed;
+        this.dominant = dominant;
+    }
     public T getRandomGeneticMaterial()
     {
+        ArrayList<T> list  = new ArrayList<>(GENETIC_MATERIAL_OPTIONS);
         Random rand = new Random();
-        return GENETIC_MATERIAL_OPTIONS.get(rand.nextInt(GENETIC_MATERIAL_OPTIONS.size()));
+        return list.get(rand.nextInt(list.size()));
     }
 
     public T getRandomGeneticMaterial(List<T> GENETIC_MATERIAL_OPTIONS)
@@ -134,8 +140,8 @@ public abstract class AbstractGene<T> implements Gene<T>
         List<T> dna = new ArrayList();
         while(dna.size() < this.length)
             dna.add(getRandomGeneticMaterial());
-     
-        return new AbstractGene(dna,this.GENETIC_MATERIAL_OPTIONS,this.length,this.suppressed,this.dominant) {};
+        this.dna = dna;
+        return copy();
     }
 
 
@@ -146,8 +152,8 @@ public abstract class AbstractGene<T> implements Gene<T>
         List<T> dna = new ArrayList();
         while(dna.size() < this.length)
             dna.add(getRandomGeneticMaterial(options));
-
-        return new AbstractGene(dna,this.GENETIC_MATERIAL_OPTIONS,this.length,this.suppressed,this.dominant) {};
+        this.dna = dna;
+        return copy();
     }
     @Override
     public void mutate(double p)
@@ -171,7 +177,7 @@ public abstract class AbstractGene<T> implements Gene<T>
     @Override
     public Gene copy()
     {
-        return new AbstractGene(this.GENETIC_MATERIAL_OPTIONS,this.dna,this.length,this.suppressed,this.dominant) {};
+        return new AbstractGene(new ArrayList(this.GENETIC_MATERIAL_OPTIONS),this.dna,this.length,this.suppressed,this.dominant) {};
     }
     @Override
     public List<T> getDna()
@@ -214,8 +220,13 @@ public abstract class AbstractGene<T> implements Gene<T>
     }
 
     @Override
-    public List<T> getGENETIC_MATERIAL_OPTIONS(){
+    public Set<T> getGENETIC_MATERIAL_OPTIONS(){
         return this.GENETIC_MATERIAL_OPTIONS;
+    }
+    @Override
+    public void setGENETIC_MATERIAL_OPTIONS(Collection<T> options){
+        GENETIC_MATERIAL_OPTIONS.clear();
+        GENETIC_MATERIAL_OPTIONS.addAll(options);
     }
 }
 

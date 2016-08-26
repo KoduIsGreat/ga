@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.List;
 
 
+import org.aas.ga.factory.GeneFactory;
 import org.aas.ga.genes.*;
 
 
@@ -22,19 +23,10 @@ public class ListChromosome extends AbstractCollectionChromosome<List<Gene>>
 {
 
 
-    public ListChromosome(){
-
+    public ListChromosome(){}
+    public ListChromosome(List<Gene> genes){
+        super(genes);
     }
-    protected ListChromosome(Gene gene)
-    {
-        super(gene);
-    }
-
-    public ListChromosome(List<Gene> genes, Gene gene_type){
-        super(genes,gene_type);
-    }
-
-
     @Override
     public Collection<Gene> crossover(Chromosome other,int p)
     {
@@ -51,18 +43,10 @@ public class ListChromosome extends AbstractCollectionChromosome<List<Gene>>
     @Override
     public Chromosome copy()
     {
-        ListChromosome chromo = new ListChromosome(this.genes,this.geneType){};
+        ListChromosome chromo = new ListChromosome(this.genes){};
         chromo.setFitness(this.getFitness());
         return chromo;
     }
 
-    @Override
-    public Chromosome createRandom( int length) {
-        List<Gene> genes = new ArrayList<>();
-        for(int i =0 ; i <length ; i ++)
-            genes.add(geneType.createRandom());
-
-        return  new ListChromosome(genes,geneType);
-    }
 
 }

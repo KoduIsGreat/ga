@@ -16,7 +16,6 @@ public interface Chromosome<T extends Collection<Gene>> extends Comparable<Chrom
      void mutate(double p);
      int length();
      Chromosome copy();
-     Chromosome createRandom(int length);
      int compareTo(Chromosome o);
      Collection<Gene> getGenes();
      void setGenes(T genes);

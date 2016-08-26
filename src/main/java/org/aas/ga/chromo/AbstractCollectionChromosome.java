@@ -1,5 +1,6 @@
 package org.aas.ga.chromo;
 
+import org.aas.ga.factory.GeneFactory;
 import org.aas.ga.genes.Gene;
 
 import java.util.*;
@@ -10,19 +11,16 @@ import java.util.*;
 public abstract class AbstractCollectionChromosome<T extends Collection<Gene>>  implements Chromosome<T> {
 
     protected T genes;
-    protected Gene geneType;
+
     private Double fitness;
 
     public AbstractCollectionChromosome(){}
 
-    public AbstractCollectionChromosome(Gene gene)
-    {
-       this(null,gene);
-    }
 
-    public AbstractCollectionChromosome(T genes, Gene type)
+
+    public AbstractCollectionChromosome(T genes)
     {
-        this.geneType = type;
+
         this.genes = genes;
         fitness = Double.NaN;
     }
@@ -39,9 +37,6 @@ public abstract class AbstractCollectionChromosome<T extends Collection<Gene>>  
 
     @Override
     public abstract Chromosome copy();
-
-    @Override
-    public abstract Chromosome createRandom( int length);
 
     @Override
     public int length()

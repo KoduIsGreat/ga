@@ -1,5 +1,6 @@
 package org.aas.ga.chromo;
 
+import org.aas.ga.factory.GeneFactory;
 import org.aas.ga.genes.Gene;
 
 import java.util.*;
@@ -11,14 +12,11 @@ public class SetChromosome extends AbstractCollectionChromosome<LinkedHashSet<Ge
 
     public SetChromosome(){}
 
-    public SetChromosome(Gene gene)
-    {
-        super(gene);
-    }
 
-    public SetChromosome(LinkedHashSet<Gene> genes, Gene gene_type)
+
+    public SetChromosome(LinkedHashSet<Gene> genes)
     {
-        super(genes,gene_type);
+        super(genes);
     }
 
 
@@ -64,20 +62,9 @@ public class SetChromosome extends AbstractCollectionChromosome<LinkedHashSet<Ge
     @Override
     public Chromosome copy()
     {
-        SetChromosome chromo = new SetChromosome(this.genes,this.geneType){};
+        SetChromosome chromo = new SetChromosome(this.genes){};
         chromo.setFitness(this.getFitness());
         return chromo;
     }
 
-    @Override
-    public Chromosome createRandom(int length)
-    {
-
-        List list = new ArrayList(geneType.getGENETIC_MATERIAL_OPTIONS());
-        LinkedHashSet<Gene> genes = new LinkedHashSet<>();
-        for(int i =0 ; i <length ; i ++)
-            genes.add(geneType.createRandom(list));
-
-        return  new SetChromosome(genes,geneType);
-    }
 }
