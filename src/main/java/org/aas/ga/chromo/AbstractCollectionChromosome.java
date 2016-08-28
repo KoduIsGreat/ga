@@ -16,7 +16,21 @@ public abstract class AbstractCollectionChromosome<T extends Collection<Gene>>  
 
     public AbstractCollectionChromosome(){}
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        AbstractCollectionChromosome<?> that = (AbstractCollectionChromosome<?>) o;
+
+        return genes.equals(that.genes);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return genes.hashCode();
+    }
 
     public AbstractCollectionChromosome(T genes)
     {
