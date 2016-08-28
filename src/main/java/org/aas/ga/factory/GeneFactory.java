@@ -12,7 +12,7 @@ import java.util.Set;
 public class GeneFactory<T> {
 
     protected Set<T> GENETIC_MATERIAL_OPTIONS ;
-    private final int DEFAULT_SIZE = 1;
+    private static final int DEFAULT_SIZE = 1;
     Class<? extends Gene> gene;
 
 

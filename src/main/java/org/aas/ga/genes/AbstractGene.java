@@ -16,7 +16,7 @@ import java.util.*;
 public abstract class AbstractGene<T> implements Gene<T>
 {
 
-
+    private GeneticMaterialOptions goptions;
     protected Set<T> GENETIC_MATERIAL_OPTIONS = new LinkedHashSet<>();
     private List<T> dna = new ArrayList<>();
     private boolean suppressed;
@@ -68,7 +68,7 @@ public abstract class AbstractGene<T> implements Gene<T>
     }
     public T getRandomGeneticMaterial()
     {
-        ArrayList<T> list  = new ArrayList<>(GENETIC_MATERIAL_OPTIONS);
+        ArrayList<T> list  = new ArrayList<>(goptions.getOptions());
         Random rand = new Random();
         return list.get(rand.nextInt(list.size()));
     }
@@ -122,16 +122,7 @@ public abstract class AbstractGene<T> implements Gene<T>
         {
             return false;
         }
-        Iterator<T> itr = this.dna.iterator();
-        Iterator<?> oitr = other.dna.iterator();
-        while(itr.hasNext())
-        {
-           T val =  itr.next();
-           T oval = (T) oitr.next();
-           if( val != oval)
-               return false;           
-        }
-        return true;
+        return dna.hashCode() == other.dna.hashCode();
     }
 
     @Override
