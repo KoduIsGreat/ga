@@ -5,10 +5,7 @@
  */
 package org.aas.ga.trans;
 
-import org.aas.ga.genes.Base10Gene;
 import org.aas.ga.genes.Gene;
-
-import java.util.Collection;
 
 /**
  *
@@ -20,13 +17,14 @@ public class Base10IntTransformer extends AbstractTransformer<Integer>
     @Override
     public Integer transformGene(Gene gene)
     {
-        Base10Gene b10g = (Base10Gene)gene;
-        String s ="";
-        for(Integer i : b10g.getDna())
-        {
-            s= s.concat(i.toString());
-        }
-        return Integer.parseInt(s);
+//        Base10Gene b10g = (Base10Gene)gene;
+//        String s ="";
+//        for(Integer i : b10g.getDna())
+//        {
+//            s= s.concat(i.toString());
+//        }
+//        return Integer.parseInt(s);
+        return 0;
     }
     
 }

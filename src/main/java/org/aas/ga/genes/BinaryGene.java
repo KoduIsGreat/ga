@@ -6,35 +6,31 @@
 package org.aas.ga.genes;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import org.aas.ga.sim.Simulation;
+
+import java.util.*;
 
 /**
  *
  * @author Adam
  */
-public class BinaryGene extends AbstractGene<Integer>
+public class BinaryGene extends BaseGene<Integer>
 {
 
-    public BinaryGene(int length, boolean suppressed,boolean dominant)
+    public BinaryGene(Collection<Integer> dna, int length, boolean suppressed, boolean dominant)
     {      
-        super(Arrays.asList(0,1),length,suppressed,dominant);
+        super(dna,length,suppressed,dominant);
     }
     
-    public BinaryGene(int length)
-    {
-        super(Arrays.asList(0,1),length);
-    }
-    public BinaryGene()
-    {
-        super(Arrays.asList(0,1));
-    }
+
     @Override
     public void mutate(double p)
     {
+
         Random rand = new Random();
+        if(Simulation.seed !=null)
+            rand = Simulation.seed;
+
         List<Integer> new_dna = new ArrayList();
         for(Integer bit : this.getDna())
         {

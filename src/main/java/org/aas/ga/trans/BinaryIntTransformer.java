@@ -20,11 +20,12 @@ public class BinaryIntTransformer extends AbstractTransformer<Integer>
     @Override
     public Integer transformGene(Gene gene)
     {
-        BinaryGene bg = (BinaryGene) gene;
-        int val =0;
-        for (Integer i : bg.getDna())
-            val += Math.pow(2.0*bg.getDna().get(i), bg.getDna().size()-i);
-        return val;
+//        BinaryGene bg = (BinaryGene) gene;
+//        int val =0;
+//        for (Integer i : bg.getDna())
+//            val += Math.pow(2.0*bg.getDna().get(0), bg.getDna().size()-i);
+//        return val;
+        return 0;
     }
     
 }

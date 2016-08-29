@@ -22,7 +22,10 @@ public interface GeneticAlgorithm<T extends Chromosome> extends Runnable
      void evaluateFitness(Chromosome chromo);
      void mutate(double p);
      void refresh();
-
+     void setDoElitism(boolean doElitism);
+     boolean isDoElitism();
+     void setInverseFitnessRanking(boolean inverseFitnessRanking);
+     boolean isInverseFitnessRanking();
      boolean shouldTerminate();
 
 

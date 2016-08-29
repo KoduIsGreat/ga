@@ -37,6 +37,7 @@ public abstract class AbstractGeneticAlgorithm<T extends Chromosome> implements 
 
 
     public AbstractGeneticAlgorithm(){
+        this(null);
     }
     public AbstractGeneticAlgorithm(List<T> pop){
         this(pop,.5,.5);
@@ -53,7 +54,7 @@ public abstract class AbstractGeneticAlgorithm<T extends Chromosome> implements 
     public AbstractGeneticAlgorithm(List<T> pop, double absW, double relW, double pMutate, double pCrossover, int gen, boolean elitist, boolean inverseFitRanking, int quit_after, int refresh_after){
         if (relW + absW != 1) throw new AssertionError("Absolute and relative weighting Factors must add to 1");
         this.population = pop;
-        this.origPopSize = pop.size();
+        this.origPopSize = pop != null ? pop.size() : 0;
         this.absFitWeight = absW;
         this.relFitWeight = relW;
         this.pMutate = pMutate;

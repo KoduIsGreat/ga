@@ -3,10 +3,6 @@ package org.aas.ga.examples.AsciiMatcher;
 import org.aas.ga.algo.AbstractGeneticAlgorithm;
 import org.aas.ga.chromo.AbstractCollectionChromosome;
 import org.aas.ga.chromo.Chromosome;
-import org.aas.ga.chromo.ListChromosome;
-import org.aas.ga.factory.ChromosomeFactory;
-import org.aas.ga.factory.GeneFactory;
-import org.aas.ga.genes.DefaultGeneTypes;
 import org.aas.ga.genes.Gene;
 
 import java.util.List;
@@ -31,7 +27,7 @@ public class AsciiMatcherGA<T extends AbstractCollectionChromosome> extends Abst
         this(pop,.5,.5,.5,.5,50000,false,true,5000,2500,target);
 
     }
-    public AsciiMatcherGA(String target){this.target = target;}
+    public AsciiMatcherGA(String target){this(null,.5,.5,.5,.5,50000,false,true,5000,2500,target);}
 
     @Override
     public void evaluateFitness(Chromosome chromo)
@@ -62,18 +58,5 @@ public class AsciiMatcherGA<T extends AbstractCollectionChromosome> extends Abst
 
     @Override
     public boolean shouldTerminate(){return this.getFittest().getFitness() == 0;}
-
-    public static void main(String[] args)
-    {
-        String input = "In a hole in the ground there lived a hobbit. Not a nasty, dirty, wet hole, filled with the ends of worms and an oozy smell, nor yet a dry, bare, sandy hole with nothing in it to sit down on or to eat: it was a hobbit-hole and that means comfort.";
-        GeneFactory geneFactory = new GeneFactory(DefaultGeneTypes.ASCII_GENE.getGeneClass());
-        ChromosomeFactory chromosomeFactory = new ChromosomeFactory(ListChromosome.class,geneFactory,input.length());
-        List<Chromosome>  population = chromosomeFactory.populate(200);
-        AsciiMatcherGA<ListChromosome> ga = new AsciiMatcherGA(population,50000,.6,.4,.6,.5,input);
-        ga.setDoElitism(true);
-        ga.setInverseFitnessRanking(true);
-        ga.run();
-    }
-
 
 }

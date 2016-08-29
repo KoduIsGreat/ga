@@ -1,42 +1,32 @@
 package org.aas.ga.factory;
 
+import org.aas.ga.genes.BaseGene;
 import org.aas.ga.genes.Gene;
+import org.aas.ga.genes.GeneticMaterialOptions;
+import org.aas.ga.util.RandomUtil;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 
 
 /**
  * Created by Adam on 7/26/2016.
  */
-public class GeneFactory<T> {
-
-    protected Set<T> GENETIC_MATERIAL_OPTIONS ;
-    private static final int DEFAULT_SIZE = 1;
-    Class<? extends Gene> gene;
+public class GeneFactory {
 
 
-    private int geneLength ;
-
-    public GeneFactory(Class<? extends Gene> gene)
+    public static Gene createGene(Class<? extends Gene> gene,GeneticMaterialOptions options, int geneLength)
     {
-        this.gene = gene;
-        geneLength = DEFAULT_SIZE;
-    }
-    public GeneFactory(Class<? extends Gene> gene, int geneLength){
-        this.gene = gene;
-        this.geneLength = geneLength;
+        return createGene(gene,ArrayList.class,options,geneLength);
     }
 
-    public Gene createGene()
+    public static Gene createGene(Class<? extends Gene> gene,Class<? extends Collection> clazz, GeneticMaterialOptions options, int geneLength)
     {
         try
         {
             Gene newGene = gene.newInstance();
-            if(GENETIC_MATERIAL_OPTIONS != null)
-                newGene.setGENETIC_MATERIAL_OPTIONS(GENETIC_MATERIAL_OPTIONS);
             newGene.setLength(geneLength);
-            return newGene.createRandom();
+            newGene.setDna(RandomUtil.createRandomDNA(clazz,options));
+            return newGene;
         }
         catch (InstantiationException e)
         {
@@ -49,29 +39,4 @@ public class GeneFactory<T> {
             return null;
         }
     }
-
-    public Class<? extends Gene> getGene() {
-        return gene;
-    }
-
-    public void setGene(Class<? extends Gene> gene) {
-        this.gene = gene;
-    }
-
-    public int getGeneLength() {
-        return geneLength;
-    }
-
-    public void setGeneLength(int geneLength) {
-        this.geneLength = geneLength;
-    }
-
-    public Set<T> getGENETIC_MATERIAL_OPTIONS() {
-        return GENETIC_MATERIAL_OPTIONS;
-    }
-
-    public void setGENETIC_MATERIAL_OPTIONS(Set<T> GENETIC_MATERIAL_OPTIONS) {
-        this.GENETIC_MATERIAL_OPTIONS = GENETIC_MATERIAL_OPTIONS;
-    }
-
 }

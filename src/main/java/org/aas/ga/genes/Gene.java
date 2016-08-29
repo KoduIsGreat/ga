@@ -17,17 +17,15 @@ public interface Gene<T>
 {
      void setLength(int len);
      int getLength();
-     List<T> getDna();
-     void setDna(List<T> dna);
+     Collection<T> getDna();
+     void setDna(Collection<T> dna);
      void mutate(double p);
-     Gene createRandom();
-     Gene createRandom(List<T> options);
+
      Gene copy();
      void setSuppressed(boolean suppressed);
      boolean isSuppressed();
      boolean isDominant();
      void setDominant(boolean dominant);
-     Set<T> getGENETIC_MATERIAL_OPTIONS();
-     void setGENETIC_MATERIAL_OPTIONS(Collection<T> options);
+
 
 }
