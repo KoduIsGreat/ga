@@ -8,6 +8,7 @@ package org.aas.ga.genes;
 import org.aas.ga.sim.Simulation;
 import org.aas.ga.util.RandomUtil;
 
+
 import java.util.*;
 
 
@@ -21,18 +22,16 @@ public class BaseGene<T> implements Gene<T>
 
 
     private Collection<T> dna ;
-    private boolean suppressed;
     private boolean dominant;
     private int length;
 
     public BaseGene(){}
 
     
-    public BaseGene(Collection<T> dna, int length, boolean suppressed, boolean dominant)
+    public BaseGene(Collection<T> dna, int length, boolean dominant)
     {
         this.dna =dna;
         this.length = length;
-        this.suppressed = suppressed;
         this.dominant = dominant;
     }
 
@@ -41,7 +40,6 @@ public class BaseGene<T> implements Gene<T>
     public int hashCode()
     {
         int hash = 5;
-        hash = 67 * hash + (this.suppressed ? 1 : 0);
         hash = 67 * hash + (this.dominant ? 1 : 0);
         hash = (67 * hash) + Objects.hashCode(this.dna);
         return hash;
@@ -84,7 +82,7 @@ public class BaseGene<T> implements Gene<T>
         {
             if(rand.nextDouble() < p && !this.dominant)
             {
-                new_dna.add((T)RandomUtil.getRandomGeneticMaterial(Simulation.options));
+                new_dna.add((T) RandomUtil.getRandomGeneticMaterial(Simulation.options,Simulation.seed));
             }
             else
             {
@@ -97,7 +95,7 @@ public class BaseGene<T> implements Gene<T>
     @Override
     public Gene copy()
     {
-        return new BaseGene(this.dna,this.length,this.suppressed,this.dominant) ;
+        return new BaseGene(this.dna,this.length,this.dominant) ;
     }
     @Override
     public Collection<T> getDna()
@@ -110,16 +108,6 @@ public class BaseGene<T> implements Gene<T>
         this.dna = dna;
     }
 
-    @Override
-    public boolean isSuppressed()
-    {
-        return suppressed;
-    }
-    @Override
-    public void setSuppressed(boolean suppressed)
-    {
-        this.suppressed = suppressed;
-    }
     @Override
     public int getLength()
     {

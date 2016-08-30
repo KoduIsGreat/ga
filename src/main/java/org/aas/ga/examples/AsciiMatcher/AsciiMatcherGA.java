@@ -1,7 +1,7 @@
 package org.aas.ga.examples.AsciiMatcher;
 
 import org.aas.ga.algo.AbstractGeneticAlgorithm;
-import org.aas.ga.chromo.AbstractCollectionChromosome;
+import org.aas.ga.chromo.BaseChromosome;
 import org.aas.ga.chromo.Chromosome;
 import org.aas.ga.genes.Gene;
 
@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by Adam on 6/16/2016.
  */
-public class AsciiMatcherGA<T extends AbstractCollectionChromosome> extends AbstractGeneticAlgorithm<T> {
+public class AsciiMatcherGA<T extends BaseChromosome> extends AbstractGeneticAlgorithm<T> {
 
     private final String target;
 

@@ -1,10 +1,8 @@
 package org.aas.ga.examples.TravelingSalesman;
 
 import org.aas.ga.algo.AbstractGeneticAlgorithm;
-import org.aas.ga.chromo.AbstractCollectionChromosome;
+import org.aas.ga.chromo.BaseChromosome;
 import org.aas.ga.chromo.Chromosome;
-import org.aas.ga.chromo.SetChromosome;
-import org.aas.ga.factory.GeneFactory;
 import org.aas.ga.genes.Gene;
 import org.aas.ga.sim.Simulation;
 
@@ -13,7 +11,7 @@ import java.util.*;
 /**
  * Created by Adam on 6/28/2016.
  */
-public class TravelingSalesmanGA<T extends AbstractCollectionChromosome> extends AbstractGeneticAlgorithm<T> {
+public class TravelingSalesmanGA<T extends BaseChromosome> extends AbstractGeneticAlgorithm<T> {
     public TravelingSalesmanGA(){}
     public TravelingSalesmanGA(List<T> pop){
         super(pop);
@@ -40,19 +38,9 @@ public class TravelingSalesmanGA<T extends AbstractCollectionChromosome> extends
     {
           Cities cities = new Cities();
           cities.setOptions(City.createRandomCities(20));
-          Simulation sim = new Simulation(cities,15151L,new TravelingSalesmanGA<SetChromosome>());
+          Simulation sim = new Simulation(cities,15151L,new TravelingSalesmanGA());
           sim.setChromoLength(cities.getOptions().size());
-          sim.populateAsSet();
-          sim.getAlgorithm().setDoElitism(true);
-          sim.getAlgorithm().setInverseFitnessRanking(true);
+          sim.init();
           sim.run();
-//        GeneFactory geneFactory = new GeneFactory(CityGene.class);
-//        geneFactory.setGENETIC_MATERIAL_OPTIONS(City.createRandomCities(20));
-//        ChromosomeFactory chromosomeFactory = new ChromosomeFactory(SetChromosome.class,geneFactory,CityGene.getNumOfCities());
-//        List<Chromosome>  population = chromosomeFactory.initPopulation(200);
-//        TravelingSalesmanGA<SetChromosome> ga = new TravelingSalesmanGA(population);
-//        ga.setInverseFitnessRanking(true);
-//        ga.setDoElitism(true);
-//        ga.run();
     }
 }

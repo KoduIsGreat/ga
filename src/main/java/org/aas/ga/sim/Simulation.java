@@ -1,12 +1,12 @@
 package org.aas.ga.sim;
 
 import org.aas.ga.algo.GeneticAlgorithm;
+import org.aas.ga.chromo.BaseChromosome;
 import org.aas.ga.chromo.Chromosome;
-import org.aas.ga.chromo.ListChromosome;
 import org.aas.ga.genes.BaseGene;
 import org.aas.ga.genes.Gene;
 import org.aas.ga.genes.GeneticMaterialOptions;
-import org.aas.ga.util.SimulationConfig;
+import org.aas.ga.util.RandomUtil;
 
 import java.util.*;
 
@@ -16,6 +16,13 @@ import java.util.*;
 public class Simulation implements Runnable{
     public static GeneticMaterialOptions options = null;
     public static Random seed;
+    private static final int DEFAULT_GENE_SIZE = 1;
+    private static final int DEFAULT_CHROMO_SIZE =10;
+    private static final int DEFAULT_POP_SIZE = 200;
+    private static final Class<? extends Gene> DEFAULT_GENE_TYPE = BaseGene.class;
+    private static final Class<? extends Chromosome> DEFAULT_CHROMO_TYPE = BaseChromosome.class;
+    private static final Class<? extends Collection> DEFAULT_STORAGE_TYPE = ArrayList.class;
+
 
     private GeneticAlgorithm algorithm;
     private boolean running;
@@ -25,6 +32,11 @@ public class Simulation implements Runnable{
     private Class<? extends Gene> gene;
     private Class<? extends Chromosome> chromosome;
 
+
+
+    private Class<? extends Collection> geneDataStructure;
+
+    public Simulation(){}
     public Simulation(GeneticMaterialOptions options,GeneticAlgorithm algo)
     {
         this(options,null,algo);
@@ -35,21 +47,76 @@ public class Simulation implements Runnable{
         this.options = options;
         this.seed = new Random(seed);
         this.algorithm = algorithm;
-        this.popSize = 200;
-        this.geneLength = 1;
-        this.chromoLength = 10;
-        this.gene = BaseGene.class;
-        this.chromosome = ListChromosome.class;
-
+        this.popSize = DEFAULT_POP_SIZE;
+        this.geneLength = DEFAULT_GENE_SIZE;
+        this.chromoLength = DEFAULT_CHROMO_SIZE;
+        this.gene = DEFAULT_GENE_TYPE;
+        this.chromosome = DEFAULT_CHROMO_TYPE;
+        this.geneDataStructure = DEFAULT_STORAGE_TYPE;
     }
 
-    public void populateAsList()
+    private List<Chromosome> initPopulation()
     {
-        algorithm.setPopulation(SimulationConfig.initPopulationAsList(gene,geneLength,chromoLength,popSize));
+        List<Chromosome> population = new ArrayList<>();
+        while(population.size()<popSize)
+        {
+            Chromosome chromo = null;
+            Collection<Gene> genes = null;
+            try
+            {
+                chromo = chromosome.newInstance();
+                genes = (Collection<Gene>) geneDataStructure.newInstance();
+            }
+            catch (InstantiationException | IllegalAccessException e)
+            {
+                e.printStackTrace();
+            }
+
+
+            while(genes.size()<chromoLength)
+                genes.add(createGene());
+            chromo.setGenes(genes);
+            population.add(chromo);
+        }
+        return population;
     }
-    public void populateAsSet(){
-        algorithm.setPopulation(SimulationConfig.initPopulationAsSet(gene,geneLength,chromoLength,popSize));
+
+    public void init()
+    {
+        this.algorithm.setPopulation(initPopulation());
+        this.algorithm.setDoElitism(true);
+        this.algorithm.setInverseFitnessRanking(true);
     }
+
+
+
+    private  Gene createGene()
+    {
+        try
+        {
+            Gene newGene = gene.newInstance();
+            newGene.setLength(geneLength);
+
+            Collection dna = geneDataStructure.newInstance();
+            while(dna.size() < DEFAULT_GENE_SIZE)
+                dna.add(RandomUtil.getRandomGeneticMaterial(options,seed));
+
+            newGene.setDna(dna);
+            return newGene;
+        }
+        catch (InstantiationException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+        catch (IllegalAccessException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
     public GeneticAlgorithm getAlgorithm() {
         return algorithm;
     }
@@ -97,6 +164,13 @@ public class Simulation implements Runnable{
         this.gene = gene;
     }
 
+    public Class<? extends Collection> getGeneDataStructure() {
+        return geneDataStructure;
+    }
+
+    public void setGeneDataStructure(Class<? extends Collection> geneDataStructure) {
+        this.geneDataStructure = geneDataStructure;
+    }
     public Class<? extends Chromosome> getChromosome() {
         return chromosome;
     }

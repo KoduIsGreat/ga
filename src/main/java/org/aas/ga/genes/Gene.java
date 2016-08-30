@@ -22,8 +22,6 @@ public interface Gene<T>
      void mutate(double p);
 
      Gene copy();
-     void setSuppressed(boolean suppressed);
-     boolean isSuppressed();
      boolean isDominant();
      void setDominant(boolean dominant);
 

@@ -17,9 +17,9 @@ import java.util.*;
 public class BinaryGene extends BaseGene<Integer>
 {
 
-    public BinaryGene(Collection<Integer> dna, int length, boolean suppressed, boolean dominant)
+    public BinaryGene(Collection<Integer> dna, int length, boolean dominant)
     {      
-        super(dna,length,suppressed,dominant);
+        super(dna,length,dominant);
     }
     
 

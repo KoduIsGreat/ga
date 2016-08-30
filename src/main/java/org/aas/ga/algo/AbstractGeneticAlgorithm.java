@@ -1,6 +1,5 @@
 package org.aas.ga.algo;
 
-import org.aas.ga.chromo.AbstractCollectionChromosome;
 import org.aas.ga.chromo.Chromosome;
 import org.aas.ga.trans.Transformer;
 
@@ -316,6 +315,7 @@ public abstract class AbstractGeneticAlgorithm<T extends Chromosome> implements 
     @Override
     public void setPopulation(List<T> population) {
         this.population = population;
+        this.origPopSize = population.size();
     }
 
     public boolean isDoElitism() {

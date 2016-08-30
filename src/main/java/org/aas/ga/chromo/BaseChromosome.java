@@ -1,6 +1,5 @@
 package org.aas.ga.chromo;
 
-import org.aas.ga.factory.GeneFactory;
 import org.aas.ga.genes.Gene;
 
 import java.util.*;
@@ -8,21 +7,44 @@ import java.util.*;
 /**
  * Created by Adam on 6/26/2016.
  */
-public abstract class AbstractCollectionChromosome<T extends Collection<Gene>>  implements Chromosome<T> {
+public class BaseChromosome<T extends Collection<Gene>>  implements Chromosome<T> {
 
-    protected T genes;
-
+    private T genes;
     private Double fitness;
+    private Class<? extends Collection>  geneDataStructure;
 
-    public AbstractCollectionChromosome(){}
+    public BaseChromosome(){}
 
+
+
+    public BaseChromosome(T genes)
+    {
+        this.genes = genes;
+        this.geneDataStructure=genes.getClass();
+        fitness = Double.NaN;
+    }
+
+
+    private Collection createChildGeneDS()
+    {
+        try
+        {
+            Collection dataStructure = geneDataStructure.newInstance();
+            return dataStructure;
+        }
+        catch (InstantiationException | IllegalAccessException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
     @Override
     public boolean equals(Object o)
     {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        AbstractCollectionChromosome<?> that = (AbstractCollectionChromosome<?>) o;
+        BaseChromosome<?> that = (BaseChromosome<?>) o;
 
         return genes.equals(that.genes);
     }
@@ -32,12 +54,6 @@ public abstract class AbstractCollectionChromosome<T extends Collection<Gene>>  
         return genes.hashCode();
     }
 
-    public AbstractCollectionChromosome(T genes)
-    {
-        this.genes = genes;
-        fitness = Double.NaN;
-    }
-
     @Override
     public void mutate(double p)
     {
@@ -45,11 +61,28 @@ public abstract class AbstractCollectionChromosome<T extends Collection<Gene>>  
             gene.mutate(p);
     }
 
-    @Override
-    public abstract Collection<Gene> crossover(Chromosome other, int p);
 
     @Override
-    public abstract Chromosome copy();
+    public Collection<Gene> crossover(Chromosome other, int p)
+    {
+        List<Gene> list = new ArrayList(genes);
+        Collection<Gene> childDNA = createChildGeneDS();
+        childDNA.addAll(list.subList(0, p));
+        ArrayList<Gene> otherGenes = (ArrayList<Gene>) other.getGenes();
+        childDNA.addAll(otherGenes.subList(p, other.getGenes().size()));
+        if(childDNA.size() < this.genes.size())
+            childDNA.addAll(genes);
+
+        return childDNA;
+    }
+
+    @Override
+    public Chromosome copy()
+    {
+        BaseChromosome chromo = new BaseChromosome(genes);;
+        chromo.setFitness(this.fitness);
+        return chromo;
+    }
 
     @Override
     public int length()
