@@ -6,7 +6,7 @@ import java.util.*;
 /**
  * Created by Adam on 6/26/2016.
  */
-public class City {
+public class City  {
 
 
     int id;
@@ -70,4 +70,5 @@ public class City {
     {
         return new ArrayList<>(createRandomCities(n));
     }
+
 }

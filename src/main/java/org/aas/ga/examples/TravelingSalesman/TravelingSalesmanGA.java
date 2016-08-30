@@ -33,14 +33,5 @@ public class TravelingSalesmanGA<T extends BaseChromosome> extends AbstractGenet
         }
         chromo.setFitness(fitness);
     }
-
-    public static void main(String[] args)
-    {
-          Cities cities = new Cities();
-          cities.setOptions(City.createRandomCities(20));
-          Simulation sim = new Simulation(cities,15151L,new TravelingSalesmanGA());
-          sim.setChromoLength(cities.getOptions().size());
-          sim.init();
-          sim.run();
-    }
+    
 }
