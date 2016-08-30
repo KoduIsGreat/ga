@@ -13,7 +13,6 @@ public abstract class AbstractGeneticAlgorithm<T extends Chromosome> implements 
     private final double REFRESH_RATE = 1;
     private final int NO_TARGET_SIZE_DEFINED =-1;
     private final Map<Integer,T> overallFitnessMap = new LinkedHashMap<>();
-
     private List<T> population;
     private Transformer transformer;
     private double absFitWeight;
@@ -29,9 +28,7 @@ public abstract class AbstractGeneticAlgorithm<T extends Chromosome> implements 
     private Integer refreshAfter;
     private boolean doElitism;
     private boolean inverseFitnessRanking;
-
     private boolean printGenerationInfo;
-
     private T overall_fittest;
 
 
@@ -256,6 +253,7 @@ public abstract class AbstractGeneticAlgorithm<T extends Chromosome> implements 
 
         Double min = getWeakest().getFitness();
         Double range = Math.abs(getFittest().getFitness() - min) ;
+
         if(range == 0)
         {
             Map<T,Double> defaultCdf = new LinkedHashMap<>();

@@ -31,9 +31,6 @@ public class Simulation implements Runnable{
     private int chromoLength;
     private Class<? extends Gene> gene;
     private Class<? extends Chromosome> chromosome;
-
-
-
     private Class<? extends Collection> geneDataStructure;
 
     public Simulation(){}
@@ -62,6 +59,7 @@ public class Simulation implements Runnable{
         {
             Chromosome chromo = null;
             Collection<Gene> genes = null;
+
             try
             {
                 chromo = chromosome.newInstance();
@@ -79,6 +77,35 @@ public class Simulation implements Runnable{
             population.add(chromo);
         }
         return population;
+    }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Simulation that = (Simulation) o;
+
+        if (popSize != that.popSize) return false;
+        if (geneLength != that.geneLength) return false;
+        if (chromoLength != that.chromoLength) return false;
+        if (!algorithm.equals(that.algorithm)) return false;
+        if (!gene.equals(that.gene)) return false;
+        if (!chromosome.equals(that.chromosome)) return false;
+        return geneDataStructure.equals(that.geneDataStructure);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = algorithm.hashCode();
+        result = 31 * result + popSize;
+        result = 31 * result + geneLength;
+        result = 31 * result + chromoLength;
+        result = 31 * result + gene.hashCode();
+        result = 31 * result + chromosome.hashCode();
+        result = 31 * result + geneDataStructure.hashCode();
+        return result;
     }
 
     public void init()
@@ -104,12 +131,7 @@ public class Simulation implements Runnable{
             newGene.setDna(dna);
             return newGene;
         }
-        catch (InstantiationException e)
-        {
-            e.printStackTrace();
-            return null;
-        }
-        catch (IllegalAccessException e)
+        catch (InstantiationException  | IllegalAccessException  e)
         {
             e.printStackTrace();
             return null;
