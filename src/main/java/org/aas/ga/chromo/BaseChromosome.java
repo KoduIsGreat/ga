@@ -25,11 +25,11 @@ public class BaseChromosome<T extends Collection<Gene>>  implements Chromosome<T
     }
 
 
-    private Collection createChildGeneDS()
+    private Collection<Gene> createChildGeneDS()
     {
         try
         {
-            Collection dataStructure = geneDataStructure.newInstance();
+            Collection<Gene> dataStructure = geneDataStructure.newInstance();
             return dataStructure;
         }
         catch (InstantiationException | IllegalAccessException e)

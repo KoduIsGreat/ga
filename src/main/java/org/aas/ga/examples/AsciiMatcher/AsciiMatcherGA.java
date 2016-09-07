@@ -18,15 +18,6 @@ public class AsciiMatcherGA<T extends BaseChromosome> extends AbstractGeneticAlg
         super(pop, absW, relW, p_mutate, p_crossover, gen, elitist,inverseFitRanking, quit_after, refresh_after);
         this.target = target;
     }
-
-    public AsciiMatcherGA(List<T> pop, int gen, double absW, double relW, double p_mutate, double p_crossover, String target) {
-        this(pop,absW,relW,p_mutate,p_crossover,gen,false,true,5000,2500,target);
-
-    }
-    public AsciiMatcherGA(List<T>pop,String target){
-        this(pop,.5,.5,.5,.5,50000,false,true,5000,2500,target);
-
-    }
     public AsciiMatcherGA(String target){this(null,.5,.5,.5,.5,50000,false,true,5000,2500,target);}
 
     @Override

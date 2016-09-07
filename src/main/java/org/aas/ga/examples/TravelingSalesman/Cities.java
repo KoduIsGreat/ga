@@ -13,7 +13,7 @@ public class Cities implements GeneticMaterialOptions
     private Collection<City> options ;
 
     @Override
-    public Collection getOptions() {
+    public Collection<City> getOptions() {
         return options;
     }
 
