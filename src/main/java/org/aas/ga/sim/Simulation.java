@@ -34,6 +34,7 @@ public class Simulation implements Runnable{
     private Class<? extends Collection> geneDataStructure;
 
     public Simulation(){}
+
     public Simulation(GeneticMaterialOptions options,GeneticAlgorithm algo)
     {
         this(options,null,algo);
@@ -50,6 +51,16 @@ public class Simulation implements Runnable{
         this.gene = DEFAULT_GENE_TYPE;
         this.chromosome = DEFAULT_CHROMO_TYPE;
         this.geneDataStructure = DEFAULT_STORAGE_TYPE;
+    }
+
+
+    public static  Object getRandomGeneticMaterial()
+    {
+        ArrayList<Object> list  = new ArrayList<>(options.getOptions());
+        Random rand = new Random();
+        if(seed != null)
+            rand = seed;
+        return list.get(rand.nextInt(list.size()));
     }
 
     private List<Chromosome> initPopulation()
@@ -77,6 +88,27 @@ public class Simulation implements Runnable{
             population.add(chromo);
         }
         return population;
+    }
+
+    private Gene createGene()
+    {
+        try
+        {
+            Gene newGene = gene.newInstance();
+            newGene.setLength(geneLength);
+
+            Collection dna = geneDataStructure.newInstance();
+            while(dna.size() < DEFAULT_GENE_SIZE)
+                dna.add(getRandomGeneticMaterial());
+
+            newGene.setDna(dna);
+            return newGene;
+        }
+        catch (InstantiationException  | IllegalAccessException  e)
+        {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
@@ -113,29 +145,6 @@ public class Simulation implements Runnable{
         this.algorithm.setPopulation(initPopulation());
         this.algorithm.setDoElitism(true);
         this.algorithm.setInverseFitnessRanking(true);
-    }
-
-
-
-    private  Gene createGene()
-    {
-        try
-        {
-            Gene newGene = gene.newInstance();
-            newGene.setLength(geneLength);
-
-            Collection dna = geneDataStructure.newInstance();
-            while(dna.size() < DEFAULT_GENE_SIZE)
-                dna.add(RandomUtil.getRandomGeneticMaterial(options,seed));
-
-            newGene.setDna(dna);
-            return newGene;
-        }
-        catch (InstantiationException  | IllegalAccessException  e)
-        {
-            e.printStackTrace();
-            return null;
-        }
     }
 
 

@@ -34,8 +34,7 @@ public class BaseGene<T> implements Gene<T>
         this.length = length;
         this.dominant = dominant;
     }
-
-
+    
     @Override
     public int hashCode()
     {

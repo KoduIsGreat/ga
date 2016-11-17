@@ -20,7 +20,6 @@ public interface Gene<T>
      Collection<T> getDna();
      void setDna(Collection<T> dna);
      void mutate(double p);
-
      Gene copy();
      boolean isDominant();
      void setDominant(boolean dominant);

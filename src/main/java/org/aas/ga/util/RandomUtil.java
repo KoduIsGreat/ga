@@ -13,9 +13,6 @@ public class RandomUtil
     public static  Object getRandomGeneticMaterial(GeneticMaterialOptions options,Random seed)
     {
         ArrayList<Object> list  = new ArrayList<>(options.getOptions());
-        Random rand = new Random();
-        if(seed != null)
-            rand = seed;
-        return list.get(rand.nextInt(list.size()));
+        return list.get(seed.nextInt(list.size()));
     }
 }

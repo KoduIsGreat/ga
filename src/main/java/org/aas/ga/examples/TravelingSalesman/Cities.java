@@ -9,8 +9,15 @@ import java.util.Collection;
  */
 public class Cities implements GeneticMaterialOptions
 {
-    public Cities(){}
     private Collection<City> options ;
+
+    public Cities(){}
+
+    public Cities(Collection<City> options)
+    {
+        this.options=options;
+    }
+
 
     @Override
     public Collection<City> getOptions() {

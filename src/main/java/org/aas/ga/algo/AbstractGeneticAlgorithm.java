@@ -1,6 +1,8 @@
 package org.aas.ga.algo;
 
 import org.aas.ga.chromo.Chromosome;
+import org.aas.ga.sim.BaseMutator;
+import org.aas.ga.sim.Mutator;
 import org.aas.ga.trans.Transformer;
 
 import java.util.*;
@@ -30,30 +32,31 @@ public abstract class AbstractGeneticAlgorithm<T extends Chromosome> implements 
     private boolean inverseFitnessRanking;
     private boolean printGenerationInfo;
     private T overall_fittest;
-
+    private Mutator<T> mutator;
 
     public AbstractGeneticAlgorithm(){
-        this(null);
-    }
-    public AbstractGeneticAlgorithm(List<T> pop){
-        this(pop,.5,.5);
-
-    }
-    public AbstractGeneticAlgorithm(List<T>pop,double absW, double relW){
-        this(pop,absW,relW,.5,.5,50000);
+        this(null,null);
     }
 
-    public AbstractGeneticAlgorithm(List<T>pop, double absW, double relW, double pMutate, double pCrossover, int gen){
-        this(pop,absW,relW, pMutate, pCrossover,gen,false,false,2500,1000);
+    public AbstractGeneticAlgorithm(List<T> pop,BaseMutator<T> mutator){
+        this(pop,mutator,.5,.5);
+
+    }
+    public AbstractGeneticAlgorithm(List<T>pop, BaseMutator<T> mutator, double absW, double relW){
+        this(pop,absW,relW,mutator,.5,50000);
     }
 
-    public AbstractGeneticAlgorithm(List<T> pop, double absW, double relW, double pMutate, double pCrossover, int gen, boolean elitist, boolean inverseFitRanking, int quit_after, int refresh_after){
+    public AbstractGeneticAlgorithm(List<T>pop, double absW, double relW, Mutator<T> mutator, double pCrossover, int gen){
+        this(pop,absW,relW, mutator, pCrossover,gen,false,false,2500,1000);
+    }
+
+    public AbstractGeneticAlgorithm(List<T> pop, double absW, double relW, Mutator<T> mutator, double pCrossover, int gen, boolean elitist, boolean inverseFitRanking, int quit_after, int refresh_after){
         if (relW + absW != 1) throw new AssertionError("Absolute and relative weighting Factors must add to 1");
         this.population = pop;
         this.origPopSize = pop != null ? pop.size() : 0;
         this.absFitWeight = absW;
         this.relFitWeight = relW;
-        this.pMutate = pMutate;
+        this.mutator = mutator;
         this.pCrossover = pCrossover;
         this.numGeneration = gen;
         this.doElitism = elitist;
@@ -174,9 +177,9 @@ public abstract class AbstractGeneticAlgorithm<T extends Chromosome> implements 
     }
 
     @Override
-    public void mutate(double p) {
+    public void mutate() {
         for(T c : population)
-            c.mutate(p);
+            mutator.mutate(c);
     }
 
     @Override
@@ -204,7 +207,7 @@ public abstract class AbstractGeneticAlgorithm<T extends Chromosome> implements 
         for(int gen = 1; gen <= numGeneration; gen ++)
         {
             population = reproduce(compete(), pCrossover);
-            mutate(pMutate);
+            mutate();
             calculateFitness();
 
             if(gen == 1)

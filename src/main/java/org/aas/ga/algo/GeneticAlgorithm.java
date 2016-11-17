@@ -20,7 +20,7 @@ public interface GeneticAlgorithm<T extends Chromosome> extends Runnable
      void sort(List<T> chromosomes);
      void calculateFitness();
      void evaluateFitness(Chromosome chromo);
-     void mutate(double p);
+     void mutate();
      void refresh();
      void setDoElitism(boolean doElitism);
      boolean isDoElitism();

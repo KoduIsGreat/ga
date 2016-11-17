@@ -4,6 +4,8 @@ import org.aas.ga.algo.AbstractGeneticAlgorithm;
 import org.aas.ga.chromo.BaseChromosome;
 import org.aas.ga.chromo.Chromosome;
 import org.aas.ga.genes.Gene;
+import org.aas.ga.sim.BaseMutator;
+import org.aas.ga.sim.Mutator;
 import org.aas.ga.sim.Simulation;
 
 import java.util.*;
@@ -13,8 +15,8 @@ import java.util.*;
  */
 public class TravelingSalesmanGA<T extends BaseChromosome> extends AbstractGeneticAlgorithm<T> {
     public TravelingSalesmanGA(){}
-    public TravelingSalesmanGA(List<T> pop){
-        super(pop);
+    public TravelingSalesmanGA(List<T> pop, BaseMutator<T> mutator){
+        super(pop,mutator);
     }
     private Double calculateDistance(double x1, double x2, double y1, double y2)
     {
