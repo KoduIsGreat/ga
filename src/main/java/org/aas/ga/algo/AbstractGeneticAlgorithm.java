@@ -32,6 +32,7 @@ public abstract class AbstractGeneticAlgorithm<T extends Chromosome> implements 
     private boolean inverseFitnessRanking;
     private boolean printGenerationInfo;
     private T overall_fittest;
+
     private Mutator<T> mutator;
 
     public AbstractGeneticAlgorithm(){
@@ -398,7 +399,13 @@ public abstract class AbstractGeneticAlgorithm<T extends Chromosome> implements 
     public void setTransformer(Transformer transformer) {
         this.transformer = transformer;
     }
-
+    public Mutator<T> getMutator() {
+        return mutator;
+    }
+    @Override
+    public void setMutator(Mutator<T> mutator) {
+        this.mutator = mutator;
+    }
     public boolean isInverseFitnessRanking() {
         return inverseFitnessRanking;
     }

@@ -19,7 +19,7 @@ public class AsciiMatcherGA<T extends BaseChromosome> extends AbstractGeneticAlg
         super(pop, absW, relW, mutator, p_crossover, gen, elitist,inverseFitRanking, quit_after, refresh_after);
         this.target = target;
     }
-    public AsciiMatcherGA(String target,List<T>pop, Mutator<T> mutator){this(pop,.5,.5,mutator,.5,50000,false,true,5000,2500,target);}
+    public AsciiMatcherGA(String target){this(null,.5,.5,null,.5,50000,false,true,5000,2500,target);}
 
     @Override
     public void evaluateFitness(Chromosome chromo)

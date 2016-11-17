@@ -1,6 +1,7 @@
 package org.aas.ga.algo;
 
 import org.aas.ga.chromo.Chromosome;
+import org.aas.ga.sim.Mutator;
 
 import java.util.List;
 
@@ -23,6 +24,7 @@ public interface GeneticAlgorithm<T extends Chromosome> extends Runnable
      void mutate();
      void refresh();
      void setDoElitism(boolean doElitism);
+     void setMutator(Mutator<T> mutator);
      boolean isDoElitism();
      void setInverseFitnessRanking(boolean inverseFitnessRanking);
      boolean isInverseFitnessRanking();

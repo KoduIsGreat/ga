@@ -14,17 +14,19 @@ public class BaseMutator<T extends Chromosome> implements Mutator<T>
     private double p;
     private Random seed;
     private GeneticMaterialOptions options;
+    private Class <? extends Collection>geneDataStructure;
 
-    public BaseMutator(double p,GeneticMaterialOptions options,Random seed)
+    public BaseMutator(double p,GeneticMaterialOptions options,Class<? extends Collection> geneDataStructure,Random seed)
     {
         this.p= p;
         this.seed = seed;
         this.options = options;
+        this.geneDataStructure = geneDataStructure;
     }
 
-    public BaseMutator(double p,GeneticMaterialOptions options)
+    public BaseMutator(double p,GeneticMaterialOptions options,Class<? extends Collection> geneDataStructure)
     {
-        this(p, options,new Random());
+        this(p, options,geneDataStructure,new Random());
     }
 
 
@@ -37,14 +39,27 @@ public class BaseMutator<T extends Chromosome> implements Mutator<T>
     private void mutate(Gene gene)
     {
         Collection dna =  gene.getDna();
-        Iterator itr = dna.iterator();
-        while(itr.hasNext())
+        try
         {
-            Object strand = itr.next();
-            if(seed.nextDouble() < p && !gene.isDominant())
+            Collection newDna = geneDataStructure.newInstance();
+
+            Iterator itr = dna.iterator();
+            while (itr.hasNext())
             {
-               strand = getRandomGeneticMaterial();
+                Object strand = itr.next();
+                if (seed.nextDouble() < p && !gene.isDominant()) {
+                    newDna.add(getRandomGeneticMaterial());
+                }
+                else
+                {
+                    newDna.add(strand);
+                }
             }
+            gene.setDna(newDna);
+        }
+        catch (InstantiationException |IllegalAccessException e)
+        {
+            e.printStackTrace();
         }
     }
 

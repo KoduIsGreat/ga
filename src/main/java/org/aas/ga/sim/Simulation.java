@@ -3,22 +3,27 @@ package org.aas.ga.sim;
 import org.aas.ga.algo.GeneticAlgorithm;
 import org.aas.ga.chromo.BaseChromosome;
 import org.aas.ga.chromo.Chromosome;
+import org.aas.ga.factory.ChromosomeFactory;
+import org.aas.ga.factory.GeneFactory;
 import org.aas.ga.genes.BaseGene;
 import org.aas.ga.genes.Gene;
 import org.aas.ga.genes.GeneticMaterialOptions;
-import org.aas.ga.util.RandomUtil;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Random;
 
 /**
  * Created by Adam on 8/28/2016.
  */
 public class Simulation implements Runnable{
-    public static GeneticMaterialOptions options = null;
+    public static GeneticMaterialOptions options;
     public static Random seed;
     private static final int DEFAULT_GENE_SIZE = 1;
     private static final int DEFAULT_CHROMO_SIZE =10;
     private static final int DEFAULT_POP_SIZE = 200;
+    private static final double DEFAULT_MUTATION_RATE = .5;
     private static final Class<? extends Gene> DEFAULT_GENE_TYPE = BaseGene.class;
     private static final Class<? extends Chromosome> DEFAULT_CHROMO_TYPE = BaseChromosome.class;
     private static final Class<? extends Collection> DEFAULT_STORAGE_TYPE = ArrayList.class;
@@ -27,17 +32,21 @@ public class Simulation implements Runnable{
     private GeneticAlgorithm algorithm;
     private boolean running;
     private int popSize;
+
     private int geneLength;
     private int chromoLength;
+    private double pMutate ;
     private Class<? extends Gene> gene;
     private Class<? extends Chromosome> chromosome;
     private Class<? extends Collection> geneDataStructure;
-
+    private Class<? extends Collection<Gene>> chromosomeDataStructure;
+    private ChromosomeFactory<? extends Chromosome> chromoFactory;
+    private BaseMutator<? extends Chromosome> mutator;
     public Simulation(){}
 
     public Simulation(GeneticMaterialOptions options,GeneticAlgorithm algo)
     {
-        this(options,null,algo);
+        this(options,new Random().nextLong(),algo);
     }
 
     public Simulation (GeneticMaterialOptions options, Long seed, GeneticAlgorithm algorithm)
@@ -45,6 +54,7 @@ public class Simulation implements Runnable{
         this.options = options;
         this.seed = new Random(seed);
         this.algorithm = algorithm;
+        this.pMutate = DEFAULT_MUTATION_RATE;
         this.popSize = DEFAULT_POP_SIZE;
         this.geneLength = DEFAULT_GENE_SIZE;
         this.chromoLength = DEFAULT_CHROMO_SIZE;
@@ -54,61 +64,26 @@ public class Simulation implements Runnable{
     }
 
 
-    public static  Object getRandomGeneticMaterial()
+    private List<? extends Chromosome> initPopulation()
     {
-        ArrayList<Object> list  = new ArrayList<>(options.getOptions());
-        Random rand = new Random();
-        if(seed != null)
-            rand = seed;
-        return list.get(rand.nextInt(list.size()));
-    }
-
-    private List<Chromosome> initPopulation()
-    {
-        List<Chromosome> population = new ArrayList<>();
-        while(population.size()<popSize)
-        {
-            Chromosome chromo = null;
-            Collection<Gene> genes = null;
-
-            try
-            {
-                chromo = chromosome.newInstance();
-                genes = (Collection<Gene>) geneDataStructure.newInstance();
-            }
-            catch (InstantiationException | IllegalAccessException e)
-            {
-                e.printStackTrace();
-            }
-
-
-            while(genes.size()<chromoLength)
-                genes.add(createGene());
-            chromo.setGenes(genes);
-            population.add(chromo);
-        }
+        List<? extends Chromosome> population = chromoFactory.create(200);
         return population;
     }
 
-    private Gene createGene()
+    private void  build()
     {
-        try
-        {
-            Gene newGene = gene.newInstance();
-            newGene.setLength(geneLength);
+        GeneFactory<? extends Gene> geneFactory = new GeneFactory(gene,options,seed,geneLength);
+        chromoFactory = new ChromosomeFactory(chromosome,options,geneFactory,seed,chromoLength);
+        mutator = new BaseMutator(pMutate,options,geneDataStructure,seed);
+    }
 
-            Collection dna = geneDataStructure.newInstance();
-            while(dna.size() < DEFAULT_GENE_SIZE)
-                dna.add(getRandomGeneticMaterial());
-
-            newGene.setDna(dna);
-            return newGene;
-        }
-        catch (InstantiationException  | IllegalAccessException  e)
-        {
-            e.printStackTrace();
-            return null;
-        }
+    public void init()
+    {
+        build();
+        this.algorithm.setPopulation(initPopulation());
+        this.algorithm.setMutator(mutator);
+        this.algorithm.setDoElitism(true);
+        this.algorithm.setInverseFitnessRanking(true);
     }
 
     @Override
@@ -140,13 +115,13 @@ public class Simulation implements Runnable{
         return result;
     }
 
-    public void init()
-    {
-        this.algorithm.setPopulation(initPopulation());
-        this.algorithm.setDoElitism(true);
-        this.algorithm.setInverseFitnessRanking(true);
+    public double getpMutate() {
+        return pMutate;
     }
 
+    public void setpMutate(double pMutate) {
+        this.pMutate = pMutate;
+    }
 
     public GeneticAlgorithm getAlgorithm() {
         return algorithm;
@@ -179,6 +154,37 @@ public class Simulation implements Runnable{
         this.geneLength = geneLength;
     }
 
+    public static GeneticMaterialOptions getOptions() {
+        return options;
+    }
+
+    public static void setOptions(GeneticMaterialOptions options) {
+        Simulation.options = options;
+    }
+
+    public static Random getSeed() {
+        return seed;
+    }
+
+    public static void setSeed(Random seed) {
+        Simulation.seed = seed;
+    }
+
+    public ChromosomeFactory<? extends Chromosome> getChromoFactory() {
+        return chromoFactory;
+    }
+
+    public void setChromoFactory(ChromosomeFactory<? extends Chromosome> chromoFactory) {
+        this.chromoFactory = chromoFactory;
+    }
+
+    public BaseMutator<? extends Chromosome> getMutator() {
+        return mutator;
+    }
+
+    public void setMutator(BaseMutator<? extends Chromosome> mutator) {
+        this.mutator = mutator;
+    }
     public int getChromoLength() {
         return chromoLength;
     }
