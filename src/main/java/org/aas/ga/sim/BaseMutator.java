@@ -14,14 +14,14 @@ public class BaseMutator<T extends Chromosome> implements Mutator<T>
     private double p;
     private Random seed;
     private GeneticMaterialOptions options;
-    private Class <? extends Collection>geneDataStructure;
+    private Class <? extends Collection>dnaDataStructure;
 
     public BaseMutator(double p,GeneticMaterialOptions options,Class<? extends Collection> geneDataStructure,Random seed)
     {
         this.p= p;
         this.seed = seed;
         this.options = options;
-        this.geneDataStructure = geneDataStructure;
+        this.dnaDataStructure = geneDataStructure;
     }
 
     public BaseMutator(double p,GeneticMaterialOptions options,Class<? extends Collection> geneDataStructure)
@@ -41,7 +41,7 @@ public class BaseMutator<T extends Chromosome> implements Mutator<T>
         Collection dna =  gene.getDna();
         try
         {
-            Collection newDna = geneDataStructure.newInstance();
+            Collection newDna = dnaDataStructure.newInstance();
 
             Iterator itr = dna.iterator();
             while (itr.hasNext())

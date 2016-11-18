@@ -34,6 +34,7 @@ public abstract class AbstractGeneticAlgorithm<T extends Chromosome> implements 
     private T overall_fittest;
 
     private Mutator<T> mutator;
+    private Mutator<T> refresher;
 
     public AbstractGeneticAlgorithm(){
         this(null,null);

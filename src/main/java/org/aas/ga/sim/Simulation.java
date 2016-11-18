@@ -38,8 +38,9 @@ public class Simulation implements Runnable{
     private double pMutate ;
     private Class<? extends Gene> gene;
     private Class<? extends Chromosome> chromosome;
+    private Class<? extends Collection> dnaDataStructure;
     private Class<? extends Collection> geneDataStructure;
-    private Class<? extends Collection<Gene>> chromosomeDataStructure;
+    private Class<? extends Collection> chromosomeDataStructure;
     private ChromosomeFactory<? extends Chromosome> chromoFactory;
     private BaseMutator<? extends Chromosome> mutator;
     public Simulation(){}
@@ -60,27 +61,29 @@ public class Simulation implements Runnable{
         this.chromoLength = DEFAULT_CHROMO_SIZE;
         this.gene = DEFAULT_GENE_TYPE;
         this.chromosome = DEFAULT_CHROMO_TYPE;
+        this.dnaDataStructure = DEFAULT_STORAGE_TYPE;
         this.geneDataStructure = DEFAULT_STORAGE_TYPE;
+        this.chromosomeDataStructure = DEFAULT_STORAGE_TYPE;
     }
 
 
     private List<? extends Chromosome> initPopulation()
     {
-        List<? extends Chromosome> population = chromoFactory.create(200);
-        return population;
+
+        return null;
     }
 
     private void  build()
     {
-        GeneFactory<? extends Gene> geneFactory = new GeneFactory(gene,options,seed,geneLength);
-        chromoFactory = new ChromosomeFactory(chromosome,options,geneFactory,seed,chromoLength);
-        mutator = new BaseMutator(pMutate,options,geneDataStructure,seed);
+        GeneFactory<? extends Gene> geneFactory = new GeneFactory<Gene>(gene,dnaDataStructure,geneDataStructure,options,seed,geneLength);
+        chromoFactory = new ChromosomeFactory<Chromosome>(chromosome,geneDataStructure,chromosomeDataStructure,options,geneFactory,seed,chromoLength);
+        mutator = new BaseMutator<>(pMutate,options,geneDataStructure,seed);
     }
 
     public void init()
     {
         build();
-        this.algorithm.setPopulation(initPopulation());
+        this.algorithm.setPopulation((List) chromoFactory.create(popSize));
         this.algorithm.setMutator(mutator);
         this.algorithm.setDoElitism(true);
         this.algorithm.setInverseFitnessRanking(true);

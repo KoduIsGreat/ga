@@ -11,20 +11,23 @@ import java.util.Random;
  * Created by Adam on 11/16/2016.
  */
 public class GeneFactory<G extends Gene> extends AbstractGeneticFactory<G> {
-    public GeneFactory(Class<G> clazz, GeneticMaterialOptions options)
+    public GeneFactory(Class<? extends G> clazz, GeneticMaterialOptions options)
     {
-        super(clazz,DEFAULT_STORAGE_TYPE,options,new Random(),DEFAULT_SIZE);
+        super((Class<G>) clazz,DEFAULT_STORAGE_TYPE,DEFAULT_STORAGE_TYPE,options,new Random(),DEFAULT_SIZE);
 
     }
-    public GeneFactory(Class<G>clazz, GeneticMaterialOptions options, Random seed){
-        super(clazz,DEFAULT_STORAGE_TYPE,options,seed,DEFAULT_SIZE);
+    public GeneFactory(Class<? extends G>clazz, GeneticMaterialOptions options, Random seed){
+        super((Class<G>)clazz,DEFAULT_STORAGE_TYPE,DEFAULT_STORAGE_TYPE,options,seed,DEFAULT_SIZE);
     }
-    public GeneFactory(Class<G>clazz, GeneticMaterialOptions options, Random seed, int length) {
-        super(clazz, DEFAULT_STORAGE_TYPE, options, seed, length);
+    public GeneFactory(Class<? extends G>clazz, GeneticMaterialOptions options, Random seed, int length) {
+        super((Class<G>)clazz, DEFAULT_STORAGE_TYPE,DEFAULT_STORAGE_TYPE, options, seed, length);
     }
-    public GeneFactory(Class<G> clazz, Class<? extends Collection>dataStructure, GeneticMaterialOptions options, Random seed, int length){
-        super(clazz,dataStructure,options,seed,length);
+    public GeneFactory(Class<? extends G> clazz, Class<? extends Collection>dataStructure,Class<? extends Collection>ds2, GeneticMaterialOptions options, Random seed, int length){
+        super((Class<G>) clazz,dataStructure,ds2,options,seed,length);
     }
+
+
+
     @Override
     public G create(){
         try
@@ -32,7 +35,7 @@ public class GeneFactory<G extends Gene> extends AbstractGeneticFactory<G> {
             G newGene = clazz.newInstance();
             newGene.setLength(length);
 
-            Collection dna = dataStructure.newInstance();
+            Collection dna = phenotypeDataStructure.newInstance();
             while(dna.size() < DEFAULT_SIZE)
                 dna.add(RandomUtil.getRandomGeneticMaterial(options,seed));
 
@@ -45,4 +48,5 @@ public class GeneFactory<G extends Gene> extends AbstractGeneticFactory<G> {
             return null;
         }
     }
+
 }
