@@ -9,4 +9,5 @@ import org.aas.ga.chromo.Chromosome;
 public interface Mutator<T extends Chromosome>
 {
     public void mutate(T chromosome);
+    public void refresh(T chromosome, double p);
 }

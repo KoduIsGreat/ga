@@ -13,7 +13,6 @@ import java.util.List;
 public interface Chromosome<T extends Collection<Gene>> extends Comparable<Chromosome>
 {
      Collection<Gene> crossover(Chromosome other, int p);
-     void mutate(double p);
      int length();
      Chromosome copy();
      int compareTo(Chromosome o);

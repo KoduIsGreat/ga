@@ -1,8 +1,12 @@
 package org.aas.ga.chromo;
 
 import org.aas.ga.genes.Gene;
+import org.aas.ga.util.RandomUtil;
 
 import java.util.*;
+
+import static org.aas.ga.sim.Simulation.options;
+import static org.aas.ga.sim.Simulation.seed;
 
 /**
  * Created by Adam on 6/26/2016.
@@ -54,12 +58,7 @@ public class BaseChromosome<T extends Collection<Gene>>  implements Chromosome<T
         return genes.hashCode();
     }
 
-    @Override
-    public void mutate(double p)
-    {
-        for (Gene gene : genes)
-            gene.mutate(p);
-    }
+
 
 
     @Override
@@ -68,9 +67,9 @@ public class BaseChromosome<T extends Collection<Gene>>  implements Chromosome<T
         List<Gene> list = new ArrayList(genes);
         Collection<Gene> childDNA = createChildGeneDS();
         childDNA.addAll(list.subList(0, p));
-        ArrayList<Gene> otherGenes = (ArrayList<Gene>) other.getGenes();
+        ArrayList<Gene> otherGenes = new ArrayList<>(other.getGenes());
         childDNA.addAll(otherGenes.subList(p, other.getGenes().size()));
-        if(childDNA.size() < this.genes.size())
+        while(childDNA.size() < this.genes.size())
             childDNA.addAll(genes);
 
         return childDNA;

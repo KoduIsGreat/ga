@@ -3,6 +3,7 @@ package org.aas.ga.sim;
 import org.aas.ga.chromo.Chromosome;
 import org.aas.ga.genes.Gene;
 import org.aas.ga.genes.GeneticMaterialOptions;
+import org.aas.ga.util.RandomUtil;
 
 import java.util.*;
 
@@ -29,45 +30,53 @@ public class BaseMutator<T extends Chromosome> implements Mutator<T>
         this(p, options,geneDataStructure,new Random());
     }
 
-
-    private Object getRandomGeneticMaterial()
+    private void mutateGene(Gene gene, double p)
     {
-        ArrayList<Object> list  = new ArrayList<>(options.getOptions());
-        return list.get(seed.nextInt(list.size()));
-    }
+        Random rand = new Random();
+        if(Simulation.seed != null)
+            rand = Simulation.seed;
 
-    private void mutate(Gene gene)
-    {
-        Collection dna =  gene.getDna();
+        Collection newDna = null;
         try
         {
-            Collection newDna = dnaDataStructure.newInstance();
-
-            Iterator itr = dna.iterator();
-            while (itr.hasNext())
-            {
-                Object strand = itr.next();
-                if (seed.nextDouble() < p && !gene.isDominant()) {
-                    newDna.add(getRandomGeneticMaterial());
-                }
-                else
-                {
-                    newDna.add(strand);
-                }
-            }
-            gene.setDna(newDna);
+            newDna = dnaDataStructure.newInstance();
         }
-        catch (InstantiationException |IllegalAccessException e)
+        catch (InstantiationException | IllegalAccessException e)
         {
             e.printStackTrace();
         }
+        for(Object strand : gene.getDna())
+        {
+            if(rand.nextDouble() < p && !gene.isDominant())
+            {
+                newDna.add(RandomUtil.getRandomGeneticMaterial(Simulation.options,Simulation.seed));
+            }
+            else
+            {
+                newDna.add(strand);
+            }
+        }
+        gene.setDna(newDna);
+    }
+
+    private void mutateGene(Gene gene)
+    {
+        mutateGene(gene,p);
     }
 
     @Override
-    public void mutate(Chromosome chromosome)
+    public void mutate(T chromosome)
     {
-        Collection<Gene> genes = chromosome.getGenes();
-        for (Gene gene : genes)
-            mutate(gene);
+        Iterator<Gene> itr = chromosome.iterator();
+        while(itr.hasNext())
+            mutateGene(itr.next());
+    }
+
+    @Override
+    public void refresh(T chromosome, double p)
+    {
+        Iterator<Gene> itr = chromosome.iterator();
+        while(itr.hasNext())
+            mutateGene(itr.next(),p);
     }
 }

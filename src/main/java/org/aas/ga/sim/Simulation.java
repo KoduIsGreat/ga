@@ -66,13 +66,6 @@ public class Simulation implements Runnable{
         this.chromosomeDataStructure = DEFAULT_STORAGE_TYPE;
     }
 
-
-    private List<? extends Chromosome> initPopulation()
-    {
-
-        return null;
-    }
-
     private void  build()
     {
         GeneFactory<? extends Gene> geneFactory = new GeneFactory<Gene>(gene,dnaDataStructure,geneDataStructure,options,seed,geneLength);

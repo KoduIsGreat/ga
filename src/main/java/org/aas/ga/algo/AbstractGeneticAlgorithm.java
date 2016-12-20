@@ -187,7 +187,7 @@ public abstract class AbstractGeneticAlgorithm<T extends Chromosome> implements 
     @Override
     public void refresh() {
         for(T c : population)
-            c.mutate(REFRESH_RATE);
+            mutator.refresh(c,REFRESH_RATE);
     }
 
 
