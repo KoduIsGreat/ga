@@ -8,7 +8,7 @@ import java.util.Set;
 /**
  * Created by Adam on 8/28/2016.
  */
-public enum DefaultGeneticMaterialOptions implements GeneticMaterialOptions
+public enum DefaultAlleleOptions implements AlleleOptions
 {
     ALL_ASCII(Arrays.asList("a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z",
             "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z",
@@ -26,8 +26,8 @@ public enum DefaultGeneticMaterialOptions implements GeneticMaterialOptions
     DNA(Arrays.asList("A","C","T","G"));
 
     private Set options = new HashSet<>();
-    DefaultGeneticMaterialOptions(){}
-    DefaultGeneticMaterialOptions(Collection options){
+    DefaultAlleleOptions(){}
+    DefaultAlleleOptions(Collection options){
         this.options.addAll(options);
     }
 

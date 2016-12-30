@@ -1,13 +1,13 @@
 package org.aas.ga.examples.TravelingSalesman;
 
-import org.aas.ga.genes.GeneticMaterialOptions;
+import org.aas.ga.genes.AlleleOptions;
 
 import java.util.Collection;
 
 /**
  * Created by Adam on 8/28/2016.
  */
-public class Cities implements GeneticMaterialOptions
+public class Cities implements AlleleOptions
 {
     private Collection<City> options ;
 

@@ -24,7 +24,7 @@ public interface GeneticAlgorithm<T extends Chromosome> extends Runnable
      void mutate();
      void refresh();
      void setDoElitism(boolean doElitism);
-     void setMutator(Mutator<T> mutator);
+     void setMutator(Mutator mutator);
      boolean isDoElitism();
      void setInverseFitnessRanking(boolean inverseFitnessRanking);
      boolean isInverseFitnessRanking();

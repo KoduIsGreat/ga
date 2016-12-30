@@ -1,6 +1,6 @@
 package org.aas.ga.util;
 
-import org.aas.ga.genes.GeneticMaterialOptions;
+import org.aas.ga.genes.AlleleOptions;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -10,7 +10,7 @@ import java.util.Random;
  */
 public class RandomUtil
 {
-    public static  Object getRandomGeneticMaterial(GeneticMaterialOptions options,Random seed)
+    public static  Object getRandomGeneticMaterial(AlleleOptions options, Random seed)
     {
         ArrayList<Object> list  = new ArrayList<>(options.getOptions());
         return list.get(seed.nextInt(list.size()));

@@ -1,6 +1,6 @@
 package org.aas.ga.factory;
 
-import org.aas.ga.genes.GeneticMaterialOptions;
+import org.aas.ga.genes.AlleleOptions;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,9 +17,9 @@ public abstract class AbstractGeneticFactory<T> implements Factory<T> {
     protected Class<? extends Collection> phenotypeCollectionDataStructure;
     protected Random seed;
     protected int length;
-    protected GeneticMaterialOptions options;
+    protected AlleleOptions options;
     public AbstractGeneticFactory(){}
-    public AbstractGeneticFactory(Class<T> clazz,Class<? extends Collection>phenotypeDataStructure,Class<? extends Collection>phenotypeCollectionDataStructure,GeneticMaterialOptions options,Random seed,int length)
+    public AbstractGeneticFactory(Class<T> clazz, Class<? extends Collection>phenotypeDataStructure, Class<? extends Collection>phenotypeCollectionDataStructure, AlleleOptions options, Random seed, int length)
     {
         this.clazz = clazz;
         this.options = options;
@@ -28,7 +28,7 @@ public abstract class AbstractGeneticFactory<T> implements Factory<T> {
         this.phenotypeCollectionDataStructure = phenotypeCollectionDataStructure;
         this.seed = seed;
     }
-     public abstract T create();
+    public abstract T create();
 
     public Collection<T> create(int size)
     {

@@ -6,8 +6,6 @@
 package org.aas.ga.genes;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Set;
 
 /**
  *
@@ -19,7 +17,7 @@ public interface Gene<T>
      int getLength();
      Collection<T> getDna();
      void setDna(Collection<T> dna);
-     void mutate(double p);
+//     void mutate(double p);
      Gene copy();
      boolean isDominant();
      void setDominant(boolean dominant);

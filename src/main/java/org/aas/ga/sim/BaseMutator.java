@@ -2,7 +2,7 @@ package org.aas.ga.sim;
 
 import org.aas.ga.chromo.Chromosome;
 import org.aas.ga.genes.Gene;
-import org.aas.ga.genes.GeneticMaterialOptions;
+import org.aas.ga.genes.AlleleOptions;
 import org.aas.ga.util.RandomUtil;
 
 import java.util.*;
@@ -10,14 +10,14 @@ import java.util.*;
 /**
  * Created by Adam on 11/16/2016.
  */
-public class BaseMutator<T extends Chromosome> implements Mutator<T>
+public class BaseMutator implements Mutator
 {
-    private double p;
-    private Random seed;
-    private GeneticMaterialOptions options;
+    double p;
+    Random seed;
+    private AlleleOptions options;
     private Class <? extends Collection>dnaDataStructure;
 
-    public BaseMutator(double p,GeneticMaterialOptions options,Class<? extends Collection> geneDataStructure,Random seed)
+    public BaseMutator(double p, AlleleOptions options, Class<? extends Collection> geneDataStructure, Random seed)
     {
         this.p= p;
         this.seed = seed;
@@ -25,7 +25,7 @@ public class BaseMutator<T extends Chromosome> implements Mutator<T>
         this.dnaDataStructure = geneDataStructure;
     }
 
-    public BaseMutator(double p,GeneticMaterialOptions options,Class<? extends Collection> geneDataStructure)
+    public BaseMutator(double p, AlleleOptions options, Class<? extends Collection> geneDataStructure)
     {
         this(p, options,geneDataStructure,new Random());
     }
@@ -36,7 +36,7 @@ public class BaseMutator<T extends Chromosome> implements Mutator<T>
         if(Simulation.seed != null)
             rand = Simulation.seed;
 
-        Collection newDna = null;
+        Collection<Object> newDna = null;
         try
         {
             newDna = dnaDataStructure.newInstance();
@@ -45,11 +45,12 @@ public class BaseMutator<T extends Chromosome> implements Mutator<T>
         {
             e.printStackTrace();
         }
+        assert newDna != null;
         for(Object strand : gene.getDna())
         {
             if(rand.nextDouble() < p && !gene.isDominant())
             {
-                newDna.add(RandomUtil.getRandomGeneticMaterial(Simulation.options,Simulation.seed));
+                newDna.add(RandomUtil.getRandomGeneticMaterial(options,seed));
             }
             else
             {
@@ -65,18 +66,25 @@ public class BaseMutator<T extends Chromosome> implements Mutator<T>
     }
 
     @Override
-    public void mutate(T chromosome)
+    public void mutate(Chromosome chromosome)
     {
-        Iterator<Gene> itr = chromosome.iterator();
+
+        Iterator itr = chromosome.iterator();
         while(itr.hasNext())
-            mutateGene(itr.next());
+        {
+            Gene gene = (Gene) itr.next();
+            mutateGene(gene);
+        }
     }
 
     @Override
-    public void refresh(T chromosome, double p)
+    public void refresh(Chromosome chromosome, double p)
     {
-        Iterator<Gene> itr = chromosome.iterator();
+        Iterator itr = chromosome.iterator();
         while(itr.hasNext())
-            mutateGene(itr.next(),p);
+        {
+            Gene gene = (Gene) itr.next();
+            mutateGene(gene,p);
+        }
     }
 }

@@ -5,9 +5,6 @@
  */
 package org.aas.ga.genes;
 
-import org.aas.ga.sim.Simulation;
-import org.aas.ga.util.RandomUtil;
-
 
 import java.util.*;
 
@@ -68,28 +65,6 @@ public class BaseGene<T> implements Gene<T>
         return hashCode() == other.hashCode();
     }
 
-
-    @Override
-    public void mutate(double p)
-    {
-        Random rand = new Random();
-        if(Simulation.seed != null)
-            rand = Simulation.seed;
-
-        List<T> new_dna = new ArrayList();
-        for(T strand : dna)
-        {
-            if(rand.nextDouble() < p && !this.dominant)
-            {
-                new_dna.add((T) RandomUtil.getRandomGeneticMaterial(Simulation.options,Simulation.seed));
-            }
-            else
-            {
-                new_dna.add(strand);
-            }
-        }
-        this.dna = new_dna;
-    }
 
     @Override
     public Gene copy()

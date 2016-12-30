@@ -33,26 +33,25 @@ public abstract class AbstractGeneticAlgorithm<T extends Chromosome> implements 
     private boolean printGenerationInfo;
     private T overall_fittest;
 
-    private Mutator<T> mutator;
-    private Mutator<T> refresher;
+    private Mutator mutator;
 
     public AbstractGeneticAlgorithm(){
         this(null,null);
     }
 
-    public AbstractGeneticAlgorithm(List<T> pop,BaseMutator<T> mutator){
+    public AbstractGeneticAlgorithm(List<T> pop,BaseMutator mutator){
         this(pop,mutator,.5,.5);
 
     }
-    public AbstractGeneticAlgorithm(List<T>pop, BaseMutator<T> mutator, double absW, double relW){
+    public AbstractGeneticAlgorithm(List<T>pop, BaseMutator mutator, double absW, double relW){
         this(pop,absW,relW,mutator,.5,50000);
     }
 
-    public AbstractGeneticAlgorithm(List<T>pop, double absW, double relW, Mutator<T> mutator, double pCrossover, int gen){
+    public AbstractGeneticAlgorithm(List<T>pop, double absW, double relW, Mutator mutator, double pCrossover, int gen){
         this(pop,absW,relW, mutator, pCrossover,gen,false,false,2500,1000);
     }
 
-    public AbstractGeneticAlgorithm(List<T> pop, double absW, double relW, Mutator<T> mutator, double pCrossover, int gen, boolean elitist, boolean inverseFitRanking, int quit_after, int refresh_after){
+    public AbstractGeneticAlgorithm(List<T> pop, double absW, double relW, Mutator mutator, double pCrossover, int gen, boolean elitist, boolean inverseFitRanking, int quit_after, int refresh_after){
         if (relW + absW != 1) throw new AssertionError("Absolute and relative weighting Factors must add to 1");
         this.population = pop;
         this.origPopSize = pop != null ? pop.size() : 0;
@@ -400,11 +399,11 @@ public abstract class AbstractGeneticAlgorithm<T extends Chromosome> implements 
     public void setTransformer(Transformer transformer) {
         this.transformer = transformer;
     }
-    public Mutator<T> getMutator() {
+    public Mutator getMutator() {
         return mutator;
     }
     @Override
-    public void setMutator(Mutator<T> mutator) {
+    public void setMutator(Mutator mutator) {
         this.mutator = mutator;
     }
     public boolean isInverseFitnessRanking() {

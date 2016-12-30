@@ -7,7 +7,7 @@ import org.aas.ga.factory.ChromosomeFactory;
 import org.aas.ga.factory.GeneFactory;
 import org.aas.ga.genes.BaseGene;
 import org.aas.ga.genes.Gene;
-import org.aas.ga.genes.GeneticMaterialOptions;
+import org.aas.ga.genes.AlleleOptions;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,7 +18,7 @@ import java.util.Random;
  * Created by Adam on 8/28/2016.
  */
 public class Simulation implements Runnable{
-    public static GeneticMaterialOptions options;
+    public static AlleleOptions options;
     public static Random seed;
     private static final int DEFAULT_GENE_SIZE = 1;
     private static final int DEFAULT_CHROMO_SIZE =10;
@@ -42,15 +42,15 @@ public class Simulation implements Runnable{
     private Class<? extends Collection> geneDataStructure;
     private Class<? extends Collection> chromosomeDataStructure;
     private ChromosomeFactory<? extends Chromosome> chromoFactory;
-    private BaseMutator<? extends Chromosome> mutator;
+    private BaseMutator mutator;
     public Simulation(){}
 
-    public Simulation(GeneticMaterialOptions options,GeneticAlgorithm algo)
+    public Simulation(AlleleOptions options, GeneticAlgorithm algo)
     {
         this(options,new Random().nextLong(),algo);
     }
 
-    public Simulation (GeneticMaterialOptions options, Long seed, GeneticAlgorithm algorithm)
+    public Simulation (AlleleOptions options, Long seed, GeneticAlgorithm algorithm)
     {
         this.options = options;
         this.seed = new Random(seed);
@@ -66,11 +66,11 @@ public class Simulation implements Runnable{
         this.chromosomeDataStructure = DEFAULT_STORAGE_TYPE;
     }
 
-    private void  build()
+    private void build()
     {
         GeneFactory<? extends Gene> geneFactory = new GeneFactory<Gene>(gene,dnaDataStructure,geneDataStructure,options,seed,geneLength);
         chromoFactory = new ChromosomeFactory<Chromosome>(chromosome,geneDataStructure,chromosomeDataStructure,options,geneFactory,seed,chromoLength);
-        mutator = new BaseMutator<>(pMutate,options,geneDataStructure,seed);
+        mutator = new SetMutator(pMutate,options,geneDataStructure,seed);
     }
 
     public void init()
@@ -150,11 +150,11 @@ public class Simulation implements Runnable{
         this.geneLength = geneLength;
     }
 
-    public static GeneticMaterialOptions getOptions() {
+    public static AlleleOptions getOptions() {
         return options;
     }
 
-    public static void setOptions(GeneticMaterialOptions options) {
+    public static void setOptions(AlleleOptions options) {
         Simulation.options = options;
     }
 
@@ -174,11 +174,11 @@ public class Simulation implements Runnable{
         this.chromoFactory = chromoFactory;
     }
 
-    public BaseMutator<? extends Chromosome> getMutator() {
+    public BaseMutator getMutator() {
         return mutator;
     }
 
-    public void setMutator(BaseMutator<? extends Chromosome> mutator) {
+    public void setMutator(BaseMutator mutator) {
         this.mutator = mutator;
     }
     public int getChromoLength() {
@@ -201,7 +201,8 @@ public class Simulation implements Runnable{
         return geneDataStructure;
     }
 
-    public void setGeneDataStructure(Class<? extends Collection> geneDataStructure) {
+    public void setGeneDataStructure(Class<? extends Collection> geneDataStructure)
+    {
         this.geneDataStructure = geneDataStructure;
     }
     public Class<? extends Chromosome> getChromosome() {

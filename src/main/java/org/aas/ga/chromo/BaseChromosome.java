@@ -42,6 +42,7 @@ public class BaseChromosome<T extends Collection<Gene>>  implements Chromosome<T
             return null;
         }
     }
+
     @Override
     public boolean equals(Object o)
     {
@@ -126,7 +127,8 @@ public class BaseChromosome<T extends Collection<Gene>>  implements Chromosome<T
     }
 
     @Override
-    public String toString(){
+    public String toString()
+    {
         Iterator<Gene> itr = iterator();
         StringBuilder sb = new StringBuilder();
         while(itr.hasNext()){
