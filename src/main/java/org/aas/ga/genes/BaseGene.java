@@ -21,7 +21,6 @@ public class BaseGene<T> implements Gene<T>
     private Collection<T> dna ;
     private boolean dominant;
     private int length;
-
     public BaseGene(){}
 
     

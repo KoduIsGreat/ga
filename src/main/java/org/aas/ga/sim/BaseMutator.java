@@ -12,11 +12,13 @@ import java.util.*;
  */
 public class BaseMutator implements Mutator
 {
-    double p;
-    Random seed;
+
+    private double p;
+    private Random seed;
     private AlleleOptions options;
     private Class <? extends Collection>dnaDataStructure;
 
+    public BaseMutator(){}
     public BaseMutator(double p, AlleleOptions options, Class<? extends Collection> geneDataStructure, Random seed)
     {
         this.p= p;
@@ -86,5 +88,37 @@ public class BaseMutator implements Mutator
             Gene gene = (Gene) itr.next();
             mutateGene(gene,p);
         }
+    }
+    @Override
+    public double getP() {
+        return p;
+    }
+    @Override
+    public void setP(double p) {
+        this.p = p;
+    }
+    @Override
+    public Random getSeed() {
+        return seed;
+    }
+    @Override
+    public void setSeed(Random seed) {
+        this.seed = seed;
+    }
+    @Override
+    public AlleleOptions getOptions() {
+        return options;
+    }
+    @Override
+    public void setOptions(AlleleOptions options) {
+        this.options = options;
+    }
+    @Override
+    public Class<? extends Collection> getDnaDataStructure() {
+        return dnaDataStructure;
+    }
+    @Override
+    public void setDnaDataStructure(Class<? extends Collection> dnaDataStructure) {
+        this.dnaDataStructure = dnaDataStructure;
     }
 }

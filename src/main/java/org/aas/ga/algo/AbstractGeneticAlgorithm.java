@@ -65,7 +65,7 @@ public abstract class AbstractGeneticAlgorithm<T extends Chromosome> implements 
         this.refreshAfter = refresh_after;
         this.inverseFitnessRanking = inverseFitRanking;
         printGenerationInfo =false;
-        maxNumRefreshes=8;
+        maxNumRefreshes=100;
         if(inverseFitnessRanking)
         {
             this.minRunFit = Double.MIN_VALUE;
@@ -102,7 +102,7 @@ public abstract class AbstractGeneticAlgorithm<T extends Chromosome> implements 
     public List<T> compete()
     {
         Random rand = new Random();
-        List<T> survivors = new ArrayList();
+        List<T> survivors = new ArrayList<>();
         if(doElitism)
         {
             T elite = getFittest();
@@ -142,7 +142,7 @@ public abstract class AbstractGeneticAlgorithm<T extends Chromosome> implements 
     @Override
     public void calculateFitness()
     {
-        population.stream().forEach(this::evaluateFitness);
+        population.forEach(this::evaluateFitness);
     }
 
     @Override
@@ -252,7 +252,7 @@ public abstract class AbstractGeneticAlgorithm<T extends Chromosome> implements 
         System.out.println("Run took : "+seconds+" seconds");
     }
 
-    public Map<T,Double> computeFitnessCDF(List<T> survivors)
+    private Map<T,Double> computeFitnessCDF(List<T> survivors)
     {
 
         Double min = getWeakest().getFitness();
@@ -280,7 +280,7 @@ public abstract class AbstractGeneticAlgorithm<T extends Chromosome> implements 
         }
     }
 
-    public  T weightedChoice(Map<T,Double> survivorCdfMap)
+    private  T weightedChoice(Map<T,Double> survivorCdfMap)
     {
         Random rand = new Random();
         for(T chromo : survivorCdfMap.keySet()){
@@ -291,7 +291,7 @@ public abstract class AbstractGeneticAlgorithm<T extends Chromosome> implements 
         return choice(survivorCdfMap.keySet(),rand);
     }
 
-    public T choice(Collection<? extends T> coll, Random rand) {
+    private T choice(Collection<? extends T> coll, Random rand) {
 
         if (coll.isEmpty())
             return null;
@@ -384,14 +384,15 @@ public abstract class AbstractGeneticAlgorithm<T extends Chromosome> implements 
     public void setRefreshAfter(Integer refreshAfter) {
         this.refreshAfter = refreshAfter;
     }
-
-    public Chromosome getOverall_fittest() {
+    @Override
+    public T getOverall_fittest() {
         return overall_fittest;
     }
-
+    @Override
     public Map<Integer, T> getOverallFitnessMap() {
         return overallFitnessMap;
     }
+
     public Transformer getTransformer() {
         return transformer;
     }
