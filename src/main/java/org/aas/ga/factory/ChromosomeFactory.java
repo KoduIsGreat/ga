@@ -31,20 +31,10 @@ public class ChromosomeFactory<C extends Chromosome> extends AbstractGeneticFact
     }
 
     @Override
-    public C create()
+    public C create() throws InstantiationException,IllegalAccessException
     {
-        C chromo = null;
-        Collection<Gene> genes = null;
-
-        try
-        {
-            chromo = clazz.newInstance();
-            genes = (Collection<Gene>) phenotypeDataStructure.newInstance();
-        }
-        catch (InstantiationException | IllegalAccessException e)
-        {
-            e.printStackTrace();
-        }
+        C chromo = clazz.newInstance();
+        Collection<Gene> genes = (Collection<Gene>) phenotypeDataStructure.newInstance();
         genes.addAll(geneFactory.create(length));
         chromo.setGenes(genes);
         return chromo;

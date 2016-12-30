@@ -1,6 +1,8 @@
 package org.aas.ga.factory;
 
 import org.aas.ga.genes.AlleleOptions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,17 +11,20 @@ import java.util.Random;
 /**
  * Created by Adam on 11/17/2016.
  */
-public abstract class AbstractGeneticFactory<T> implements Factory<T> {
-    protected static final int DEFAULT_SIZE = 1;
-    protected static final Class<? extends Collection> DEFAULT_STORAGE_TYPE = ArrayList.class;
-    protected Class<T> clazz;
-    protected Class<? extends Collection> phenotypeDataStructure;
-    protected Class<? extends Collection> phenotypeCollectionDataStructure;
-    protected Random seed;
-    protected int length;
+abstract class AbstractGeneticFactory<T> implements Factory<T>
+{
+
+    Logger LOG = LoggerFactory.getLogger(AbstractGeneticFactory.class);
+    static final int DEFAULT_SIZE = 1;
+    static final Class<? extends Collection> DEFAULT_STORAGE_TYPE = ArrayList.class;
+    Class<T> clazz;
+    Class<? extends Collection> phenotypeDataStructure;
+    Class<? extends Collection> phenotypeCollectionDataStructure;
+    Random seed;
+    int length;
     protected AlleleOptions options;
-    public AbstractGeneticFactory(){}
-    public AbstractGeneticFactory(Class<T> clazz, Class<? extends Collection>phenotypeDataStructure, Class<? extends Collection>phenotypeCollectionDataStructure, AlleleOptions options, Random seed, int length)
+    AbstractGeneticFactory(){}
+    AbstractGeneticFactory(Class<T> clazz, Class<? extends Collection>phenotypeDataStructure, Class<? extends Collection>phenotypeCollectionDataStructure, AlleleOptions options, Random seed, int length)
     {
         this.clazz = clazz;
         this.options = options;
@@ -28,7 +33,7 @@ public abstract class AbstractGeneticFactory<T> implements Factory<T> {
         this.phenotypeCollectionDataStructure = phenotypeCollectionDataStructure;
         this.seed = seed;
     }
-    public abstract T create();
+    public abstract T create()throws InstantiationException,IllegalAccessException;
 
     public Collection<T> create(int size)
     {
@@ -41,7 +46,7 @@ public abstract class AbstractGeneticFactory<T> implements Factory<T> {
         }
         catch (InstantiationException |IllegalAccessException e)
         {
-            e.printStackTrace();
+            LOG.error(e.getMessage());
             return null;
         }
     }

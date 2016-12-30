@@ -1,5 +1,6 @@
 package org.aas.ga.factory;
 
+import org.aas.ga.genes.BaseGene;
 import org.aas.ga.genes.Gene;
 import org.aas.ga.genes.AlleleOptions;
 import org.aas.ga.util.RandomUtil;
@@ -29,24 +30,16 @@ public class GeneFactory<G extends Gene> extends AbstractGeneticFactory<G> {
 
 
     @Override
-    public G create(){
-        try
-        {
-            G newGene = clazz.newInstance();
-            newGene.setLength(length);
+    public G create() throws IllegalAccessException, InstantiationException
+    {
+        G newGene = clazz.newInstance();
+        newGene.setLength(length);
+        Collection dna = phenotypeDataStructure.newInstance();
+        while(dna.size() < DEFAULT_SIZE)
+            dna.add(RandomUtil.getRandomGeneticMaterial(options,seed));
 
-            Collection dna = phenotypeDataStructure.newInstance();
-            while(dna.size() < DEFAULT_SIZE)
-                dna.add(RandomUtil.getRandomGeneticMaterial(options,seed));
-
-            newGene.setDna(dna);
-            return newGene;
-        }
-        catch (InstantiationException  | IllegalAccessException  e)
-        {
-            e.printStackTrace();
-            return null;
-        }
+        newGene.setDna(dna);
+        return newGene;
     }
 
 }
