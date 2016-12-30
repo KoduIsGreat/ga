@@ -42,10 +42,9 @@ public class AsciiMatcherGA extends AbstractGeneticAlgorithm {
 
     private int HammingDistance(byte a, byte b)
     {
-        int dist = 1;
         if (a == b)
-            dist--;
-        return dist;
+            return 0;
+        return 1;
     }
 
     @Override
