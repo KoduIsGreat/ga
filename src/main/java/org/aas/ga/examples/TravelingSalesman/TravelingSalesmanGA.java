@@ -13,9 +13,9 @@ import java.util.*;
 /**
  * Created by Adam on 6/28/2016.
  */
-public class TravelingSalesmanGA<T extends BaseChromosome> extends AbstractGeneticAlgorithm<T> {
+public class TravelingSalesmanGA extends AbstractGeneticAlgorithm {
     public TravelingSalesmanGA(){}
-    public TravelingSalesmanGA(List<T> pop, BaseMutator mutator){
+    public TravelingSalesmanGA(List<Chromosome> pop, BaseMutator mutator){
         super(pop,mutator);
     }
     private Double calculateDistance(double x1, double x2, double y1, double y2)

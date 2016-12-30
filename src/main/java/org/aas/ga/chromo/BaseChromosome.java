@@ -33,8 +33,7 @@ public class BaseChromosome<T extends Collection<Gene>>  implements Chromosome<T
     {
         try
         {
-            Collection<Gene> dataStructure = geneDataStructure.newInstance();
-            return dataStructure;
+            return (Collection<Gene>) geneDataStructure.newInstance();
         }
         catch (InstantiationException | IllegalAccessException e)
         {

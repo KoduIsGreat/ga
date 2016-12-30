@@ -39,7 +39,7 @@ public class Simulation implements Runnable{
     private Class<? extends Collection> geneDataStructure;
     private Class<? extends Collection> chromosomeDataStructure;
     private ChromosomeFactory<? extends Chromosome> chromoFactory;
-    private Mutator mutator;
+    private Mutator mutator = new BaseMutator();
     public Simulation(){}
 
     public Simulation(AlleleOptions options, GeneticAlgorithm algo)

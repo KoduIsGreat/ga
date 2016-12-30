@@ -9,17 +9,17 @@ import java.util.Map;
 /**
  * Created by Adam on 6/12/2016.
  */
-public interface GeneticAlgorithm<T extends Chromosome> extends Runnable
+public interface GeneticAlgorithm extends Runnable
 {
 
-     T getWeakest();
-     T getFittest();
-     List<T> compete();
-     List<T> reproduce(List<T> survivors, double pCrossover, int targetSize);
-     List<T> reproduce(List<T> survivors, double pCrossover);
-     List<T> getPopulation();
-     void setPopulation(List<T> population);
-     void sort(List<T> chromosomes);
+     Chromosome getWeakest();
+     Chromosome getFittest();
+     List<Chromosome> compete();
+     List<Chromosome> reproduce(List<Chromosome> survivors, double pCrossover, int targetSize);
+     List<Chromosome> reproduce(List<Chromosome> survivors, double pCrossover);
+     List<Chromosome> getPopulation();
+     void setPopulation(List<Chromosome> population);
+     void sort(List<Chromosome> chromosomes);
      void calculateFitness();
      void evaluateFitness(Chromosome chromo);
      void mutate();
@@ -30,8 +30,8 @@ public interface GeneticAlgorithm<T extends Chromosome> extends Runnable
      void setInverseFitnessRanking(boolean inverseFitnessRanking);
      boolean isInverseFitnessRanking();
      boolean shouldTerminate();
-     Map<Integer, T> getOverallFitnessMap();
-     T getOverall_fittest();
+     Map<Integer, Chromosome> getOverallFitnessMap();
+     Chromosome getOverall_fittest();
 
 
 }

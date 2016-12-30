@@ -11,11 +11,11 @@ import java.util.List;
 /**
  * Created by Adam on 6/16/2016.
  */
-public class AsciiMatcherGA<T extends BaseChromosome> extends AbstractGeneticAlgorithm<T> {
+public class AsciiMatcherGA extends AbstractGeneticAlgorithm {
 
     private final String target;
 
-    public AsciiMatcherGA(List<T> pop, double absW, double relW, Mutator mutator, double p_crossover, int gen, boolean elitist, boolean inverseFitRanking, int quit_after, int refresh_after, String target) {
+    public AsciiMatcherGA(List<Chromosome> pop, double absW, double relW, Mutator mutator, double p_crossover, int gen, boolean elitist, boolean inverseFitRanking, int quit_after, int refresh_after, String target) {
         super(pop, absW, relW, mutator, p_crossover, gen, elitist,inverseFitRanking, quit_after, refresh_after);
         this.target = target;
     }
