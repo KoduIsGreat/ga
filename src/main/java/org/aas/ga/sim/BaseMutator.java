@@ -4,6 +4,8 @@ import org.aas.ga.chromo.Chromosome;
 import org.aas.ga.genes.Gene;
 import org.aas.ga.genes.AlleleOptions;
 import org.aas.ga.util.RandomUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -12,7 +14,7 @@ import java.util.*;
  */
 public class BaseMutator implements Mutator
 {
-
+    Logger LOG = LoggerFactory.getLogger(BaseMutator.class);
     private double p;
     private Random seed;
     private AlleleOptions options;
@@ -45,7 +47,7 @@ public class BaseMutator implements Mutator
         }
         catch (InstantiationException | IllegalAccessException e)
         {
-            e.printStackTrace();
+            LOG.error(e.getMessage());
         }
         assert newDna != null;
         for(Object strand : gene.getDna())

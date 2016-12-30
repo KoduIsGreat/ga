@@ -3,11 +3,14 @@ package org.aas.ga.sim;
 import org.aas.ga.algo.GeneticAlgorithm;
 import org.aas.ga.chromo.BaseChromosome;
 import org.aas.ga.chromo.Chromosome;
+import org.aas.ga.err.WeightsException;
 import org.aas.ga.factory.ChromosomeFactory;
 import org.aas.ga.factory.GeneFactory;
 import org.aas.ga.genes.BaseGene;
 import org.aas.ga.genes.Gene;
 import org.aas.ga.genes.AlleleOptions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -15,6 +18,8 @@ import java.util.*;
  * Created by Adam on 8/28/2016.
  */
 public class Simulation implements Runnable{
+
+    Logger LOG = LoggerFactory.getLogger(Simulation.class);
     public static AlleleOptions options;
     public static Random seed;
     public static final int DEFAULT_GENE_SIZE = 1;
@@ -223,7 +228,14 @@ public class Simulation implements Runnable{
     public void run()
     {
         this.setRunning(true);
-        algorithm.run();
+        try
+        {
+            algorithm.run();
+        }
+        catch (WeightsException e)
+        {
+            LOG.error(e.getMessage());
+        }
         this.setRunning(false);
     }
 }

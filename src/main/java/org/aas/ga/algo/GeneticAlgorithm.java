@@ -1,6 +1,7 @@
 package org.aas.ga.algo;
 
 import org.aas.ga.chromo.Chromosome;
+import org.aas.ga.err.WeightsException;
 import org.aas.ga.sim.Mutator;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.Map;
 /**
  * Created by Adam on 6/12/2016.
  */
-public interface GeneticAlgorithm extends Runnable
+public interface GeneticAlgorithm
 {
 
      Chromosome getWeakest();
@@ -32,6 +33,6 @@ public interface GeneticAlgorithm extends Runnable
      boolean shouldTerminate();
      Map<Integer, Chromosome> getOverallFitnessMap();
      Chromosome getOverall_fittest();
-
+     void run() throws WeightsException;
 
 }

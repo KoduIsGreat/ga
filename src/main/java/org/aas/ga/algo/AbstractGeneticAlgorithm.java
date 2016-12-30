@@ -1,9 +1,12 @@
 package org.aas.ga.algo;
 
 import org.aas.ga.chromo.Chromosome;
+import org.aas.ga.err.WeightsException;
 import org.aas.ga.sim.BaseMutator;
 import org.aas.ga.sim.Mutator;
 import org.aas.ga.trans.Transformer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -12,6 +15,7 @@ import java.util.*;
  */
 public abstract class AbstractGeneticAlgorithm implements GeneticAlgorithm {
 
+    Logger LOG = LoggerFactory.getLogger(AbstractGeneticAlgorithm.class);
     private final double REFRESH_RATE = 1;
     private final int NO_TARGET_SIZE_DEFINED =-1;
     private final Map<Integer,Chromosome> overallFitnessMap = new LinkedHashMap<>();
@@ -35,11 +39,11 @@ public abstract class AbstractGeneticAlgorithm implements GeneticAlgorithm {
 
     private Mutator mutator;
 
-    public AbstractGeneticAlgorithm(){
+    public AbstractGeneticAlgorithm() {
         this(null,null);
     }
 
-    public AbstractGeneticAlgorithm(List<Chromosome> pop,BaseMutator mutator){
+    public AbstractGeneticAlgorithm(List<Chromosome> pop,BaseMutator mutator) {
         this(pop,mutator,.5,.5);
 
     }
@@ -47,12 +51,12 @@ public abstract class AbstractGeneticAlgorithm implements GeneticAlgorithm {
         this(pop,absW,relW,mutator,.5,50000);
     }
 
-    public AbstractGeneticAlgorithm(List<Chromosome>pop, double absW, double relW, Mutator mutator, double pCrossover, int gen){
+    public AbstractGeneticAlgorithm(List<Chromosome>pop, double absW, double relW, Mutator mutator, double pCrossover, int gen) {
         this(pop,absW,relW, mutator, pCrossover,gen,false,false,2500,1000);
     }
 
-    public AbstractGeneticAlgorithm(List<Chromosome> pop, double absW, double relW, Mutator mutator, double pCrossover, int gen, boolean elitist, boolean inverseFitRanking, int quit_after, int refresh_after){
-        if (relW + absW != 1) throw new AssertionError("Absolute and relative weighting Factors must add to 1");
+    public AbstractGeneticAlgorithm(List<Chromosome> pop, double absW, double relW, Mutator mutator, double pCrossover, int gen, boolean elitist, boolean inverseFitRanking, int quit_after, int refresh_after) {
+
         this.population = pop;
         this.origPopSize = pop != null ? pop.size() : 0;
         this.absFitWeight = absW;
@@ -122,7 +126,7 @@ public abstract class AbstractGeneticAlgorithm implements GeneticAlgorithm {
         double relativeFitnessRange = Math.abs(maxFit - minFit);
 
 
-        for(Chromosome c : population)
+        for(Chromosome c : population)//n
         {
             double fitness = c.getFitness();
             double p_abs = (overallFitnessRange != 0) ? ((Math.abs(fitness - this.minRunFit))/overallFitnessRange) : 1;
@@ -156,7 +160,7 @@ public abstract class AbstractGeneticAlgorithm implements GeneticAlgorithm {
         int numSurvivors = survivors.size();
         List<Chromosome> offspring = new ArrayList<>();
         Map<Chromosome,Double> survivorCDF = computeFitnessCDF(survivors);
-        while(survivors.size()+offspring.size() < targetSize)
+        while(survivors.size()+offspring.size() < targetSize)//n'
         {
             Chromosome c1 = weightedChoice(survivorCDF).copy();
             if(rand.nextDouble()<pCrossover)
@@ -196,8 +200,11 @@ public abstract class AbstractGeneticAlgorithm implements GeneticAlgorithm {
     }
 
     @Override
-    public void run()
+    public void run() throws WeightsException
     {
+        if (this.relFitWeight + this.absFitWeight != 1)
+            throw new WeightsException("Relative Weight : "+relFitWeight+" Absolute Weight "+absFitWeight +" They must equal 1");
+
         calculateFitness();
         overall_fittest = null;
         long start = System.currentTimeMillis();
@@ -220,7 +227,7 @@ public abstract class AbstractGeneticAlgorithm implements GeneticAlgorithm {
                     (generationFittest.getFitness()<overall_fittest.getFitness() && this.inverseFitnessRanking))
             {
                 overall_fittest = generationFittest.copy();
-                System.out.println("New overall fittest found on gen "+gen +": "+overall_fittest + " Fitness: "+overall_fittest.getFitness());
+                LOG.info("New overall fittest found on gen "+gen +": "+overall_fittest + " Fitness: "+overall_fittest.getFitness());
                 overallFitnessMap.put(gen,generationFittest);
                 generationsSinceUpset = 0;
                 refreshCount = 0;
@@ -228,17 +235,17 @@ public abstract class AbstractGeneticAlgorithm implements GeneticAlgorithm {
             else
             {
                 if(printGenerationInfo)
-                    System.out.println("Generation "+gen+" Fittest: "+generationFittest + " Fitness : "+ generationFittest.getFitness());
+                    LOG.info("Generation "+gen+" Fittest: "+generationFittest + " Fitness : "+ generationFittest.getFitness());
                 generationsSinceUpset++;
             }
             if(quitAfterGen != null && generationsSinceUpset > quitAfterGen){
-                System.out.println("Quitting on gen "+gen + " "+generationsSinceUpset+" number of generations since disturbance");
+                LOG.info("Quitting on gen "+gen + " "+generationsSinceUpset+" number of generations since disturbance");
                 break;
             }
 
             if(refreshAfter != null && generationsSinceUpset> refreshAfter)
             {
-                System.out.println("Refreshing on gen "+gen);
+                LOG.info("Refreshing on gen "+gen);
                 refresh();
                 refreshCount++;
                 generationsSinceUpset = 0;
@@ -249,7 +256,7 @@ public abstract class AbstractGeneticAlgorithm implements GeneticAlgorithm {
         }
         long end = System.currentTimeMillis();
         double seconds = (double) (end - start)*0.001;
-        System.out.println("Run took : "+seconds+" seconds");
+        LOG.info("Run took : "+seconds+" seconds");
     }
 
     private Map<Chromosome,Double> computeFitnessCDF(List<Chromosome> survivors)
@@ -262,7 +269,7 @@ public abstract class AbstractGeneticAlgorithm implements GeneticAlgorithm {
         {
             Map<Chromosome,Double> defaultCdf = new LinkedHashMap<>();
             Random rand = new Random();
-            for(Chromosome chromo : survivors)
+            for(Chromosome chromo : survivors)//n'
             {
                 defaultCdf.put(chromo,rand.nextDouble());
             }
@@ -283,7 +290,8 @@ public abstract class AbstractGeneticAlgorithm implements GeneticAlgorithm {
     private  Chromosome weightedChoice(Map<Chromosome,Double> survivorCdfMap)
     {
         Random rand = new Random();
-        for(Chromosome chromo : survivorCdfMap.keySet()){
+        for(Chromosome chromo : survivorCdfMap.keySet())
+        {//n'
             if(rand.nextDouble() < survivorCdfMap.get(chromo))
                 return chromo;
         }
@@ -298,7 +306,7 @@ public abstract class AbstractGeneticAlgorithm implements GeneticAlgorithm {
 
         int index = rand.nextInt(coll.size());
         if (coll instanceof List)
-            return ((List<? extends Chromosome>) coll).get(index);
+            return ((List<? extends Chromosome>) coll).get(index);//
         else
         {
             Iterator<? extends Chromosome> iter = coll.iterator();
