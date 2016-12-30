@@ -2,6 +2,8 @@ package org.aas.ga.chromo;
 
 import org.aas.ga.genes.Gene;
 import org.aas.ga.util.RandomUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -13,6 +15,7 @@ import static org.aas.ga.sim.Simulation.seed;
  */
 public class BaseChromosome<T extends Collection<Gene>>  implements Chromosome<T> {
 
+    Logger LOG = LoggerFactory.getLogger(BaseChromosome.class);
     private T genes;
     private Double fitness;
     private Class<? extends Collection>  geneDataStructure;
@@ -37,7 +40,7 @@ public class BaseChromosome<T extends Collection<Gene>>  implements Chromosome<T
         }
         catch (InstantiationException | IllegalAccessException e)
         {
-            e.printStackTrace();
+            LOG.error(e.getMessage());
             return null;
         }
     }
