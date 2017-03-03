@@ -5,7 +5,9 @@ import java.util.Collection;
 /**
  * Created by Adam on 8/28/2016.
  */
-public interface AlleleOptions {
-    public Collection getOptions();
-    public void setOptions(Collection options);
+public interface AlleleOptions<T> {
+    public Collection<T> getOptions();
+    public void setOptions(Collection<T> options);
+    public void buildRandomOptions(int n);
+    public T pickRandom();
 }

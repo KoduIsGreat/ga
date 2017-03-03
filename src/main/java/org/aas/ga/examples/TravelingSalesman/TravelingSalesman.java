@@ -11,7 +11,7 @@ public class TravelingSalesman
 {
     public static void main(String[] args)
     {
-        Cities cities = new Cities(City.createRandomCities(20));
+        Cities cities = new Cities(20);
         Simulation sim = new Simulation(cities,199991L,new TravelingSalesmanGA());
         sim.setChromoLength(cities.getOptions().size());
         sim.setGeneDataStructure(LinkedHashSet.class);

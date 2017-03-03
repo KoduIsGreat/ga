@@ -1,19 +1,21 @@
 package org.aas.ga.examples.TravelingSalesman;
 
 
+import org.aas.ga.Allele;
+
 import java.util.*;
 
 /**
  * Created by Adam on 6/26/2016.
  */
-public class City {
+public class City implements Allele {
 
 
     int id;
     Double xCoordinate;
     Double yCoordinate;
 
-    private City(Double x, Double y)
+    protected City(Double x, Double y)
     {
 
         xCoordinate = x;

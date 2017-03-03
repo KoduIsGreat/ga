@@ -1,9 +1,6 @@
 package org.aas.ga.genes;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Adam on 8/28/2016.
@@ -25,7 +22,7 @@ public enum DefaultAlleleOptions implements AlleleOptions
     BASE10(Arrays.asList(0,1,2,3,4,5,6,7,8,9)),
     DNA(Arrays.asList("A","C","T","G"));
 
-    private Set options = new HashSet<>();
+    private LinkedHashSet options = new LinkedHashSet<>();
     DefaultAlleleOptions(){}
     DefaultAlleleOptions(Collection options){
         this.options.addAll(options);
@@ -38,5 +35,26 @@ public enum DefaultAlleleOptions implements AlleleOptions
     @Override
     public void setOptions(Collection options){
         this.options.addAll(options);
+    }
+
+    @Override
+    public void buildRandomOptions(int n) {
+        throw new UnsupportedOperationException("buildRandomOptions is not available for default Alleleoptions") ;
+    }
+
+    @Override
+    public Object pickRandom()
+    {
+        Object item;
+        Integer randm = new Random().nextInt(options.size());
+        int i = 0;
+        Iterator itr = options.iterator();
+        do
+        {
+            item = itr.next();
+            i++;
+        }
+        while(i<randm);
+        return item;
     }
 }
