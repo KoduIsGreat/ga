@@ -1,19 +1,19 @@
 # Genetic Algorithm API
 
 ## Synopsis
-This is my attempt a relatively straight-forward implementation of a genetic algorithm in Java.
-I like evolutionary algorithms, and this is mostly a learning experience for me.
+This is my attempt at a relatively straight-forward implementation of a genetic algorithm in Java.
 Its core goals are to :
  - Abstract away genetic operator complexity for simple adopotion
- - Allow extensibility of core algorithm operations to allow rapid creation of customized algorithms (i.e. easily implementing new crossover methods etc)
-
+ - Allow extensibility of core algorithm operations to allow rapid creation of customized algorithms 
 ## Code Example
 
 A simple example could be the following post on /r/dailyprogrammer 
 https://www.reddit.com/r/dailyprogrammer/comments/40rs67/20160113_challenge_249_intermediate_hello_world/
 
-To accomplish this we  subclass the AbstractGeneticAlgorithm class and override the evaluteFitness method
-
+To accomplish this we  subclass the AbstractGeneticAlgorithm class and override the evaluteFitness method.
+In our class we make use of a simple Hamming Distance function which is a common method for char comparisons
+Additionally for our specific case, we need to override the Should Terminate method, which lets the algorithm know when to stop.
+Unlike most problems genetic algorithms are use to solving this one has a known end-point (when we've found the matched string).
 ```java
 public class AsciiMatcherGA extends AbstractGeneticAlgorithm {
 
