@@ -14,7 +14,7 @@ import java.util.*;
  */
 public class BaseMutator implements Mutator
 {
-    Logger LOG = LoggerFactory.getLogger(BaseMutator.class);
+    private Logger LOG = LoggerFactory.getLogger(BaseMutator.class);
     private double p;
     private Random seed;
     private AlleleOptions options;
@@ -37,8 +37,8 @@ public class BaseMutator implements Mutator
     private void mutateGene(Gene gene, double p)
     {
         Random rand = new Random();
-        if(Simulation.seed != null)
-            rand = Simulation.seed;
+        if(seed != null)
+            rand = seed;
 
         Collection<Object> newDna = null;
         try
@@ -54,7 +54,7 @@ public class BaseMutator implements Mutator
         {
             if(rand.nextDouble() < p && !gene.isDominant())
             {
-                newDna.add(RandomUtil.getRandomGeneticMaterial(options,seed));
+                newDna.add(options.pickRandom());
             }
             else
             {

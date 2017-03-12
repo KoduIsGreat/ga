@@ -20,8 +20,8 @@ import java.util.*;
 public class Simulation implements Runnable{
 
     Logger LOG = LoggerFactory.getLogger(Simulation.class);
-    public static AlleleOptions options;
-    public static Random seed;
+    public AlleleOptions options;
+    public Random seed;
     public static final int DEFAULT_GENE_SIZE = 1;
     public static final int DEFAULT_CHROMO_SIZE =10;
     public static final int DEFAULT_POP_SIZE = 200;
@@ -161,20 +161,20 @@ public class Simulation implements Runnable{
         this.geneLength = geneLength;
     }
 
-    public static AlleleOptions getOptions() {
+    public  AlleleOptions getOptions() {
         return options;
     }
 
-    public static void setOptions(AlleleOptions options) {
-        Simulation.options = options;
+    public  void setOptions(AlleleOptions options) {
+        this.options = options;
     }
 
-    public static Random getSeed() {
-        return seed;
+    public  Random getSeed() {
+        return this.seed;
     }
 
-    public static void setSeed(Random seed) {
-        Simulation.seed = seed;
+    public  void setSeed(Random seed) {
+        this.seed = seed;
     }
 
     public ChromosomeFactory<? extends Chromosome> getChromoFactory() {

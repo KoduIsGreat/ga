@@ -15,7 +15,6 @@ public class AsciiMatching
         AsciiMatcherGA ga = new AsciiMatcherGA(input);
         Simulation sim = new Simulation(DefaultAlleleOptions.ALL_ASCII,15125L,ga);
         sim.setChromoLength(input.length());
-        sim.setMutator(new BaseMutator());
         sim.init();
         sim.run();
 

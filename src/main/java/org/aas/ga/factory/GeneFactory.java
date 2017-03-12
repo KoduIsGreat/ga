@@ -36,7 +36,7 @@ public class GeneFactory<G extends Gene> extends AbstractGeneticFactory<G> {
         newGene.setLength(length);
         Collection dna = phenotypeDataStructure.newInstance();
         while(dna.size() < DEFAULT_SIZE)
-            dna.add(RandomUtil.getRandomGeneticMaterial(options,seed));
+            dna.add(options.pickRandom());
 
         newGene.setDna(dna);
         return newGene;
