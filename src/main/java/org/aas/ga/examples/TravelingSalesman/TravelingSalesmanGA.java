@@ -29,8 +29,8 @@ public class TravelingSalesmanGA extends AbstractGeneticAlgorithm {
 
         for(int i=1; i<genes.size(); i ++)
         {
-            City c1 = (City)genes.get(i-1).getDna().iterator().next();
-            City c2 = (City)genes.get(i).getDna().iterator().next();
+            City c1 = (City)genes.get(i-1).getDna();
+            City c2 = (City)genes.get(i).getDna();
             fitness+=calculateDistance(c1.xCoordinate,c2.xCoordinate,c1.yCoordinate,c2.yCoordinate);
         }
         chromo.setFitness(fitness);

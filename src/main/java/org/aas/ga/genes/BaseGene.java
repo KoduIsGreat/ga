@@ -18,16 +18,14 @@ public class BaseGene<T> implements Gene<T>
 {
 
 
-    private Collection<T> dna ;
+    private T dna ;
     private boolean dominant;
-    private int length;
     public BaseGene(){}
 
     
-    public BaseGene(Collection<T> dna, int length, boolean dominant)
+    public BaseGene(T dna, boolean dominant)
     {
         this.dna =dna;
-        this.length = length;
         this.dominant = dominant;
     }
     
@@ -44,8 +42,7 @@ public class BaseGene<T> implements Gene<T>
     public String toString()
     {
         StringBuilder sb = new StringBuilder();
-        for (T data : dna)
-            sb.append(data.toString());
+            sb.append(dna.toString());
         return sb.toString();
     }
     
@@ -68,29 +65,19 @@ public class BaseGene<T> implements Gene<T>
     @Override
     public Gene copy()
     {
-        return new BaseGene(this.dna,this.length,this.dominant) ;
+        return new BaseGene(this.dna,this.dominant) ;
     }
     @Override
-    public Collection<T> getDna()
+    public T getDna()
     {
         return this.dna;
     }
 
     @Override
-    public void setDna(Collection dna){
+    public void setDna(T dna){
         this.dna = dna;
     }
 
-    @Override
-    public int getLength()
-    {
-        return length;
-    }
-    @Override
-    public void setLength(int length)
-    {
-        this.length = length;
-    }
     @Override
     public boolean isDominant() {
         return dominant;

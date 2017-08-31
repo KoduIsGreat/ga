@@ -13,13 +13,10 @@ import java.util.Collection;
  */
 public interface Gene<T>
 {
-     void setLength(int len);
-     int getLength();
-     Collection<T> getDna();
-     void setDna(Collection<T> dna);
+     T getDna();
+     void setDna(T dna);
      Gene copy();
      boolean isDominant();
      void setDominant(boolean dominant);
-
 
 }

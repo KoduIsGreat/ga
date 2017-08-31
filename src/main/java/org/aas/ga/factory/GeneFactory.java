@@ -33,12 +33,8 @@ public class GeneFactory<G extends Gene> extends AbstractGeneticFactory<G> {
     public G create() throws IllegalAccessException, InstantiationException
     {
         G newGene = clazz.newInstance();
-        newGene.setLength(length);
-        Collection dna = phenotypeDataStructure.newInstance();
-        while(dna.size() < DEFAULT_SIZE)
-            dna.add(options.pickRandom());
 
-        newGene.setDna(dna);
+        newGene.setDna(RandomUtil.getRandomGeneticMaterial(options,seed));
         return newGene;
     }
 

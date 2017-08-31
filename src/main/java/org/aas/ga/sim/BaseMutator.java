@@ -40,28 +40,10 @@ public class BaseMutator implements Mutator
         if(seed != null)
             rand = seed;
 
-        Collection<Object> newDna = null;
-        try
+        if(rand.nextDouble() < p && !gene.isDominant())
         {
-            newDna = dnaDataStructure.newInstance();
+            gene.setDna(options.pickRandom());
         }
-        catch (InstantiationException | IllegalAccessException e)
-        {
-            LOG.error(e.getMessage());
-        }
-        assert newDna != null;
-        for(Object strand : gene.getDna())
-        {
-            if(rand.nextDouble() < p && !gene.isDominant())
-            {
-                newDna.add(options.pickRandom());
-            }
-            else
-            {
-                newDna.add(strand);
-            }
-        }
-        gene.setDna(newDna);
     }
 
     private void mutateGene(Gene gene)
