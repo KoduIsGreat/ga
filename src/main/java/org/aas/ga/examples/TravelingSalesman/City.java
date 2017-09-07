@@ -23,7 +23,7 @@ public class City implements Allele {
         id = 31 * id + (xCoordinate != null ? xCoordinate.hashCode() : 0);
         id = 31 * id + (yCoordinate != null ? yCoordinate.hashCode() : 0);
         id = Math.abs(id);
-}
+    }
 
     @Override
     public boolean equals(Object o)

@@ -29,10 +29,10 @@ public class AsciiMatcherGA extends AbstractGeneticAlgorithm {
         for(int k =0; k<stringChromo.length(); k ++)
         {
             int geneFit = HammingDistance((byte)stringChromo.charAt(k),(byte)target.charAt(k));
-            List<Gene> genes = (List)chromo.getGenes();
-            if(geneFit == 0 && !(genes.get(k).isDominant()))
+            Gene[] genes = chromo.getGenes();
+            if(geneFit == 0 && !(genes[k].isDominant()))
             {
-                genes.get(k).setDominant(true);
+                genes[k].setDominant(true);
             }
             fit += geneFit;
         }

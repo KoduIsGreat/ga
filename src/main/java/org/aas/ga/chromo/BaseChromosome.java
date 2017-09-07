@@ -1,36 +1,31 @@
 package org.aas.ga.chromo;
 
 import org.aas.ga.genes.Gene;
-import org.aas.ga.util.RandomUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
-import static org.aas.ga.sim.Simulation.options;
-import static org.aas.ga.sim.Simulation.seed;
+
 
 /**
  * Created by Adam on 6/26/2016.
  */
-public class BaseChromosome<T extends Collection<Gene>>  implements Chromosome<T> {
+public class BaseChromosome  implements Chromosome {
 
     Logger LOG = LoggerFactory.getLogger(BaseChromosome.class);
-    private T genes;
+    private Gene[] genes;
     private Double fitness;
     private Class<? extends Collection>  geneDataStructure;
 
     public BaseChromosome(){}
 
-
-
-    public BaseChromosome(T genes)
+    public BaseChromosome(Gene[] genes)
     {
         this.genes = genes;
-        this.geneDataStructure=genes.getClass();
+//        this.geneDataStructure=genes.getClass();
         fitness = Double.NaN;
     }
-
 
     private Collection<Gene> createChildGeneDS()
     {
@@ -51,31 +46,36 @@ public class BaseChromosome<T extends Collection<Gene>>  implements Chromosome<T
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        BaseChromosome<?> that = (BaseChromosome<?>) o;
+        BaseChromosome that = (BaseChromosome) o;
 
-        return genes.equals(that.genes);
+        return Arrays.deepEquals(genes,that.genes);
     }
 
     @Override
     public int hashCode() {
-        return genes.hashCode();
+        return Arrays.hashCode(genes);
     }
 
-
-
-
     @Override
-    public Collection<Gene> crossover(Chromosome other, int p)
+    public Gene[] crossover(Chromosome other, int p)
     {
-        List<Gene> list = new ArrayList(genes);
-        Collection<Gene> childDNA = createChildGeneDS();
-        childDNA.addAll(list.subList(0, p));
-        ArrayList<Gene> otherGenes = new ArrayList<>(other.getGenes());
-        childDNA.addAll(otherGenes.subList(p, other.getGenes().size()));
-        while(childDNA.size() < this.genes.size())
-            childDNA.addAll(genes);
 
-        return childDNA;
+        Gene[] otherArray = other.getGenes();
+        Gene[] offspring = new Gene[genes.length];
+        for(int i =0; i <genes.length; i++)
+        {
+            if ( i < p)
+                offspring[i] = genes[i];
+            else
+                offspring[i] = otherArray[i];
+        }
+//        Collection<Gene> childDNA = createChildGeneDS();
+//        ArrayList<Gene> otherGenes = new ArrayList<>(other.getGenes());
+//        childDNA.addAll(otherGenes.subList(p, other.getGenes().size()));
+//        while(childDNA.size() < this.genes.size())
+//            childDNA.addAll(genes);
+
+        return offspring;
     }
 
     @Override
@@ -89,7 +89,7 @@ public class BaseChromosome<T extends Collection<Gene>>  implements Chromosome<T
     @Override
     public int length()
     {
-        return this.genes.size();
+        return this.genes.length;
     }
 
     @Override
@@ -102,13 +102,13 @@ public class BaseChromosome<T extends Collection<Gene>>  implements Chromosome<T
     }
 
     @Override
-    public Collection<Gene> getGenes()
+    public Gene[] getGenes()
     {
         return genes;
     }
 
     @Override
-    public void setGenes(T genes)
+    public void setGenes(Gene[] genes)
     {
         this.genes = genes;
     }
@@ -122,20 +122,13 @@ public class BaseChromosome<T extends Collection<Gene>>  implements Chromosome<T
     @Override
     public void setFitness(Double f) {this.fitness =f;}
 
-    @Override
-    public Iterator<Gene> iterator()
-    {
-        return this.genes.iterator();
-    }
 
     @Override
     public String toString()
     {
-        Iterator<Gene> itr = iterator();
         StringBuilder sb = new StringBuilder();
-        while(itr.hasNext()){
-            sb.append(itr.next().toString());
-        }
+        for(int i =0 ; i < genes.length ; i++)
+            sb.append(genes[i]);
         return sb.toString();
     }
 }

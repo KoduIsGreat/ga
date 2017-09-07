@@ -10,15 +10,13 @@ import java.util.List;
 /**
  * Created by Adam on 6/11/2016.
  */
-public interface Chromosome<T extends Collection<Gene>> extends Comparable<Chromosome>
+public interface Chromosome extends Comparable<Chromosome>
 {
-     Collection<Gene> crossover(Chromosome other, int p);
+     Gene[] crossover(Chromosome other, int p);
      int length();
      Chromosome copy();
-     int compareTo(Chromosome o);
-     Collection<Gene> getGenes();
-     void setGenes(T genes);
+     Gene[] getGenes();
+     void setGenes(Gene[] genes);
      Double getFitness();
      void setFitness(Double f);
-     Iterator<Gene> iterator();
 }

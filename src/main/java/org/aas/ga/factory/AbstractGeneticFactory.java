@@ -35,19 +35,19 @@ abstract class AbstractGeneticFactory<T> implements Factory<T>
     }
     public abstract T create()throws InstantiationException,IllegalAccessException;
 
-    public Collection<T> create(int size)
-    {
-        try
-        {
-            Collection<T> coll =  phenotypeCollectionDataStructure.newInstance();
-            while(coll.size()<size)
-                coll.add(create());
-            return coll;
-        }
-        catch (InstantiationException |IllegalAccessException e)
-        {
-            LOG.error(e.getMessage());
-            return null;
-        }
-    }
+//    public T[] create(int size)
+//    {
+//        try
+//        {
+//            T[] coll =
+//            while(coll.size()<size)
+//                coll.add(create());
+//            return coll;
+//        }
+//        catch (InstantiationException |IllegalAccessException e)
+//        {
+//            LOG.error(e.getMessage());
+//            return null;
+//        }
+//    }
 }

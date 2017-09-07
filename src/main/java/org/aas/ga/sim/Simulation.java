@@ -43,7 +43,7 @@ public class Simulation implements Runnable{
     private Class<? extends Collection> dnaDataStructure;
     private Class<? extends Collection> geneDataStructure;
     private Class<? extends Collection> chromosomeDataStructure;
-    private ChromosomeFactory<? extends Chromosome> chromoFactory;
+    private ChromosomeFactory chromoFactory;
     private Mutator mutator = new BaseMutator();
     public Simulation(){}
 
@@ -70,8 +70,8 @@ public class Simulation implements Runnable{
 
     private void buildFactories()
     {
-        GeneFactory<? extends Gene> geneFactory = new GeneFactory<Gene>(gene,dnaDataStructure,geneDataStructure,options,seed,geneLength);
-        chromoFactory = new ChromosomeFactory<Chromosome>(chromosome,geneDataStructure,chromosomeDataStructure,options,geneFactory,seed,chromoLength);
+        GeneFactory geneFactory = new GeneFactory(options,seed);
+        chromoFactory = new ChromosomeFactory(geneFactory,chromoLength);
 
     }
 
@@ -84,7 +84,7 @@ public class Simulation implements Runnable{
         mutator.setP(pMutate);
         mutator.setSeed(seed);
 
-        this.algorithm.setPopulation((List) chromoFactory.create(popSize));
+        this.algorithm.setPopulation(chromoFactory.create(popSize));
         this.algorithm.setMutator(mutator);
         this.algorithm.setDoElitism(true);
         this.algorithm.setInverseFitnessRanking(true);
@@ -177,11 +177,11 @@ public class Simulation implements Runnable{
         this.seed = seed;
     }
 
-    public ChromosomeFactory<? extends Chromosome> getChromoFactory() {
+    public ChromosomeFactory getChromoFactory() {
         return chromoFactory;
     }
 
-    public void setChromoFactory(ChromosomeFactory<? extends Chromosome> chromoFactory) {
+    public void setChromoFactory(ChromosomeFactory chromoFactory) {
         this.chromoFactory = chromoFactory;
     }
 

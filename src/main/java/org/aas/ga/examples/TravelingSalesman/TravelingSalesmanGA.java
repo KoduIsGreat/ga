@@ -25,12 +25,12 @@ public class TravelingSalesmanGA extends AbstractGeneticAlgorithm {
     @Override
     public void evaluateFitness(Chromosome chromo) {
         Double fitness =0.0;
-        List<Gene> genes = new ArrayList<>(chromo.getGenes());
+        Gene[] genes = chromo.getGenes();
 
-        for(int i=1; i<genes.size(); i ++)
+        for(int i=1; i<genes.length; i ++)
         {
-            City c1 = (City)genes.get(i-1).getDna();
-            City c2 = (City)genes.get(i).getDna();
+            City c1 = (City)genes[i-1].getDna();
+            City c2 = (City)genes[i].getDna();
             fitness+=calculateDistance(c1.xCoordinate,c2.xCoordinate,c1.yCoordinate,c2.yCoordinate);
         }
         chromo.setFitness(fitness);

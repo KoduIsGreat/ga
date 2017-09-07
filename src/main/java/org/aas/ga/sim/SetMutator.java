@@ -31,18 +31,18 @@ public class SetMutator implements Mutator
         this.options = options;
         this.dnaDataStructure = geneDataStructure;
     }
-
+    // re-write using array shuffle per element
     private void reorderChromosome(Chromosome c , double p)
     {
         if(seed.nextDouble() < p)
         {
-            ArrayList<Gene> genes = new ArrayList<>();
-            genes.addAll(c.getGenes());
-
-            Collections.shuffle(genes, seed);
-            LinkedHashSet<Gene> newOrder = new LinkedHashSet<>();
-            newOrder.addAll(genes);
-            c.setGenes(newOrder);
+//            ArrayList<Gene> genes = new ArrayList<>();
+//            genes.addAll(c.getGenes());
+//
+//            Collections.shuffle(genes, seed);
+//            LinkedHashSet<Gene> newOrder = new LinkedHashSet<>();
+//            newOrder.addAll(genes);
+//            c.setGenes(newOrder);
         }
     }
     @Override

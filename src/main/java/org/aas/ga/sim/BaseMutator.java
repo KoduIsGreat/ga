@@ -54,11 +54,9 @@ public class BaseMutator implements Mutator
     @Override
     public void mutate(Chromosome chromosome)
     {
-
-        Iterator itr = chromosome.iterator();
-        while(itr.hasNext())
+        Gene[] genes = chromosome.getGenes();
+        for(Gene gene : genes)
         {
-            Gene gene = (Gene) itr.next();
             mutateGene(gene);
         }
     }
@@ -66,10 +64,9 @@ public class BaseMutator implements Mutator
     @Override
     public void refresh(Chromosome chromosome, double p)
     {
-        Iterator itr = chromosome.iterator();
-        while(itr.hasNext())
+        Gene[]genes = chromosome.getGenes();
+        for(Gene gene : genes)
         {
-            Gene gene = (Gene) itr.next();
             mutateGene(gene,p);
         }
     }

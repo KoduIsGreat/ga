@@ -23,9 +23,10 @@ public abstract class AbstractTransformer<E> implements Transformer<E>
     @Override
     public Collection<E> transformChromosome(Chromosome chromo, Collection<E> coll)
     {        
-        Collection<Gene> genes = chromo.getGenes();
-        for(Gene gene : genes)
-            coll.add(transformGene(gene));
-        return coll;
+//        Collection<Gene> genes = chromo.getGenes();
+//        for(Gene gene : genes)
+//            coll.add(transformGene(gene));
+//        return coll;
+        return null;
     }
 }

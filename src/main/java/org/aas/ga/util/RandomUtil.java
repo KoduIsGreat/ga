@@ -10,9 +10,9 @@ import java.util.Random;
  */
 public class RandomUtil
 {
-    public static  Object getRandomGeneticMaterial(AlleleOptions options, Random seed)
+    public static <T> T  getRandomGeneticMaterial(AlleleOptions options, Random seed)
     {
-        ArrayList<Object> list  = new ArrayList<>(options.getOptions());
+        ArrayList<T> list  = new ArrayList<>(options.getOptions());
         return list.get(seed.nextInt(list.size()));
     }
 }
