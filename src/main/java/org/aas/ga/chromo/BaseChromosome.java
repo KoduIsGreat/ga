@@ -16,29 +16,15 @@ public class BaseChromosome  implements Chromosome {
     Logger LOG = LoggerFactory.getLogger(BaseChromosome.class);
     private Gene[] genes;
     private Double fitness;
-    private Class<? extends Collection>  geneDataStructure;
 
     public BaseChromosome(){}
 
     public BaseChromosome(Gene[] genes)
     {
         this.genes = genes;
-//        this.geneDataStructure=genes.getClass();
         fitness = Double.NaN;
     }
 
-    private Collection<Gene> createChildGeneDS()
-    {
-        try
-        {
-            return (Collection<Gene>) geneDataStructure.newInstance();
-        }
-        catch (InstantiationException | IllegalAccessException e)
-        {
-            LOG.error(e.getMessage());
-            return null;
-        }
-    }
 
     @Override
     public boolean equals(Object o)
@@ -69,12 +55,6 @@ public class BaseChromosome  implements Chromosome {
             else
                 offspring[i] = otherArray[i];
         }
-//        Collection<Gene> childDNA = createChildGeneDS();
-//        ArrayList<Gene> otherGenes = new ArrayList<>(other.getGenes());
-//        childDNA.addAll(otherGenes.subList(p, other.getGenes().size()));
-//        while(childDNA.size() < this.genes.size())
-//            childDNA.addAll(genes);
-
         return offspring;
     }
 

@@ -30,7 +30,7 @@ public class GeneFactory {
 
     public BaseGene create(){
         BaseGene newGene = new BaseGene();
-        newGene.setDna(getRandomGeneticMaterial(options,seed));
+        newGene.setDna(options.pickRandom());
         return newGene;
     }
 

@@ -52,4 +52,25 @@ public class Cities implements AlleleOptions<City>
         while(i<randm);
         return city;
     }
+
+    @Override
+    public City pickRandom(boolean containsUniques)
+    {
+
+        Integer randm = new Random().nextInt(options.size());
+        for(City city : options )
+        {
+            return city;
+        }
+    return null;
+    }
+
+    @Override
+    public City[] getRandomOrder() {
+        City[] newOrder = new City[options.size()];
+        for(int i =0 ; i < newOrder.length ; i ++){
+            newOrder[i]= pickRandom(true);
+        }
+        return newOrder;
+    }
 }

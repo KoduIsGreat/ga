@@ -36,6 +36,7 @@ public class ChromosomeFactory {
         BaseChromosome chromo = new BaseChromosome();
         Gene [] genes = new Gene[length];
         for(int i = 0; i < length ; i++){
+
             genes[i] = geneFactory.create();
         }
 

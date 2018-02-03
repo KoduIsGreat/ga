@@ -34,16 +34,20 @@ public class SetMutator implements Mutator
     // re-write using array shuffle per element
     private void reorderChromosome(Chromosome c , double p)
     {
-        if(seed.nextDouble() < p)
+        Gene[] genes = c.getGenes();
+        for(int i=0; i< genes.length; i ++)
         {
-//            ArrayList<Gene> genes = new ArrayList<>();
-//            genes.addAll(c.getGenes());
-//
-//            Collections.shuffle(genes, seed);
-//            LinkedHashSet<Gene> newOrder = new LinkedHashSet<>();
-//            newOrder.addAll(genes);
-//            c.setGenes(newOrder);
+            if(seed.nextDouble() < p)
+            {
+                Gene current = genes[i].copy();
+                int swapLocation =seed.nextInt(genes.length);
+                Gene swap= genes[swapLocation];
+
+                genes[i] = swap;
+                genes[swapLocation] = current;
+            }
         }
+
     }
     @Override
     public void mutate(Chromosome chromosome)

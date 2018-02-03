@@ -10,4 +10,6 @@ public interface AlleleOptions<T> {
     public void setOptions(Collection<T> options);
     public void buildRandomOptions(int n);
     public T pickRandom();
+    public T pickRandom(boolean containsUniques);
+    public T[] getRandomOrder();
 }
